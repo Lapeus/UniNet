@@ -4,9 +4,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Hier könnte Ihre Werbung stehen</title>
 </head>
 <body>
-
+Dies ist ein Test
+<form action="testservlet" method="get">
+Bitte Namen eingeben<input type="text" name="name"> 
+<input type="submit">
+</form>
+${antwort}
 </body>
 </html>
