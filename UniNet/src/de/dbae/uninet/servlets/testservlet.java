@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
  * Servlet implementation class testservlet
@@ -36,6 +37,15 @@ public class testservlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Connection con = new DBConnection().getCon();
+		AnmeldeSql sqlSt = new AnmeldeSql(con);
+		for (String s : sqlSt.getUniList()) {
+			System.out.println(s);
+		}
+
+		request.setAttribute("unis", sqlSt.getUniList());
+		
+		/*
 		Connection con = null;
 		String name = request.getParameter("name");
 		String sql = "SELECT * FROM Nutzer WHERE Vorname=?;";
@@ -75,14 +85,44 @@ public class testservlet extends HttpServlet {
 				}
 			} catch (SQLException ignored) {}
 		}
+		*/
+		try {
+			if(!con.isClosed()) {
+				con.close();
+				System.out.println("Connection closed");
+			}
+		} catch (SQLException e) {
+			System.out.println("No Connection");
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		Connection con = new DBConnection().getCon();
+		AnmeldeSql sqlSt = new AnmeldeSql(con);
+		String anrede = request.getParameter("anrede");
+		boolean bAnrede = anrede.equals("Herr") ? true : false; 
+		String vorname = request.getParameter("vorname");
+		String nachname = request.getParameter("nachname");
+		String email = request.getParameter("email");
+		String password1 = request.getParameter("password1");
+		String password2 = request.getParameter("password2");
+		
+		if(password1.equals(password2)) {
+			sqlSt.registrierungsSql(bAnrede, vorname, nachname, email, password1);
+		} else {
+			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
+		}
+		try {
+			if(!con.isClosed()) {
+				con.close();
+				System.out.println("Connection closed");
+			}
+		} catch (SQLException e) {
+			System.out.println("No Connection");
+		}
 	}
 
 }
