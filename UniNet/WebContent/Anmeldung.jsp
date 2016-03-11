@@ -32,8 +32,8 @@
 <div class="row"><br><br><br></div>
 
 	<div class="form-group" >
-	    <label for="email" class="col-sm-2 control-label">
-	        Name</label>
+	    <label for="Anrede" class="col-sm-2 control-label">
+	        Anrede</label>
 	    <div class="col-sm-4">
 	        <div class="row">
 	            <div class="col-md-3">
@@ -42,10 +42,17 @@
 	                    <option>Frau</option>
 	                </select>
 	            </div>
-	            <div class="col-md-9">
-	                <input type="text" class="form-control" placeholder="Name" />
-	            </div>
 	        </div>
+	    </div>
+	</div>
+	<div class="form-group">
+	    <label for="name" class="col-sm-2 control-label">
+	        Name</label>
+	    <div class="col-sm-2">
+	        <input type="text" class="form-control" id="vorname" placeholder="Vorname eingeben" />
+	    </div>
+	     <div class="col-sm-2">
+	        <input type="text" class="form-control" id="nachname" placeholder="Nachname eingeben" />
 	    </div>
 	</div>
 	<div class="form-group">
@@ -55,18 +62,19 @@
 	        <input type="email" class="form-control" id="email" placeholder="Email" />
 	    </div>
 	</div>
+	
 	<div class="form-group">
-	    <label for="mobile" class="col-sm-2 control-label">
-	        Mobile</label>
+	    <label for="password" class="col-sm-2 control-label">
+	        Passwort</label>
 	    <div class="col-sm-4">
-	        <input type="email" class="form-control" id="mobile" placeholder="Mobile" />
+	        <input type="password" class="form-control" id="password" placeholder="Passwort eingeben" />
 	    </div>
 	</div>
 	<div class="form-group">
 	    <label for="password" class="col-sm-2 control-label">
-	        Password</label>
+	        Passwort</label>
 	    <div class="col-sm-4">
-	        <input type="password" class="form-control" id="password" placeholder="Password" />
+	        <input type="password" class="form-control" id="password" placeholder="Passwort erneut eingeben" />
 	    </div>
 	</div>
 	<div class="row">
@@ -74,9 +82,9 @@
 	    </div>
 	    <div class="col-sm-4">
 	        <button type="button" class="btn btn-primary btn-sm">
-	            Save & Continue</button>
+	            Registrieren</button>
 	        <button type="button" class="btn btn-default btn-sm">
-	            Cancel</button>
+	            Abbrechen</button>
 	    </div>
 	</div>
 </form>
