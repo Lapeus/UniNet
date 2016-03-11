@@ -38,13 +38,25 @@ public class testservlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection con = new DBConnection().getCon();
-		AnmeldeSql sqlSt = new AnmeldeSql(con);
-		for (String s : sqlSt.getUniList()) {
-			System.out.println(s);
+		AnmeldeSql sqlSt = new AnmeldeSql();
+		List<String> unis = new ArrayList<>();
+		PreparedStatement pStmt;
+		try {
+			pStmt = con.prepareStatement(sqlSt.getUniList());
+			ResultSet result = pStmt.executeQuery();
+			ResultSetMetaData rsMetaData = result.getMetaData();
+			while (result.next()) {
+				for (int i = 1; i <= rsMetaData.getColumnCount(); i++) {
+					unis.add(result.getString(i));
+				} 
+			}
+
+			request.setAttribute("unis", unis);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		request.setAttribute("unis", sqlSt.getUniList());
-		
 		/*
 		Connection con = null;
 		String name = request.getParameter("name");
@@ -86,14 +98,6 @@ public class testservlet extends HttpServlet {
 			} catch (SQLException ignored) {}
 		}
 		*/
-		try {
-			if(!con.isClosed()) {
-				con.close();
-				System.out.println("Connection closed");
-			}
-		} catch (SQLException e) {
-			System.out.println("No Connection");
-		}
 	}
 
 	/**
@@ -101,7 +105,8 @@ public class testservlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection con = new DBConnection().getCon();
-		AnmeldeSql sqlSt = new AnmeldeSql(con);
+		AnmeldeSql sqlSt = new AnmeldeSql();
+		
 		String anrede = request.getParameter("anrede");
 		boolean bAnrede = anrede.equals("Herr") ? true : false; 
 		String vorname = request.getParameter("vorname");
@@ -110,18 +115,21 @@ public class testservlet extends HttpServlet {
 		String password1 = request.getParameter("password1");
 		String password2 = request.getParameter("password2");
 		
-		if(password1.equals(password2)) {
-			sqlSt.registrierungsSql(bAnrede, vorname, nachname, email, password1);
-		} else {
-			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
-		}
 		try {
-			if(!con.isClosed()) {
-				con.close();
-				System.out.println("Connection closed");
-			}
-		} catch (SQLException e) {
-			System.out.println("No Connection");
+			PreparedStatement pStmt = con.prepareStatement(sqlSt.getRegistrierungsSql(bAnrede, vorname, nachname, email, password1));
+			System.out.println(sqlSt.getRegistrierungsSql(bAnrede, vorname, nachname, email, password1));
+			if(password1.equals(password2)) {
+				pStmt.execute();
+			} 
+			} catch (Exception e) {
+				response.getWriter().append("SQL-Fehler " + (con == null));
+			} finally {
+				try {
+					if (con!=null) {
+						con.close();
+						System.out.println("Die Verbindung wurde erfolgreich beendet!");
+					}
+			} catch (SQLException ignored) {}
 		}
 	}
 
