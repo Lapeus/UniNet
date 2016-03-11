@@ -8,17 +8,15 @@ public class DBConnection {
 
 	private Connection con;
 	static final String DRIVER = "org.postgresql.Driver";
-	static final String DB_SERVER = "abgabe-dbae.iis.uni-hildesheim.de:5432";
-	static final String DB_NAME = "db_ackerwolf";
+	static final String DB_SERVER = "abgabe-dbae.iis.uni-hildesheim:5432";
+	static final String DB_NAME = "db_AckerWolf";
 	static final String PASSWORD = "sicher123";
-	static final String USER = "group_ackerwolf";
+	static final String USER = "group_AckerWolf";
 	static final String URL = "jdbc:postgresql://"+DB_SERVER+ "/"+DB_NAME;
 
 	public DBConnection () {
-			
 		try {
 			Class.forName(DRIVER);
-			
 			con = DriverManager.getConnection(URL, USER, PASSWORD);
 		} catch (ClassNotFoundException e) {
 			System.out.println("Treiber konnte nicht geladen werden! " + e.getMessage());
