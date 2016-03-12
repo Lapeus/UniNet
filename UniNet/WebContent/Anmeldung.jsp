@@ -11,7 +11,7 @@
 <title>Willkommen bei UniNet</title>
 </head>
 <body >
-	<jsp:include page="/testservlet"></jsp:include>
+	<jsp:include page="/AnmeldePassivServlet"></jsp:include>
 	<form class="form-inline containerColor">
 		<div class="row"><br></div>
 		<div class="col-md-2"></div>
@@ -37,7 +37,7 @@
 	
 	<div class="row"><br><br><br></div>
 		
-	<form id="registrierung" role="form" class="form-horizontal" action="testservlet" method="post">
+	<form id="registrierung" role="form" class="form-horizontal" action="AnmeldeAktivServlet" method="post">
 		<div class="form-group">
 			<label for="Anrede" class="col-sm-2 control-label">Anrede</label>
 			<div class="col-sm-4">
@@ -78,7 +78,7 @@
 						</select>
 					</div>
 					<div class="col-sm-1">
-						<button form="reg">OK</button>
+						<input type="submit" value="OK" name="ok"/>
 					</div>
 				</div>
 			</div>	
@@ -98,8 +98,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="password" class="col-sm-2 control-label">
-				Passwort</label>
+			<label for="password" class="col-sm-2 control-label">Passwort</label>
 			<div class="col-sm-4">
 				<input type="password" class="form-control" id="password" placeholder="Passwort eingeben" name="password1" />
 			</div>
@@ -114,20 +113,10 @@
 		<div class="row">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-4">
-				<button type="submit" class="btn btn-primary btn-sm">
-					Registrieren</button>
-				<button type="reset" class="btn btn-default btn-sm">
-					Zurücksetzen</button>
+				<button type="submit" class="btn btn-primary btn-sm">Registrieren</button>
+				<button type="reset" class="btn btn-default btn-sm">Zurücksetzen</button>
 			</div>
 		</div>
-	</form>
-	
-	<form id="reg" role="form" class="form-horizontal" action="StudiengaengeServlet" method="get">
-		<select class="form-control" name="uni">
-			<c:forEach var="uni" items="${ unis }">
-				<option>${ uni }</option>
-			</c:forEach>
-		</select>
 	</form>
 	
 	
