@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,7 +12,6 @@
 </head>
 <body >
 	<jsp:include page="/testservlet"></jsp:include>
-	
 	<form class="form-inline containerColor">
 		<div class="row"><br></div>
 		<div class="col-md-2"></div>
@@ -37,7 +37,7 @@
 	
 	<div class="row"><br><br><br></div>
 		
-	<form role="form" class="form-horizontal" action="testservlet" method="post">
+	<form id="registrierung" role="form" class="form-horizontal" action="testservlet" method="post">
 		<div class="form-group">
 			<label for="Anrede" class="col-sm-2 control-label">Anrede</label>
 			<div class="col-sm-4">
@@ -61,23 +61,40 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="email" class="col-sm-2 control-label"> Email</label>
+			<label for="email" class="col-sm-2 control-label">Email</label>
 			<div class="col-sm-4">
-				<input type="email" class="form-control" id="email" placeholder="Email" name="email" />
+				<input type="email" class="form-control" id="email" placeholder="Email" name="email"/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="uni" class="col-sm-2 control-label"> Universität</label>
-			<div class="col-sm-8">
+			<label for="uni" class="col-sm-2 control-label">Universität</label>
+			<div class="col-md-8">
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-sm-3">
 						<select class="form-control" name="uni">
 							<c:forEach var="uni" items="${ unis }">
 								<option>${ uni }</option>
 							</c:forEach>
 						</select>
 					</div>
+					<div class="col-sm-1">
+						<button form="reg">OK</button>
+					</div>
 				</div>
+			</div>	
+		</div>
+		<div class="form-group">
+			<label for="studiengang" class="col-sm-2 control-label">Studiengang</label>
+			<div class="col-md-4">
+				<div class="row">
+					<div class="col-sm-8">
+						<select class="form-control" name="uni">
+							<c:forEach var="uni" items="${ studiengaenge }">
+								<option>${ uni }</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>	
 			</div>
 		</div>
 		<div class="form-group">
@@ -104,5 +121,15 @@
 			</div>
 		</div>
 	</form>
+	
+	<form id="reg" role="form" class="form-horizontal" action="StudiengaengeServlet" method="get">
+		<select class="form-control" name="uni">
+			<c:forEach var="uni" items="${ unis }">
+				<option>${ uni }</option>
+			</c:forEach>
+		</select>
+	</form>
+	
+	
 </body>
 </html>
