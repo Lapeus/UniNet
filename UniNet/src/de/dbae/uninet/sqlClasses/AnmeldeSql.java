@@ -21,7 +21,6 @@ public class AnmeldeSql {
 	
 	public String getStudiengaenge(String uni) {
 		String sql = "SELECT studiengangname FROM studiengaenge NATURAL JOIN universitaeten WHERE uniname='"+uni+"'";
-		System.out.println(sql);
 		return sql;
 	}
 }

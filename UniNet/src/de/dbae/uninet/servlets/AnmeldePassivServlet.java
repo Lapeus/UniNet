@@ -39,6 +39,8 @@ public class AnmeldePassivServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection con = new DBConnection().getCon();
 		AnmeldeSql sqlSt = new AnmeldeSql();
+		
+		String aUni = request.getParameter("uni");
 		List<String> unis = new ArrayList<>();
 		try {
 			PreparedStatement pStmt = con.prepareStatement(sqlSt.getUniList());
@@ -49,11 +51,12 @@ public class AnmeldePassivServlet extends HttpServlet {
 					unis.add(result.getString(i));
 				} 
 			}
+			unis.remove(aUni);
+			unis.add(0, aUni);
 
 			request.setAttribute("unis", unis);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Fehler - AnmmeldePassivServlet.doGet()");
 		}
 	}
 

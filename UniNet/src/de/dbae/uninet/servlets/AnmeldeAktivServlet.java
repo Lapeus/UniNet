@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
+
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
@@ -46,24 +48,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		Connection con = new DBConnection().getCon();
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		
-		List<String> unis = new ArrayList<>();
-		try {
-			PreparedStatement pStmt = con.prepareStatement(sqlSt.getUniList());
-			ResultSet result = pStmt.executeQuery();
-			ResultSetMetaData rsMetaData = result.getMetaData();
-			while (result.next()) {
-				for (int i = 1; i <= rsMetaData.getColumnCount(); i++) {
-					unis.add(result.getString(i));
-				} 
-			}
-
-			request.setAttribute("unis", unis);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if (!request.getParameter("ok").equals("OK")) {
+		if (!request.getParameter("laden").equals("Laden")) {
 			String anrede = request.getParameter("anrede");
 			boolean bAnrede = anrede.equals("Herr") ? true : false; 
 			String vorname = request.getParameter("vorname");
@@ -74,7 +59,6 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			
 			try {
 				PreparedStatement pStmt = con.prepareStatement(sqlSt.getRegistrierungsSql(bAnrede, vorname, nachname, email, password1));
-				System.out.println(sqlSt.getRegistrierungsSql(bAnrede, vorname, nachname, email, password1));
 				if(password1.equals(password2)) {
 					pStmt.execute();
 				} 
