@@ -4,7 +4,7 @@
 		<ul class="nav navbar-nav navbar-left">
 		<li><label class="platzhalter"></label></li>
 		<li><a class="navbar-brand kopfzeile logo" href="StartseiteServlet"><b>UNINET</b></a></li>
-		<li><form class="navbar-form navbar-left" role="search">
+		<li><form class="navbar-form navbar-left" role="search" action="SuchergebnisseServlet" method="get">
         	<div class="form-group">
          		<input type="text" class="form-control" placeholder="Suchbegriff eingeben" size="50">
         	</div>

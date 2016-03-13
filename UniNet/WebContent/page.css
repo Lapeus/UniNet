@@ -65,6 +65,10 @@ div.rechteSpalte {
 	margin-left: 80%;
 }
 
+div.beitrag {
+	background-color: white;
+}
+
 img.bild {
 	width: 100%;
 	heigt: 40%;
@@ -73,3 +77,65 @@ img.bild {
 body {
 	background-color: #b7c5e2;
 }
+
+a.verfasser {
+	font-size: 20px;
+	color: #3b5998;
+	font-weight: bold; 
+}
+
+label.zeitstempel {
+	font-size: 12px;
+	color: gray;
+}
+
+label.beitrag {
+	font-size: 16px;
+	color: black;
+	text-align: justify;
+	font-weight: lighter;
+}
+
+label.anzahlLikes {
+	font-size: 14px;
+	color: #3b5998;
+	font-weight: lighter;
+	border-bottom: 1px solid #ebebeb;
+	display: block;
+}
+
+
+
+label.anzahlKommentare {
+	font-size: 14px;
+	color: gray;
+	font-weight: lighter;
+	display: block;
+	float: right;
+}
+
+img.profilbild {
+	width: 180%;
+	heigth: 180%;
+}
+
+img.kommentarbild {
+	width: 120%;
+	heigth: 120%;
+}
+
+ul.border {
+	border-top: 1px solid #ebebeb;
+	border-bottom: 1px solid #ebebeb;
+}
+
+li a {
+	color: #3b5998;
+}
+
+li.kommentareAnzeigen {
+	margin-right: 0%;
+	float: right;
+}
+
+
