@@ -27,11 +27,7 @@ label.platzhalter {
 	outline: 0;
 }
 
-.chatSpalte {
-	border: 1px solid black;
-}
-
-.chatSpalte a {
+ul.chatSpalte a {
 	color: black;
 	outline: 0;
 }
@@ -61,17 +57,14 @@ div.mittlereSpalte {
 
 div.rechteSpalte {
 	width: 20%;
+	height: 85vh;
 	position: fixed;
 	margin-left: 80%;
+	border: 1px solid gray;
 }
 
 div.beitrag {
 	background-color: white;
-}
-
-img.bild {
-	width: 100%;
-	heigt: 40%;
 }
 
 body {
@@ -105,7 +98,6 @@ label.anzahlLikes {
 }
 
 
-
 label.anzahlKommentare {
 	font-size: 14px;
 	color: gray;
@@ -115,13 +107,15 @@ label.anzahlKommentare {
 }
 
 img.profilbild {
-	width: 180%;
-	heigth: 180%;
+	margin-top: 15%;
+	width: 200%;
+	heigth: 200%;
 }
 
 img.kommentarbild {
-	width: 120%;
-	heigth: 120%;
+	margin-top: 15%;
+	width: 140%;
+	heigth: 140%;
 }
 
 ul.border {

@@ -7,6 +7,8 @@ import java.io.Writer;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
+import de.dbae.uninet.javaClasses.Beitrag;
+
 public class BeitragTag extends TagSupport {
 
 	private static final long serialVersionUID = 4129407379981290381L;
