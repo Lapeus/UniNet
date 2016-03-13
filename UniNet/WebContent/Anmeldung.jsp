@@ -12,63 +12,65 @@
 </head>
 <body >
 	<jsp:include page="/AnmeldePassivServlet"></jsp:include>
-	<form class="form-inline containerColor">
+	<form class="form-inline containerColor" action="AnmeldeAktivServlet" method="post">
 		<div class="row"><br></div>
 		<div class="col-md-2"></div>
 		<div class="col-md-4">
 			<div class="hSelf">UniNet - Sei auch du dabei</div>
 		</div>
 		<div class="form-group">
-			<label class="sr-only" for="exampleInputEmail3">E-Mail Adresse</label> <input type="email" class="form-control"
-				id="exampleInputEmail3" placeholder="E-Mail">
+			<label class="sr-only" for="email">E-Mail Adresse</label> 
+			<input type="email" class="form-control" id="email" placeholder="E-Mail" name="email">
 		</div>
 		<div class="form-group">
-			<label class="sr-only" for="exampleInputPassword3">Passwort</label>
-			<input type="password" class="form-control"
-				id="exampleInputPassword3" placeholder="Passwort">
+			<label class="sr-only" for="password">Passwort</label>
+			<input type="password" class="form-control" id="password" placeholder="Passwort" name="password">
 		</div>
 		<div class="checkbox checkboxWhite">
 			<label> <input type="checkbox"> Angemeldet bleiben
 			</label>
 		</div>
-		<button type="submit" class="btn btn-default buttonLightBlue">Anmelden</button>
+		<button type="submit" class="btn btn-default buttonLightBlue" name="anmelden">Anmelden</button>
 		<div class="row"><br></div>
 	</form>
 	
-	<div class="row"><br><br><br></div>
-		
+	<div class="row">
+		<div class="col-sm-4">
+			<br>${ meldung }<br>
+		</div>
+	</div>
 	<form id="registrierung" role="form" class="form-horizontal" action="AnmeldeAktivServlet" method="post">
 		<div class="form-group">
 			<label for="Anrede" class="col-sm-2 control-label">Anrede</label>
 			<div class="col-sm-4">
 				<div class="row">
 					<div class="col-md-3">
-						<select class="form-control" name="anrede">
-							<option>Herr</option>
-							<option>Frau</option>
+						<select class="form-control" name="anrede" >
+							<option ${anredeM}>Herr</option>
+							<option ${anredeF}>Frau</option>
 						</select>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="name" class="col-sm-2 control-label"> Name</label>
+			<label for="name" class="col-sm-2 control-label">Name</label>
 			<div class="col-sm-2">
-				<input type="text" class="form-control" id="vorname" placeholder="Vorname eingeben" name="vorname" />
+				<input type="text" class="form-control" id="vorname" placeholder="Vorname eingeben" name="vorname" value="${ vorname }"/>
 			</div>
 			<div class="col-sm-2">
-				<input type="text" class="form-control" id="nachname" placeholder="Nachname eingeben" name="nachname" />
+				<input type="text" class="form-control" id="nachname" placeholder="Nachname eingeben" name="nachname" value="${ nachname }"/>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-2 control-label">Email</label>
 			<div class="col-sm-4">
-				<input type="email" class="form-control" id="email" placeholder="Email" name="email"/>
+				<input type="email" class="form-control" id="email" placeholder="Email" name="email" value="${ email }"/>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="uni" class="col-sm-2 control-label">Universität</label>
-			<div class="col-md-8">
+			<div class="col-sm-8">
 				<div class="row">
 					<div class="col-sm-3">
 						<select class="form-control" name="uni">
@@ -85,10 +87,10 @@
 		</div>
 		<div class="form-group">
 			<label for="studiengang" class="col-sm-2 control-label">Studiengang</label>
-			<div class="col-md-4">
+			<div class="col-sm-8">
 				<div class="row">
-					<div class="col-sm-8">
-						<select class="form-control" name="uni">
+					<div class="col-sm-4">
+						<select class="form-control" name="studiengang">
 							<c:forEach var="uni" items="${ studiengaenge }">
 								<option>${ uni }</option>
 							</c:forEach>
