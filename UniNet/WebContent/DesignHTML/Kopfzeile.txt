@@ -3,18 +3,18 @@
 		<div class="navbar-header nav-justified">
 		<ul class="nav navbar-nav navbar-left">
 		<li><label class="platzhalter"></label></li>
-		<li><a class="navbar-brand kopfzeile logo" href="Startseite.jsp"><b>UNINET</b></a></li>
+		<li><a class="navbar-brand kopfzeile logo" href="StartseiteServlet"><b>UNINET</b></a></li>
 		<li><form class="navbar-form navbar-left" role="search">
         	<div class="form-group">
          		<input type="text" class="form-control" placeholder="Suchbegriff eingeben" size="50">
         	</div>
         	<button type="submit" class="btn btn-default">Suchen</button>
       	</form></li>
-      	<li><a class="navbar-brand kopfzeile" href="#">Profilseite</a></li>
-      	<li><a class="navbar-brand kopfzeile" href="Startseite.jsp">Startseite</a></li>
-      	<li><a class="navbar-brand kopfzeile" href="#"><b>Chat(1)</b></a></li>
-      	<li><a class="navbar-brand kopfzeile" href="#"><b>Benachrichtigung(2)</b></a></li>
-      	<li><a class="navbar-brand kopfzeile" href="#">Freunde finden</a></li>
+      	<li><a class="navbar-brand kopfzeile" href="ProfilServlet">Profilseite</a></li>
+      	<li><a class="navbar-brand kopfzeile" href="StartseiteServlet">Startseite</a></li>
+      	<li><a class="navbar-brand kopfzeile" href="NachrichtenServlet"><b>Chat(1)</b></a></li>
+      	<li><a class="navbar-brand kopfzeile" href="BenachrichtigungenServlet"><b>Benachrichtigung(2)</b></a></li>
+      	<li><a class="navbar-brand kopfzeile" href="FreundeFindenServlet">Freunde finden</a></li>
       	</ul>
       	<ul class="nav navbar-nav navbar-right"><li>
       		<a class="navbar-brand kopfzeile" href="Anmeldung.jsp">Logout</a>
