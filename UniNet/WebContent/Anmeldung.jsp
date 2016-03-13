@@ -78,7 +78,7 @@
 						</select>
 					</div>
 					<div class="col-sm-1">
-						<input class="form-control" type="submit" value="Laden" name="laden"/>
+						<input class="form-control" type="submit" value="OK" name="laden"/>
 					</div>
 				</div>
 			</div>	

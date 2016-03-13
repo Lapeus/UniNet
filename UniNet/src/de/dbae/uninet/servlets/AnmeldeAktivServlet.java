@@ -61,6 +61,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				PreparedStatement pStmt = con.prepareStatement(sqlSt.getRegistrierungsSql(bAnrede, vorname, nachname, email, password1));
 				if(password1.equals(password2)) {
 					pStmt.execute();
+					request.getRequestDispatcher("Startseite.jsp").forward(request, response);
 				} 
 				} catch (Exception e) {
 					response.getWriter().append("SQL-Fehler " + (con == null));
