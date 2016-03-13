@@ -1,0 +1,15 @@
+<div class="mainPart">
+	<div class="linkeSpalte">
+		<ul class="nav nav-pills nav-stacked menueSpalte">
+		<li role="presentation"><a href="#">Profil anzeigen</a></li>
+		<li role="presentation"><a href="#">Profil bearbeiten</a></li>
+		<br>
+		<li role="presentation"><a href="#">Nachrichten</a></li>
+		<li role="presentation"><a href="#">Veranstaltungen</a></li>
+		<li role="presentation"><a href="#">Gruppen</a></li>
+		</ul> 
+	</div>
+	<div class="mittlereSpalte">
+	<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">

@@ -1,0 +1,13 @@
+<taglib xmlns="http://java.sun.com/JSP/TaglLibrariyDescriptor">
+	<tlib-version>2.0</tlib-version>
+	<jsp-version>2.0</jsp-version>
+	<short-name>´pageTLD</short-name>
+	<tag>
+		<name>kopfzeile</name>
+		<tag-class>de.dbae.taghandler.KopfzeileTag</tag-class>
+	</tag>	
+	<tag>
+		<name>seitenAufbau</name>
+		<tag-class>de.dbae.taghandler.SeitenAufbauTag</tag-class>
+	</tag>	
+</taglib>

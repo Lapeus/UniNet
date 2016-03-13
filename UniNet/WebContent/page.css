@@ -1,0 +1,75 @@
+
+a.kopfzeile {
+	background-color: #3b5998;
+	color: white;
+	outline: 0;
+	font-size: 13px;
+}
+
+a.logo {
+	font-size: 18px;
+}
+
+label.platzhalter {
+	width: 80px;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: white;
+}
+
+.menueSpalte a {
+	color: black;
+	outline: 0;
+}
+
+.chatSpalte {
+	border: 1px solid black;
+}
+
+.chatSpalte a {
+	color: black;
+	outline: 0;
+}
+
+h4.mittig {
+	text-align: center;
+}
+
+div.kopfzeile {
+	background-color: #3b5998;
+	color: white;
+}
+
+div.mainPart {
+	margin-top: 5%;
+}
+
+div.linkeSpalte {
+	width: 15%;
+	float: left;
+}
+
+div.mittlereSpalte {
+	width: 65%;
+	float: left;
+}
+
+div.rechteSpalte {
+	width: 20%;
+	position: fixed;
+	margin-left: 80%;
+}
+
+img.bild {
+	width: 100%;
+	heigt: 40%;
+}
+
+body {
+	background-color: #b7c5e2;
+}
