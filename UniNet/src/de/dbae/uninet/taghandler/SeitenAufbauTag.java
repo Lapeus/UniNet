@@ -1,4 +1,4 @@
-package de.dbae.taghandler;
+package de.dbae.uninet.taghandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
