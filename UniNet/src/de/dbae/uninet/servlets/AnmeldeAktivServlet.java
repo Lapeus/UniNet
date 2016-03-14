@@ -60,6 +60,14 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				String password = request.getParameter("password");
 				String email = request.getParameter("email");
 				
+				// Statement für userid
+				String stUserid = sqlSt.getNutzerId(email);
+				PreparedStatement eins = con.prepareStatement(stUserid);
+				// Execute userID
+				ResultSet rsUserid = eins.executeQuery();
+				rsUserid.next();
+				String userid = rsUserid.getString(1);
+				
 				String sql = sqlSt.ueberpruefeAnmeldedaten(email, password);
 				PreparedStatement pStmt = con.prepareStatement(sql);
 				ResultSet rs = pStmt.executeQuery();
@@ -70,8 +78,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 				} else {
 					HttpSession userSession = request.getSession();
-					userSession.setAttribute("UserID", sqlSt.getNutzerId(email));
-					request.getRequestDispatcher("Startseite.jsp").forward(request, response);
+					userSession.setAttribute("UserID", userid);
+					request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -147,9 +155,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						
 						psTmtStudent.execute();
 						HttpSession userSession = request.getSession();
-						userSession.setAttribute("UserID", sqlSt.getNutzerId(email));
-
-						request.getRequestDispatcher("Startseite.jsp").forward(request, response);
+						userSession.setAttribute("UserID", userid);
+						request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
 					} else {
 						// Wenn die Passwörter nich übereinstimmen
 						

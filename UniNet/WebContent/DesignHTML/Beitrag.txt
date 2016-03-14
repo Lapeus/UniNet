@@ -5,7 +5,7 @@
 		<img class="profilbild" alt="Testbild" src="Testbild.jpg">
 	</div>
 	<div class="col-md-11">
-	<a class="verfasser" href="#">NAME</a><br>
+	<a class="verfasser" href="ProfilServlet?name=UserID">NAME</a><br>
 	<label class="zeitstempel">TIMESTAMP</label>
 	</div> <!-- col-md-11 -->
 	</div> <!-- row kopf -->
@@ -14,7 +14,7 @@
 	</label><br><br>
 	<div>
 	<ul class="nav nav-pills border">
-  		<li role="presentation" class="like"><a href="#">Interessiert mich nicht besonders</a></li>
+  		<li role="presentation" class="like"><a href="">Interessiert mich nicht besonders</a></li>
   		<li role="presentation" class="kommentareAnzeigen"><a href="#">Alle Kommentare anzeigen</a></li>
 	</ul>
 	<label class="anzahlLikes"><p><p>ANZAHLLIKES Leute interessiert das nicht besonders</label>

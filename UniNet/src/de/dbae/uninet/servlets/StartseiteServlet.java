@@ -35,6 +35,7 @@ public class StartseiteServlet extends HttpServlet {
      */
     public StartseiteServlet() {
         super();
+        System.out.println("Konstruktor");
         // TODO Auto-generated constructor stub
     }
 
@@ -42,28 +43,29 @@ public class StartseiteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Angekommen");
 		session = request.getSession();
 		Connection con = new DBConnection().getCon();
 		StartseiteSql sqlSt = new StartseiteSql();
 		try {
-			/*String sql = sqlSt.getBeitraegeSql(session.getAttribute("UserID").toString());
+			String sql = sqlSt.getBeitraegeSql(session.getAttribute("UserID").toString());
 			PreparedStatement pStmt = con.prepareStatement(sql);
-			ResultSet rs = pStmt.executeQuery();*/
+			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+			ResultSet rs = pStmt.executeQuery();
 			List<Beitrag> beitragList = new ArrayList<Beitrag>();
-			/*ResultSetMetaData rsMetaData = rs.getMetaData();
 			while (rs.next()) {
 				String name = rs.getString(1) + " " + rs.getString(2);
-				String timeStamp = rs.getString(3) + " " + rs.getBoolean(4);
-				String nachricht = rs.getString(5);
-				int anzahlLikes = rs.getInt(6);
-				int anzahlKommentare = rs.getInt(7);
+				String timeStamp = "Zeitstempel P";//rs.getString(3) + " " + rs.getBoolean(4);
+				String nachricht = rs.getString(3);
+				int anzahlLikes = rs.getInt(4);
+				int anzahlKommentare = rs.getInt(5);
 				Beitrag beitrag = new Beitrag(name, timeStamp, nachricht, anzahlLikes, anzahlKommentare);
 				beitragList.add(beitrag);
-			}*/
-			Beitrag beitrag1 = new Beitrag("Christian Ackermann", "13. M‰rz 18:27 P", "Ich hab nen groﬂes Problem. <br>Irgendwie steht da null an der Seite und ich weiﬂ nich wieso.<br>Bitte helft mir!", 1234, 69);
+			}
+			/*Beitrag beitrag1 = new Beitrag("Christian Ackermann", "13. M‰rz 18:27 P", "Ich hab nen groﬂes Problem. <br>Irgendwie steht da null an der Seite und ich weiﬂ nich wieso.<br>Bitte helft mir!", 1234, 69);
 			Beitrag beitrag2 = new Beitrag("Marvin Wolf", "13. M‰rz 18:27 P", "Du bist leider viel schlauer als wir, da kann ich dir nicht helfen", 15, 3);
 			Beitrag beitrag3 = new Beitrag("Leon Schaffert", "13. M‰rz 18:27 P", "H‰h?", -3, 0);
-			beitragList.addAll(Arrays.asList(beitrag1, beitrag2, beitrag3));
+			beitragList.addAll(Arrays.asList(beitrag1, beitrag2, beitrag3));*/
 			request.setAttribute("beitragList", beitragList);
 		} catch (Exception e) {
 			response.getWriter().append("SQL-Fehler");
@@ -83,7 +85,7 @@ public class StartseiteServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		doGet(request, response);
 	}
 
 }

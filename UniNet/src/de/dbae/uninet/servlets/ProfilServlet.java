@@ -30,7 +30,7 @@ public class ProfilServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
-		// Attribute setzen
+		System.out.println(request.getParameter("name"));
 		request.getRequestDispatcher("Profil.jsp").forward(request, response);
 	}
 
