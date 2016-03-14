@@ -6,37 +6,33 @@ public class AnmeldeSql {
 	}
 	
 	// Methods
-	public String getRegistrierungNutzerSql(boolean gender, String vorname, String nachname, String email, String password1) {
-		String sql = "INSERT INTO Nutzer (anrede, vorname, nachname, email, passwort)  VALUES ('"+ gender +"','"+ vorname +"','"+ nachname +"','"+ email +"','"+ password1 +"')";
+	public String getRegistrierungNutzerSql() {
+		String sql = "INSERT INTO Nutzer (anrede, vorname, nachname, email, passwort)  VALUES (?,?,?,?,?)";
 		return sql; 
 	}
 	
-	public String getNutzerId(String email) {
-		String sql = "SELECT userid FROM nutzer WHERE email='"+ email +"'";
-		System.out.println(sql);
+	public String getNutzerId() {
+		String sql = "SELECT userid FROM nutzer WHERE email=?";
 	    return sql;
 	}
 	
-	public String getUniId(String uniname) {
-		String sql = "SELECT uniid FROM universitaeten WHERE uniname='"+ uniname +"'";
-		System.out.println(sql);
+	public String getUniId() {
+		String sql = "SELECT uniid FROM universitaeten WHERE uniname=?";
 		return sql;
 	}
 	
-	public String getStudiengangId(String studiengangname) {
-		String sql = "SELECT studiengangid FROM studiengaenge WHERE studiengangname='"+ studiengangname +"'";
-		System.out.println(sql);
+	public String getStudiengangId() {
+		String sql = "SELECT studiengangid FROM studiengaenge WHERE studiengangname=?";
 		return sql;
 	}
 	
-	public String getRegistrierungStudentSql (String userid, String uniid, String studiengangid) {
-		String sql = "INSERT INTO studenten (studentid, uniid, studiengangid, online) VALUES ("+ userid + ","+ uniid +","+ studiengangid +","+ true +")";
-		System.out.println(sql);
+	public String getRegistrierungStudentSql () {
+		String sql = "INSERT INTO studenten (studentid, uniid, studiengangid, online) VALUES (?,?,?,"+ true +")";
 		return sql;
 	}
 	
-	public String ueberpruefeAnmeldedaten(String email, String password) {
-		String sql = "SELECT email,passwort FROM nutzer WHERE email='"+ email +"' AND passwort='"+ password + "'";
+	public String ueberpruefeAnmeldedaten() {
+		String sql = "SELECT email,passwort FROM nutzer WHERE email=? AND passwort=?";
 		return sql;
 	}
 	
@@ -45,8 +41,8 @@ public class AnmeldeSql {
 		return sql;
 	}
 	
-	public String getStudiengaenge(String uni) {
-		String sql = "SELECT studiengangname FROM ((studiengaengeunis NATURAL JOIN universitaeten) NATURAL JOIN studiengaenge) WHERE uniname='"+uni+"'";
+	public String getStudiengaenge() {
+		String sql = "SELECT studiengangname FROM studiengaenge NATURAL JOIN Universitaeten WHERE uniname =?";
 		return sql;
 	}
 }
