@@ -11,7 +11,7 @@ a.logo {
 }
 
 label.platzhalter {
-	width: 80px;
+	width: auto;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -131,5 +131,7 @@ li.kommentareAnzeigen {
 	margin-right: 0%;
 	float: right;
 }
+
+
 
 
