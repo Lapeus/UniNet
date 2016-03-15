@@ -115,7 +115,7 @@
 		<div class="row">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-4">
-				<button type="submit" class="btn btn-primary btn-sm">Registrieren</button>
+				<button type="submit" class="btn btn-primary btn-sm" name="registrieren">Registrieren</button>
 				<button type="reset" class="btn btn-default btn-sm">Zurücksetzen</button>
 			</div>
 		</div>
