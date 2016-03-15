@@ -35,7 +35,7 @@ a.logo {
 }
 
 label.platzhalter {
-	width: auto;
+	width: 80px;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -136,14 +136,14 @@ label.anzahlKommentare {
 
 img.profilbild {
 	margin-top: 15%;
-	width: 200%;
-	heigth: 200%;
+	width: 42px;
+	heigth: 42px;
 }
 
 img.kommentarbild {
-	margin-top: 15%;
-	width: 140%;
-	heigth: 140%;
+	margin-top: 10%;
+	width: 30px;
+	heigth: 30px;
 }
 
 ul.border {

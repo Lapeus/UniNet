@@ -88,6 +88,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					// Wenn die Anmeldedaten in der DB sind
 					
 					HttpSession userSession = request.getSession();
+					System.out.println("SessionID: " + userSession.getId());
 					userSession.setAttribute("UserID", userid);
 					request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
 				}
