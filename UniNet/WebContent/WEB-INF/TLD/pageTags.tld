@@ -12,7 +12,7 @@
 		<name>seitenAufbau</name>
 		<tag-class>de.dbae.uninet.taghandler.SeitenAufbauTag</tag-class>
 		<attribute>
-			<name>userID</name>
+			<name>chatfreunde</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -37,7 +37,7 @@
 		<name>rechteSpalte</name>
 		<tag-class>de.dbae.uninet.taghandler.RechteSpalteTag</tag-class>
 		<attribute>
-			<name>userID</name>
+			<name>chatfreunde</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

@@ -12,7 +12,11 @@
 <title>UniNet - Nachrichten</title>
 </head>
 <body>
-<page:seitenAufbau userID='${userID}'>
+<page:kopfzeile></page:kopfzeile>
+<page:linkeSpalte>
+
+</page:linkeSpalte>
+<page:mittlereSpalte>
  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <div class="container">
@@ -81,6 +85,7 @@
         </div>
     </div>
 </div>
-</page:seitenAufbau>
+</page:mittlereSpalte>:
+<page:rechteSpalte chatfreunde="${ chatfreunde }"></page:rechteSpalte>
 </body>
 </html>

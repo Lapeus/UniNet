@@ -5,8 +5,14 @@ public class StartseiteSql {
 	public StartseiteSql() {
 	}
 	
-	public String getBeitraegeSql(String userID) {
+	public String getBeitraegeSql() {
 		String sql = "SELECT Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare FROM (beitragsView INNER JOIN freundeView ON VerfasserID = Nutzer) WHERE freund = ?;";
+		return sql;
+	}
+	
+	
+	public String getFreundeOnlineSql () {
+		String sql = "SELECT Vorname, Nachname, userID FROM (FreundeView INNER JOIN Studenten ON Freund = StudentID INNER JOIN Nutzer ON StudentID = UserID) WHERE Nutzer = ? AND Online = TRUE";
 		return sql;
 	}
 }

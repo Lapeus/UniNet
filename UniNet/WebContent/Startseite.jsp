@@ -12,7 +12,7 @@
 <title>UniNet - Startseite</title>
 </head>
 <body>
-<page:seitenAufbau userID='${userID}'>
+<page:seitenAufbau chatfreunde='${ chatfreunde }'>
 <!-- Seiteninhalt einfuegen -->
 <c:forEach var="beitrag" items="${ beitragList }">
 	<page:beitrag beitrag="${ beitrag }"></page:beitrag>

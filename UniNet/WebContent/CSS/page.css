@@ -85,6 +85,7 @@ div.rechteSpalte {
 	position: fixed;
 	margin-left: 80%;
 	border: 1px solid gray;
+	border-radius: 5px;
 }
 
 div.beitrag {
@@ -134,18 +135,6 @@ label.anzahlKommentare {
 	float: right;
 }
 
-img.profilbild {
-	margin-top: 15%;
-	width: 42px;
-	heigth: 42px;
-}
-
-img.kommentarbild {
-	margin-top: 10%;
-	width: 30px;
-	heigth: 30px;
-}
-
 ul.border {
 	border-top: 1px solid #ebebeb;
 	border-bottom: 1px solid #ebebeb;
@@ -158,6 +147,11 @@ li a {
 li.kommentareAnzeigen {
 	margin-right: 0%;
 	float: right;
+}
+
+li.chatfreunde {
+	background-color: white;
+	border-radius: 3px;
 }
 
 

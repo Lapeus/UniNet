@@ -2,13 +2,16 @@ package de.dbae.uninet.taghandler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import javax.servlet.jsp.tagext.TagSupport;
+
+import de.dbae.uninet.javaClasses.ChatFreund;
 
 public class SeitenAufbauTag extends TagSupport {
 	
 	private static final long serialVersionUID = 929940257312046566L;
-	private String userID;
+	private List<ChatFreund> chatfreunde;
 	private Writer out;
 
 	public int doStartTag() {
@@ -30,7 +33,7 @@ public class SeitenAufbauTag extends TagSupport {
 	public int doEndTag() {
 		String erg = "";
 		erg += "</div><div class='col-md-1'></div></div></div>";
-		erg += new RechteSpalteTag().getHtmlCode(userID);
+		erg += new RechteSpalteTag().getHtmlCode(chatfreunde);
 		try {
 			out.append(erg);
 		} catch (IOException e) {
@@ -40,11 +43,11 @@ public class SeitenAufbauTag extends TagSupport {
 		return EVAL_PAGE;
 	}
 
-	public String getUserID() {
-		return userID;
+	public List<ChatFreund> getChatfreunde() {
+		return chatfreunde;
 	}
 
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setChatfreunde(List<ChatFreund> chatfreunde) {
+		this.chatfreunde = chatfreunde;
 	}
 }

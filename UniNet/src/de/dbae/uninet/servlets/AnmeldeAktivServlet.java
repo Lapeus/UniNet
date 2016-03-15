@@ -93,7 +93,13 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 				} else {
 					// Wenn die Anmeldedaten in der DB sind
-
+					
+					// Setze den User auf Online (#christian)
+					sql = sqlSt.getOnlineUpdate();
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, Integer.parseInt(userid));
+					pStmt.executeUpdate();
+					// Setze die UserID fuer das SessionTracking und leite an die Startseite weiter
 					HttpSession userSession = request.getSession();
 					userSession.setAttribute("UserID", userid);
 					request.getRequestDispatcher("/StartseiteServlet").forward(request, response);

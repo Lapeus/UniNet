@@ -17,7 +17,7 @@
       	<li><a class="navbar-brand kopfzeile" href="FreundeFindenServlet">Freunde finden</a></li>
       	</ul>
       	<ul class="nav navbar-nav navbar-right"><li>
-      		<a class="navbar-brand kopfzeile" href="Anmeldung.jsp">Logout</a>
+      		<a class="navbar-brand kopfzeile" href="LogoutServlet">Logout</a>
       	</li></ul>
 		</div>
 	</div>

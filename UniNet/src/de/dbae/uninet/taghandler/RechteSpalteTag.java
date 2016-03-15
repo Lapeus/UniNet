@@ -2,18 +2,21 @@ package de.dbae.uninet.taghandler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import javax.servlet.jsp.tagext.TagSupport;
+
+import de.dbae.uninet.javaClasses.ChatFreund;
 
 public class RechteSpalteTag extends TagSupport {
 
 	private static final long serialVersionUID = 2224529992245088071L;
-	private String userID;
+	private List<ChatFreund> chatfreunde;
 	
 	public int doStartTag() {
 		Writer out = pageContext.getOut();
 		try {
-			out.append(getHtmlCode(userID));
+			out.append(getHtmlCode(chatfreunde));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -21,23 +24,25 @@ public class RechteSpalteTag extends TagSupport {
 		return SKIP_BODY;
 	}
 
-	public String getHtmlCode(String userID) {
+	public String getHtmlCode(List<ChatFreund> chatfreunde) {
 		String erg = "<div class='rechteSpalte'>";
 		erg += "<ul class='nav nav-stacked chatSpalte'>";
-		erg += "<li role='presentation'><H4 class='mittig'><b>Chat-Fenster</b></H4></li><br>";
+		erg += "<li role='presentation'><H4 class='mittig'><b>Chat-Fenster (" + chatfreunde.size() + ")</b></H4></li><br>";
 		erg += "<li><ul class='nav nav-pills nav-stacked'>";
-			// Hier folgen jetzt alle Chat-Partner ueber userID jeweils in dieser Form:
-			//<li role="presentation"><a href="#">Freund1</a></li>
+		for (ChatFreund freund : chatfreunde) {
+			erg += "<li role='presentation' class='chatfreunde'><a href='ProfilServlet?userID=" + freund.getUserID()+ "'>" + freund.getVorname() + " " + freund.getNachname() + "</a></li>";
+		}
 		erg += "</ul></ul></div>";
 		return erg;
 	}
 	
-	public String getUserID() {
-		return userID;
+	public List<ChatFreund> getChatfreunde() {
+		return chatfreunde;
 	}
 
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setChatfreunde(List<ChatFreund> chatfreunde) {
+		this.chatfreunde = chatfreunde;
 	}
+
 
 }

@@ -2,7 +2,7 @@
 	<div class="col-md-12 beitrag">
 	<div class="row kopf"><br>
 	<div class="col-md-1">
-		<img class="profilbild" alt="Testbild" src="Testbild.jpg">
+		<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
 	</div>
 	<div class="col-md-11">
 	<a class="verfasser" href="ProfilServlet?name=UserID">NAME</a><br>
@@ -21,7 +21,7 @@
 	<label class="anzahlKommentare">ANZAHLKOMMENTARE Kommentare</label></div>
 	<div class="row">
 	<div class="col-md-1">
-	<img class="kommentarbild" alt="Testbild" src="Testbild.jpg">
+	<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
 	</div>
 	<div class="col-md-11">
 	<form action="BeitragServlet" method="post">

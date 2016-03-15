@@ -11,7 +11,7 @@
 <title>UniNet - Finde neue Freunde</title>
 </head>
 <body>
-<page:seitenAufbau userID='${userID}'>
+<page:seitenAufbau chatfreunde='${ chatfreunde }'>
 Hier steht dann der tolle Inhalt
 <!-- Seiteninhalt einfuegen -->
 </page:seitenAufbau>

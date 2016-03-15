@@ -45,4 +45,15 @@ public class AnmeldeSql {
 		String sql = "SELECT studiengangname FROM studiengaenge NATURAL JOIN Universitaeten WHERE uniname =?";
 		return sql;
 	}
+	
+	public String getOnlineUpdate() {
+		String sql = "UPDATE Studenten SET Online = TRUE WHERE StudentID = ?";
+		return sql;
+	}
+	
+	public String getOfflineUpdate() {
+		String sql = "UPDATE Studenten SET Online = FALSE WHERE StudentID = ?";
+		return sql;
+	}
+	
 }

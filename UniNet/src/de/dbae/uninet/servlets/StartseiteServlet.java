@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
+import de.dbae.uninet.javaClasses.ChatFreund;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
@@ -35,7 +36,6 @@ public class StartseiteServlet extends HttpServlet {
      */
     public StartseiteServlet() {
         super();
-        System.out.println("Konstruktor");
         // TODO Auto-generated constructor stub
     }
 
@@ -48,7 +48,8 @@ public class StartseiteServlet extends HttpServlet {
 		System.out.println("Verbindung wurde geöffnet (Startseite)");
 		StartseiteSql sqlSt = new StartseiteSql();
 		try {
-			String sql = sqlSt.getBeitraegeSql(session.getAttribute("UserID").toString());
+			// Beitraege
+			String sql = sqlSt.getBeitraegeSql();
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
 			ResultSet rs = pStmt.executeQuery();
@@ -62,11 +63,24 @@ public class StartseiteServlet extends HttpServlet {
 				Beitrag beitrag = new Beitrag(name, timeStamp, nachricht, anzahlLikes, anzahlKommentare);
 				beitragList.add(beitrag);
 			}
-			/*Beitrag beitrag1 = new Beitrag("Christian Ackermann", "13. März 18:27 P", "Ich hab nen großes Problem. <br>Irgendwie steht da null an der Seite und ich weiß nich wieso.<br>Bitte helft mir!", 1234, 69);
-			Beitrag beitrag2 = new Beitrag("Marvin Wolf", "13. März 18:27 P", "Du bist leider viel schlauer als wir, da kann ich dir nicht helfen", 15, 3);
-			Beitrag beitrag3 = new Beitrag("Leon Schaffert", "13. März 18:27 P", "Häh?", -3, 0);
-			beitragList.addAll(Arrays.asList(beitrag1, beitrag2, beitrag3));*/
 			request.setAttribute("beitragList", beitragList);
+			
+			// Freunde (Online)
+			sql = sqlSt.getFreundeOnlineSql();
+			pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+			rs = pStmt.executeQuery();
+			List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
+			while (rs.next()) {
+				String vorname = rs.getString(1);
+				String nachname = rs.getString(2);
+				int userID = rs.getInt(3);
+				ChatFreund freund = new ChatFreund(vorname, nachname, userID);
+				chatfreunde.add(freund);
+			}
+			request.setAttribute("chatfreunde", chatfreunde);
+			
+			// Weiterleitung
 			request.getRequestDispatcher("Startseite.jsp").forward(request, response);
 		} catch (Exception e) {
 			response.getWriter().append("SQL-Fehler");
