@@ -1,3 +1,27 @@
+@CHARSET "UTF-8";
+
+.containerColor {
+	background-color: #3b5998;
+}
+
+.containerColor2 {
+	background-color: #b7c5e2;
+}
+
+.buttonLightBlue {
+	background-color: #2c4271;
+	color: white;
+}
+
+.checkboxWhite {
+	color: white;
+}
+
+.hSelf {
+	color: White;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 25px; 
+}
 
 a.kopfzeile {
 	background-color: #3b5998;
@@ -64,6 +88,10 @@ div.rechteSpalte {
 }
 
 div.beitrag {
+	background-color: white;
+}
+
+div.profilseite {
 	background-color: white;
 }
 
