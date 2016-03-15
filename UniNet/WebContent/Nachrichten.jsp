@@ -12,8 +12,7 @@
 <title>UniNet - Nachrichten</title>
 </head>
 <body>
-<page:kopfzeile></page:kopfzeile>
-<page:seitenAufbau>
+<page:seitenAufbau userID='${userID}'>
  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <div class="container">
