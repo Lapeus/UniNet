@@ -9,12 +9,11 @@ public class DBConnection {
 	private Connection con;
 	static final String DRIVER = "org.postgresql.Driver";
 	
-	/*
-	static final String DB_SERVER = "abgabe-dbae.iis.uni-hildesheim:5432";
-	static final String DB_NAME = "db_AckerWolf";
+	/*static final String DB_SERVER = "abgabe-dbae.iis.uni-hildesheim.de:5432";
+	static final String DB_NAME = "db_ackerwolf";
 	static final String PASSWORD = "sicher123";
-	static final String USER = "group_AckerWolf";
-	*/
+	static final String USER = "group_ackerwolf";*/
+	
 	// Eure lokalen Daten hier einsetzen und obige auskommentieren
 	
 	static final String DB_SERVER = "localhost:5432";
@@ -32,7 +31,7 @@ public class DBConnection {
 			System.out.println("Treiber konnte nicht geladen werden! " + e.getMessage());
 		} catch (SQLException e) {
 			System.out.println("Ein SQL-Fehler ist aufgetreten! " + e.getMessage());
-		} 
+		}
 	}
 	
 	public Connection getCon() {

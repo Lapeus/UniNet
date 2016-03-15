@@ -3,17 +3,51 @@
 	<jsp-version>2.0</jsp-version>
 	<short-name>pageTLD</short-name>
 	<tag>
+		<!-- Tag, der die Kopfzeile erstellt-->
 		<name>kopfzeile</name>
 		<tag-class>de.dbae.uninet.taghandler.KopfzeileTag</tag-class>
 	</tag>	
 	<tag>
+		<!-- Tag, der die komplette Seite aufbaut und den Mittelblock im Body hat -->
 		<name>seitenAufbau</name>
 		<tag-class>de.dbae.uninet.taghandler.SeitenAufbauTag</tag-class>
+		<attribute>
+			<name>userID</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>	
 	<tag>
+		<!-- Tag fuer die linke Spalte -->
+		<name>linkeSpalte</name>
+		<tag-class>de.dbae.uninet.taghandler.LinkeSpalteTag</tag-class>
+		<attribute>
+			<name>use</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag fuer die mittlere Spalte -->
+		<name>mittlereSpalte</name>
+		<tag-class>de.dbae.uninet.taghandler.MittlereSpalteTag</tag-class>
+	</tag>
+	<tag>
+		<!-- Tag fuer die rechte Spalte -->
+		<name>rechteSpalte</name>
+		<tag-class>de.dbae.uninet.taghandler.RechteSpalteTag</tag-class>
+		<attribute>
+			<name>userID</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der den Beitrag erstellt -->
 		<name>beitrag</name>
 		<tag-class>de.dbae.uninet.taghandler.BeitragTag</tag-class>
 		<attribute>
+			<!-- BeitragsObjekt -->
 			<name>beitrag</name> 
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>

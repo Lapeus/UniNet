@@ -11,8 +11,7 @@
 <title>UniNet - Gruppen</title>
 </head>
 <body>
-<page:kopfzeile></page:kopfzeile>
-<page:seitenAufbau>
+<page:seitenAufbau userID='${userID}'>
 Hier steht dann der tolle Inhalt
 <!-- Seiteninhalt einfuegen -->
 </page:seitenAufbau>
