@@ -53,9 +53,15 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		String meldung = "";
 		String meldung1 = "";
-
-		if (request.getParameter("anmelden") != null) {
-			// wenn der AnmeldeButton gedrückt wurde
+		if (request.getParameter("laden") != null) {
+			// UNIS LADEN
+			
+			// Felder bei reloead befuellen
+			felderFuellen(request);
+			String uni = request.getParameter("uni");
+			updateStudiengaenge(request, response, con, sqlSt, uni);
+		} else if (request.getParameter("anmelden") != null) {
+			// ANMELDEN
 
 			try {
 				String password = request.getParameter("password");
@@ -71,7 +77,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				if (rsUserid.next()) {
 					userid = rsUserid.getString(1);
 				}
-				
+
 				// Statement für email und PW kontrolle
 				String sql = sqlSt.ueberpruefeAnmeldedaten();
 				PreparedStatement pStmt = con.prepareStatement(sql);
@@ -81,28 +87,25 @@ public class AnmeldeAktivServlet extends HttpServlet {
 
 				if (!rs.next()) {
 					// Wenn die Anmeldedaten nicht in der DB sind
-					
+
 					meldung1 = "Bitte überprüfen Sie ihre Anmeldedaten";
 					request.setAttribute("meldung", meldung1);
 					request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 				} else {
 					// Wenn die Anmeldedaten in der DB sind
-					
+
 					HttpSession userSession = request.getSession();
-					System.out.println("SessionID: " + userSession.getId());
 					userSession.setAttribute("UserID", userid);
 					request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				try {
-					killConnection(con);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				killConnection(con);
 			}
-		} else {
+		} else if (request.getParameter("registrieren") != null) {
+			// REGISTRIERUNG
+			
 			// Alle eingaben abfragen
 			String anrede = request.getParameter("anrede");
 			boolean bAnrede = anrede.equals("Herr") ? true : false;
@@ -113,46 +116,30 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			String studiengang = request.getParameter("studiengang");
 			String password1 = request.getParameter("password1");
 			String password2 = request.getParameter("password2");
-
-			// und in die Felder füllen wenn neu geladen
-			if (bAnrede) {
-				request.setAttribute("anredeM", new String("selected='selected'"));
-			} else {
-				request.setAttribute("anredeF", new String("selected='selected'"));
-			}
-
-			request.setAttribute("vorname", vorname);
-			request.setAttribute("nachname", nachname);
-			request.setAttribute("email", email);
-
-			if (request.getParameter("laden") != null) {
-				// Wenn der Laden Button gedrückt wurde
-
-				updateStudiengaenge(request, response, con, sqlSt, uni);
-			} else if (!vorname.equals("") && !nachname.equals("") && !email.equals("") && !uni.equals("")
+			
+			// Felder bei reloead befuellen
+			felderFuellen(request);
+			
+			if (!vorname.equals("") && !nachname.equals("") && !email.equals("") && !uni.equals("")
 					&& !password1.equals("") && !password2.equals("")) {
-				// Wenn alle Daten angegeben sind
-
+				// ALLE DATEN VORHANDEN
+				
 				try {
 					if (password1.equals(password2)) {
-						// Wenn die Passwörter übereinstimmen
-
+						// PASSWÖRTER GLEICH
+						
 						// Nutzer Registrierung in Tabbelle speichern
-						System.out.println("1");
 						PreparedStatement pStmtNutzer = con.prepareStatement(sqlSt.getRegistrierungNutzerSql());
-						System.out.println("2");
 						pStmtNutzer.setBoolean(1, bAnrede);
 						pStmtNutzer.setString(2, vorname);
 						pStmtNutzer.setString(3, nachname);
 						pStmtNutzer.setString(4, email);
 						pStmtNutzer.setString(5, password1);
-						System.out.println("3");
-						System.out.println(pStmtNutzer.toString());
 						pStmtNutzer.execute();
 						// Statement für userid
 						String stUserid = sqlSt.getNutzerId();
-						PreparedStatement eins = con.prepareStatement(stUserid);   
-						eins.setString(1,email);
+						PreparedStatement eins = con.prepareStatement(stUserid);
+						eins.setString(1, email);
 						// Statement für uniid
 						String stUniid = sqlSt.getUniId();
 						PreparedStatement zwei = con.prepareStatement(stUniid);
@@ -173,10 +160,9 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						ResultSet rsStudiengangid = drei.executeQuery();
 						rsStudiengangid.next();
 						String studiengangid = rsStudiengangid.getString(1);
-						// Studentendaten aus Nutzerregistrieung in Tablle
+						// Studentendaten aus Nutzerregistrierung in Tablle
 						// speichern
-						PreparedStatement psTmtStudent = con.
-								prepareStatement(sqlSt.getRegistrierungStudentSql());
+						PreparedStatement psTmtStudent = con.prepareStatement(sqlSt.getRegistrierungStudentSql());
 						psTmtStudent.setInt(1, Integer.parseInt(userid));
 						psTmtStudent.setInt(2, Integer.parseInt(uniid));
 						psTmtStudent.setInt(3, Integer.parseInt(studiengangid));
@@ -185,47 +171,64 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						userSession.setAttribute("UserID", userid);
 						request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
 					} else {
-						// Wenn die Passwörter nich übereinstimmen
+						// PASSWÖRTER UNGLEICH
 
-						// Meldung bei gleicher E-Mail´
+						// Meldung bei ungleichem Passwort
 						meldung = "Keine übereinstimmung - Geben das Passwort erneut ein";
 						request.setAttribute("meldung", meldung);
+						// Studiengaenge updaten
 						updateStudiengaenge(request, response, con, sqlSt, uni);
 					}
-
 				} catch (Exception e) {
-					// Wenn die E-Mail schon vorhanden ist
+					// EMAIL SCHON REGISTRIERT
+					
 					e.printStackTrace();
-					// Meldung bei gleicher E-Mail´
+					// Meldung bei gleicher E-Mail
 					meldung = "E-Mail wird schon verwendet.";
 					request.setAttribute("meldung", meldung);
+					// Studiengaenge updaten
 					updateStudiengaenge(request, response, con, sqlSt, uni);
 				} finally {
-					try {
-						killConnection(con);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					killConnection(con);
 				}
 			} else {
-				// Wenn die Daten noch nicht vollständig angegeben sind
-
+				// DATEN UNVOLLSTÄNDIG
+				
+				// Meldung bei unvollständiger Registrierung
 				meldung = "Bitte füllen Sie das Formular vollständig aus";
 				request.setAttribute("meldung", meldung);
+				// Studiengaenge updaten
 				updateStudiengaenge(request, response, con, sqlSt, uni);
 			}
 		}
 	}
 
-	private void killConnection(Connection con) throws Exception {
+	private void killConnection(Connection con){
 		try {
 			if (con != null) {
 				con.close();
 				System.out.println("Die Verbindung wurde erfolgreich beendet!");
 			}
-		} catch (SQLException ignored) {
-			System.out.println("Strange things");
+		} catch (Exception ignored) {
+			ignored.printStackTrace();
 		}
+	}
+	
+	private void felderFuellen(HttpServletRequest request) {
+		// und in die Felder füllen wenn neu geladen
+		String anrede = request.getParameter("anrede");
+		boolean bAnrede = anrede.equals("Herr") ? true : false;
+		String vorname = request.getParameter("vorname");
+		String nachname = request.getParameter("nachname");
+		String email = request.getParameter("email");
+		if (bAnrede) {
+			request.setAttribute("anredeM", new String("selected='selected'"));
+		} else {
+			request.setAttribute("anredeF", new String("selected='selected'"));
+		}
+		request.setAttribute("vorname", vorname);
+		request.setAttribute("nachname", nachname);
+		request.setAttribute("email", email);
 	}
 
 	private void updateStudiengaenge(HttpServletRequest request, HttpServletResponse response, Connection con,
@@ -243,15 +246,12 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			}
 			request.setAttribute("studiengaenge", studiengaenge);
 			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
-		} catch (SQLException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("SQL Fehler - AnmeldeSQL.getStudiengaenge()");
 			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 		} finally {
-			try {
-				killConnection(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			killConnection(con);
 		}
 	}
 

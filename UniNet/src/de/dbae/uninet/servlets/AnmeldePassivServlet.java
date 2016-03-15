@@ -59,7 +59,7 @@ public class AnmeldePassivServlet extends HttpServlet {
 		} catch (SQLException e) {
 			System.out.println("Fehler - AnmmeldePassivServlet.doGet()");
 		} catch (NullPointerException npe) {
-			System.out.println("NullPointer");
+			request.setAttribute("meldung", "Der Server ist nicht erreichbar");
 		} finally {
 			try {
 				if (con != null) {
@@ -67,6 +67,7 @@ public class AnmeldePassivServlet extends HttpServlet {
 					System.out.println("Die Verbindung wurde erfolgreich beendet!");
 				}
 			} catch (SQLException ignored) {
+				ignored.printStackTrace();
 			}
 		}
 	}
