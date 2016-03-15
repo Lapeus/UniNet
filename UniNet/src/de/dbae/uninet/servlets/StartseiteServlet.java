@@ -43,9 +43,9 @@ public class StartseiteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Angekommen");
 		session = request.getSession();
 		Connection con = new DBConnection().getCon();
+		System.out.println("Verbindung wurde geöffnet (Startseite)");
 		StartseiteSql sqlSt = new StartseiteSql();
 		try {
 			String sql = sqlSt.getBeitraegeSql(session.getAttribute("UserID").toString());
@@ -67,6 +67,7 @@ public class StartseiteServlet extends HttpServlet {
 			Beitrag beitrag3 = new Beitrag("Leon Schaffert", "13. März 18:27 P", "Häh?", -3, 0);
 			beitragList.addAll(Arrays.asList(beitrag1, beitrag2, beitrag3));*/
 			request.setAttribute("beitragList", beitragList);
+			request.getRequestDispatcher("Startseite.jsp").forward(request, response);
 		} catch (Exception e) {
 			response.getWriter().append("SQL-Fehler");
 			e.printStackTrace();
@@ -78,7 +79,6 @@ public class StartseiteServlet extends HttpServlet {
 				}
 			} catch (SQLException ignored) {}
 		}
-		request.getRequestDispatcher("Startseite.jsp").forward(request, response);
 	}
 
 	/**

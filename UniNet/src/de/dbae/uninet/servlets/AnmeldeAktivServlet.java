@@ -49,6 +49,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Connection con = new DBConnection().getCon();
+		System.out.println("Die Verbindung wurde gestartet (AnmeldeAktiv)");
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		String meldung = "";
 		String meldung1 = "";
@@ -223,6 +224,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				System.out.println("Die Verbindung wurde erfolgreich beendet!");
 			}
 		} catch (SQLException ignored) {
+			System.out.println("Strange things");
 		}
 	}
 

@@ -38,6 +38,7 @@ public class AnmeldePassivServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection con = new DBConnection().getCon();
+		System.out.println("Die Verbindung wurde geöffnet (AnmeldePassiv)");
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		
 		String aUni = request.getParameter("uni");
@@ -57,6 +58,16 @@ public class AnmeldePassivServlet extends HttpServlet {
 			request.setAttribute("unis", unis);
 		} catch (SQLException e) {
 			System.out.println("Fehler - AnmmeldePassivServlet.doGet()");
+		} catch (NullPointerException npe) {
+			System.out.println("NullPointer");
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+					System.out.println("Die Verbindung wurde erfolgreich beendet!");
+				}
+			} catch (SQLException ignored) {
+			}
 		}
 	}
 
