@@ -61,24 +61,34 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				String email = request.getParameter("email");
 
 				// Statement für userid
-				String stUserid = sqlSt.getNutzerId(email);
+				String stUserid = sqlSt.getNutzerId();
 				PreparedStatement eins = con.prepareStatement(stUserid);
+				eins.setString(1, email);
 				// Execute userID
 				ResultSet rsUserid = eins.executeQuery();
-				rsUserid.next();
-				String userid = rsUserid.getString(1);
-
-				String sql = sqlSt.ueberpruefeAnmeldedaten(email, password);
+				String userid = "";
+				if (rsUserid.next()) {
+					userid = rsUserid.getString(1);
+				}
+				
+				// Statement für email und PW kontrolle
+				String sql = sqlSt.ueberpruefeAnmeldedaten();
 				PreparedStatement pStmt = con.prepareStatement(sql);
+				pStmt.setString(1, email);
+				pStmt.setString(2, password);
 				ResultSet rs = pStmt.executeQuery();
 
 				if (!rs.next()) {
+					// Wenn die Anmeldedaten nicht in der DB sind
+					
 					meldung1 = "Bitte überprüfen Sie ihre Anmeldedaten";
 					request.setAttribute("meldung", meldung1);
 					request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 				} else {
+					// Wenn die Anmeldedaten in der DB sind
+					
 					HttpSession userSession = request.getSession();
-					System.out.println(userSession.getId());
+					userSession.setAttribute("UserID", userid);
 					request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
 				}
 			} catch (Exception e) {
@@ -126,19 +136,29 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						// Wenn die Passwörter übereinstimmen
 
 						// Nutzer Registrierung in Tabbelle speichern
-						PreparedStatement pStmtNutzer = con.prepareStatement(
-								sqlSt.getRegistrierungNutzerSql(bAnrede, vorname, nachname, email, password1));
+						System.out.println("1");
+						PreparedStatement pStmtNutzer = con.prepareStatement(sqlSt.getRegistrierungNutzerSql());
+						System.out.println("2");
+						pStmtNutzer.setBoolean(1, bAnrede);
+						pStmtNutzer.setString(2, vorname);
+						pStmtNutzer.setString(3, nachname);
+						pStmtNutzer.setString(4, email);
+						pStmtNutzer.setString(5, password1);
+						System.out.println("3");
+						System.out.println(pStmtNutzer.toString());
 						pStmtNutzer.execute();
-
 						// Statement für userid
-						String stUserid = sqlSt.getNutzerId(email);
-						PreparedStatement eins = con.prepareStatement(stUserid);
+						String stUserid = sqlSt.getNutzerId();
+						PreparedStatement eins = con.prepareStatement(stUserid);   
+						eins.setString(1,email);
 						// Statement für uniid
-						String stUniid = sqlSt.getUniId(uni);
+						String stUniid = sqlSt.getUniId();
 						PreparedStatement zwei = con.prepareStatement(stUniid);
+						zwei.setString(1, uni);
 						// Statement für studiengangid
-						String stStudiengangid = sqlSt.getStudiengangId(studiengang);
+						String stStudiengangid = sqlSt.getStudiengangId();
 						PreparedStatement drei = con.prepareStatement(stStudiengangid);
+						drei.setString(1, studiengang);
 						// Execute userID
 						ResultSet rsUserid = eins.executeQuery();
 						rsUserid.next();
@@ -154,12 +174,13 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						// Studentendaten aus Nutzerregistrieung in Tablle
 						// speichern
 						PreparedStatement psTmtStudent = con.
-								prepareStatement(sqlSt.getRegistrierungStudentSql(userid, uniid, studiengangid));
-
+								prepareStatement(sqlSt.getRegistrierungStudentSql());
+						psTmtStudent.setInt(1, Integer.parseInt(userid));
+						psTmtStudent.setInt(2, Integer.parseInt(uniid));
+						psTmtStudent.setInt(3, Integer.parseInt(studiengangid));
 						psTmtStudent.execute();
 						HttpSession userSession = request.getSession();
 						userSession.setAttribute("UserID", userid);
-						System.out.println(userSession.getId());
 						request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
 					} else {
 						// Wenn die Passwörter nich übereinstimmen
@@ -172,7 +193,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 
 				} catch (Exception e) {
 					// Wenn die E-Mail schon vorhanden ist
-
+					e.printStackTrace();
 					// Meldung bei gleicher E-Mail´
 					meldung = "E-Mail wird schon verwendet.";
 					request.setAttribute("meldung", meldung);
@@ -208,7 +229,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			AnmeldeSql sqlSt, String uni) throws ServletException, IOException {
 		List<String> studiengaenge = new ArrayList<String>();
 		try {
-			PreparedStatement pStmt = con.prepareStatement(sqlSt.getStudiengaenge(uni));
+			PreparedStatement pStmt = con.prepareStatement(sqlSt.getStudiengaenge());
+			pStmt.setString(1, uni);
 			ResultSet result = pStmt.executeQuery();
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			while (result.next()) {
@@ -219,7 +241,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			request.setAttribute("studiengaenge", studiengaenge);
 			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 		} catch (SQLException e) {
-			System.out.println("SQL Fehler - AnmeldeSQL.getStudiengaenge(uni)");
+			System.out.println("SQL Fehler - AnmeldeSQL.getStudiengaenge()");
 			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 		} finally {
 			try {
