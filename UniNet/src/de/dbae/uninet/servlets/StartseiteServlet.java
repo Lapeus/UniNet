@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
-import de.dbae.uninet.javaClasses.ChatFreund;
+import de.dbae.uninet.javaClasses.LadeChatFreunde;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
@@ -65,20 +63,9 @@ public class StartseiteServlet extends HttpServlet {
 			}
 			request.setAttribute("beitragList", beitragList);
 			
-			// Freunde (Online)
-			sql = sqlSt.getFreundeOnlineSql();
-			pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
-			rs = pStmt.executeQuery();
-			List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
-			while (rs.next()) {
-				String vorname = rs.getString(1);
-				String nachname = rs.getString(2);
-				int userID = rs.getInt(3);
-				ChatFreund freund = new ChatFreund(vorname, nachname, userID);
-				chatfreunde.add(freund);
-			}
-			request.setAttribute("chatfreunde", chatfreunde);
+			// Chatfreunde
+			LadeChatFreunde cfs = new LadeChatFreunde();
+			request.setAttribute("chatfreunde", cfs.getChatfreunde(session));
 			
 			// Weiterleitung
 			request.getRequestDispatcher("Startseite.jsp").forward(request, response);

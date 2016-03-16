@@ -30,7 +30,7 @@ public class RechteSpalteTag extends TagSupport {
 		erg += "<li role='presentation'><H4 class='mittig'><b>Chat-Fenster (" + chatfreunde.size() + ")</b></H4></li><br>";
 		erg += "<li><ul class='nav nav-pills nav-stacked'>";
 		for (ChatFreund freund : chatfreunde) {
-			erg += "<li role='presentation' class='chatfreunde'><a href='ProfilServlet?userID=" + freund.getUserID()+ "'>" + freund.getVorname() + " " + freund.getNachname() + "</a></li>";
+			erg += "<li role='presentation' class='chatfreunde'><a href='NachrichtenServlet?userID=" + freund.getUserID()+ "'>" + freund.getVorname() + " " + freund.getNachname() + "</a></li>";
 		}
 		erg += "</ul></ul></div>";
 		return erg;

@@ -99,10 +99,24 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					pStmt = con.prepareStatement(sql);
 					pStmt.setInt(1, Integer.parseInt(userid));
 					pStmt.executeUpdate();
-					// Setze die UserID fuer das SessionTracking und leite an die Startseite weiter
+					// Setze die UserID fuer das SessionTracking
 					HttpSession userSession = request.getSession();
 					userSession.setAttribute("UserID", userid);
-					request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
+					// Teste ob es sich um einen Studenten oder LocalAdmin handelt (#christian)
+					sql = sqlSt.getStudentenIDs();
+					pStmt = con.prepareStatement(sql);
+					rs = pStmt.executeQuery();
+					List<String> studentenIDs = new ArrayList<String>();
+					while (rs.next()) {
+						studentenIDs.add(rs.getString(1));
+					}
+					// Wenn es ein Student ist, leite an Startseite weiter
+					if (studentenIDs.contains(userid)) {
+						request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
+					// Sonst an die LocalAdmin Verwaltung
+					} else {
+						request.getRequestDispatcher("/LocalAdminServlet").forward(request, response);
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -56,4 +56,9 @@ public class AnmeldeSql {
 		return sql;
 	}
 	
+	public String getStudentenIDs() {
+		String sql = "SELECT StudentID FROM Studenten";
+		return sql;
+	}
+	
 }
