@@ -17,11 +17,12 @@
 <jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
+<page:linkeSpalte use="standard"></page:linkeSpalte>
 <page:mittlereSpalte>
-
-
 <div class="container">
     <div class="row">
+    	<div class="col-md-1"></div>
+    	<div class="col-md-10">
             <div class="msg-wrap">
                 <c:forEach items="${ nachrichten }" var="nachrichten">
                 	<page:nachricht nachricht="${ nachrichten }"></page:nachricht>
@@ -36,9 +37,10 @@
 	                <input type="submit" class="col-lg-4 text-right btn send-message-btn pull-right" name="senden"/>
 	            </div>
             </form>
+    	</div>
     </div>
 </div>
-</page:mittlereSpalte>:
+</page:mittlereSpalte>
 <page:rechteSpalte chatfreunde="${ chatfreunde }"></page:rechteSpalte>
 </div>
 </body>
