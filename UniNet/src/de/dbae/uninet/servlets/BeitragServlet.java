@@ -39,7 +39,9 @@ public class BeitragServlet extends HttpServlet {
 		case "Like":
 			likeBeitrag(request, response);
 			break;
-
+		case "Kommentar":
+			kommentieren(request, response);
+			break;
 		default:
 			break;
 		}
@@ -50,7 +52,7 @@ public class BeitragServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		doGet(request, response);
 	}
 	
 	private void likeBeitrag(HttpServletRequest request, HttpServletResponse response) {
@@ -87,7 +89,42 @@ public class BeitragServlet extends HttpServlet {
 				}
 			}
 			try {
-				request.getRequestDispatcher(page).forward(request, response);
+				response.sendRedirect(page);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void kommentieren(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+		int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
+		String page = request.getParameter("page");
+		Connection con = new DBConnection().getCon();
+		System.out.println("Verbindung wurde geöffnet (Beitrag)");
+		BeitragSql sqlSt = new BeitragSql();
+		try {
+			String sql = sqlSt.getKommentar();
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, beitragsID);
+			pStmt.setString(2, request.getParameter("kommentar"));
+			pStmt.setInt(3, userID);
+			pStmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("SQL Fehler in BeitragServlet");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			try {
+				response.sendRedirect(page);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

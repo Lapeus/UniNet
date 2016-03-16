@@ -169,7 +169,7 @@ public class ProfilServlet extends HttpServlet {
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				pStmt.executeUpdate();
-				doGet(request, response);
+				response.sendRedirect("ProfilServlet");
 			} else {
 				System.out.println("Problem beim Anlegen des Beitrags");
 			}

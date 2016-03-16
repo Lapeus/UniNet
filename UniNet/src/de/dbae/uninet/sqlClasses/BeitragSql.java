@@ -14,4 +14,9 @@ public class BeitragSql {
 		String sql = "DELETE FROM beitraglikes WHERE beitragsID = ? AND studentID = ?";
 		return sql;
 	}
+	
+	public String getKommentar() {
+		String sql = "INSERT INTO kommentareZuBeitrag (beitragsID, kommentar, verfasserID) VALUES (?, ?, ?)";
+		return sql;
+	}
 }

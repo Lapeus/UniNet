@@ -16,7 +16,7 @@
 <page:kopfzeile>
 </page:kopfzeile>
 <div class="mainPart">
-	<div class="linkeSpalte">
+	<page:linkeSpalte>
 		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
 		<label class="verfasser">Persönliche Infos</label>
 		<ul class="list-group">
@@ -25,7 +25,7 @@
 			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>
 			<li class="list-group-item">Freunde: ${ anzFreunde }</li>
 		</ul>
-	</div>
+	</page:linkeSpalte>
 	
 	<page:mittlereSpalte>
 	<div class="row">

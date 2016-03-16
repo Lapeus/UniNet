@@ -43,7 +43,6 @@ public class LogoutServlet extends HttpServlet {
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
 			pStmt.executeUpdate();
-			System.out.println(sql);
 		} catch (Exception e) {
 			System.out.println("Fehler beim Ausloggen");
 		} finally {
@@ -57,7 +56,7 @@ public class LogoutServlet extends HttpServlet {
 				}
 			}
 		}
-		request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
+		response.sendRedirect("Anmeldung.jsp");
 	}
 
 	/**

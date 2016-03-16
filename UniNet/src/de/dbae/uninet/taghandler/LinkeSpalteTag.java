@@ -9,11 +9,11 @@ public class LinkeSpalteTag extends TagSupport {
 
 	private static final long serialVersionUID = 1291626405868011739L;
 	private String use = "";
-	private String erg = "";
 
 	public int doStartTag() {
-		erg += "<div class='linkeSpalte'>";
 		Writer out = pageContext.getOut();
+		String erg = "";
+		erg += "<div class='linkeSpalte'>";
 		if (use.equals("standard")) {
 			erg += "<ul class='nav nav-pills nav-stacked menueSpalte'>";
 			erg += "<li role='presentation'><a href='#'>Profil anzeigen</a></li>";

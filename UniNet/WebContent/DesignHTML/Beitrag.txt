@@ -25,8 +25,8 @@
 	<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
 	</div>
 	<div class="col-md-11">
-	<form action="BeitragServlet" method="post">
-	<input type="text" class="form-control" placeholder="Schreibe einen Kommentar...">
+	<form action="BeitragServlet?page=PAGE&beitragsID=BEITRAGSID&name=Kommentar" method="post">
+	<input type="text" class="form-control" name="kommentar" placeholder="Schreibe einen Kommentar...">
 	</form>
 	</div> <!-- col-md-11 -->
 	</div> <!-- row -->

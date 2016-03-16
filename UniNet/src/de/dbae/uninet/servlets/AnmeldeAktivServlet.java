@@ -112,10 +112,10 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					}
 					// Wenn es ein Student ist, leite an Startseite weiter
 					if (studentenIDs.contains(userid)) {
-						request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
+						response.sendRedirect("StartseiteServlet");
 					// Sonst an die LocalAdmin Verwaltung
 					} else {
-						request.getRequestDispatcher("/LocalAdminServlet").forward(request, response);
+						response.sendRedirect("LocalAdminServlet");
 					}
 				}
 			} catch (Exception e) {
@@ -189,7 +189,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						psTmtStudent.execute();
 						HttpSession userSession = request.getSession();
 						userSession.setAttribute("UserID", userid);
-						request.getRequestDispatcher("/StartseiteServlet").forward(request, response);
+						response.sendRedirect("StartseiteServlet");
 					} else {
 						// PASSWÖRTER UNGLEICH
 
