@@ -10,6 +10,11 @@ public class StartseiteSql {
 		return sql;
 	}
 	
+	public String getLikeAufBeitragSql() {
+		String sql = "SELECT COUNT(beitragsID) FROM beitraglikes WHERE beitragsID = ? AND studentID = ?";
+		return sql;
+	}
+	
 	
 	public String getFreundeOnlineSql () {
 		String sql = "SELECT Vorname, Nachname, userID FROM (FreundeView INNER JOIN Studenten ON Freund = StudentID INNER JOIN Nutzer ON StudentID = UserID) WHERE Nutzer = ? AND Online = TRUE";

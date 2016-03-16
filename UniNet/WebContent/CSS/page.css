@@ -146,6 +146,10 @@ li a {
 	color: #3b5998;
 }
 
+li.geliket {
+	background-color: #b7c5e2;
+}
+
 li.kommentareAnzeigen {
 	margin-right: 0%;
 	float: right;

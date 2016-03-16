@@ -9,8 +9,9 @@ public class Beitrag {
 	private int likes;
 	private int kommentare;
 	private int beitragsID;
+	private boolean like;
 	
-	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID) {
+	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID, boolean like) {
 		this.setUserID(userID);
 		this.setName(name);
 		this.setTimeStamp(timeStamp);
@@ -18,6 +19,7 @@ public class Beitrag {
 		this.setLikes(likes);
 		this.setKommentare(kommentare);
 		this.setBeitragsID(beitragsID);
+		this.setLike(like);
 	}
 
 	public int getUserID() {
@@ -74,6 +76,14 @@ public class Beitrag {
 
 	public void setBeitragsID(int beitragsID) {
 		this.beitragsID = beitragsID;
+	}
+
+	public boolean isLike() {
+		return like;
+	}
+
+	public void setLike(boolean like) {
+		this.like = like;
 	}
 	
 }

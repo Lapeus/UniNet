@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.sqlClasses.BeitragSql;
-import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
  * Servlet implementation class BeitragServlet

@@ -59,8 +59,16 @@ public class StartseiteServlet extends HttpServlet {
 				int anzahlLikes = rs.getInt(5);
 				int anzahlKommentare = rs.getInt(6);
 				int beitragsID = rs.getInt(7);
-				Beitrag beitrag = new Beitrag(userID, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID);
-				beitragList.add(beitrag);
+				sql = sqlSt.getLikeAufBeitragSql();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, beitragsID);
+				pStmt.setInt(2, Integer.parseInt(session.getAttribute("UserID").toString()));
+				ResultSet rs2 = pStmt.executeQuery();
+				if (rs2.next()) {
+					boolean like = rs2.getInt(1) == 0 ? false : true;
+					Beitrag beitrag = new Beitrag(userID, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like);
+					beitragList.add(beitrag);
+				}
 			}
 			request.setAttribute("beitragList", beitragList);
 			

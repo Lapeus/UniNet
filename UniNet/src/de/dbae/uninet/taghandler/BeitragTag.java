@@ -40,6 +40,11 @@ public class BeitragTag extends TagSupport {
 			kopfzeile = kopfzeile.replace("NACHRICHT", beitrag.getNachricht());
 			kopfzeile = kopfzeile.replace("ANZAHLLIKES", beitrag.getLikes() + "");
 			kopfzeile = kopfzeile.replace("ANZAHLKOMMENTARE", beitrag.getKommentare() + "");
+			if (beitrag.isLike()) {
+				kopfzeile = kopfzeile.replace("CLASS", "geliket");
+			} else {
+				kopfzeile = kopfzeile.replace("CLASS", "");
+			}
 			out.append(kopfzeile);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

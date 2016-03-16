@@ -20,6 +20,11 @@ public class ProfilSql {
 		return sql;
 	}
 	
+	public String getLikeAufBeitragSql() {
+		String sql = "SELECT COUNT(beitragsID) FROM beitraglikes WHERE beitragsID = ? AND studentID = ?";
+		return sql;
+	}
+	
 	public String getBeitragAnlegenSql1() {
 		String sql = "INSERT INTO beitraege (beitrag, verfasserID, sichtbarkeit) VALUES (?, ?, ?)";
 		return sql;
