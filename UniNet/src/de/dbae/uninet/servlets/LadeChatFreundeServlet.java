@@ -1,5 +1,6 @@
-package de.dbae.uninet.javaClasses;
+package de.dbae.uninet.servlets;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,18 +8,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.ChatFreund;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
 
-public class LadeChatFreunde {
+@WebServlet("/LadeChatFreundeServlet")
+public class LadeChatFreundeServlet extends HttpServlet{
 	
-    public LadeChatFreunde() {
+ 	private static final long serialVersionUID = 4636772916140807029L;
+
+	public LadeChatFreundeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		request.setAttribute("chatfreunde", getChatfreunde(session));
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
 	
 	public List<ChatFreund> getChatfreunde(HttpSession session) {
 		// Freunde (Online)
@@ -51,6 +69,7 @@ public class LadeChatFreunde {
 				}
 			}
 		}
+		System.out.println("Chatfreunde: " + chatfreunde);
 		return chatfreunde;
 	}
 

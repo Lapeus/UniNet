@@ -11,6 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>UniNet - Profilseite</title>
 </head>
+<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <body>
 <page:kopfzeile>
 </page:kopfzeile>

@@ -12,6 +12,7 @@
 <title>UniNet - Startseite</title>
 </head>
 <body>
+<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <page:seitenAufbau chatfreunde='${ chatfreunde }'>
 <!-- Seiteninhalt einfuegen -->
 <c:forEach var="beitrag" items="${ beitragList }">

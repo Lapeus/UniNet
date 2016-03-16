@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
-import de.dbae.uninet.javaClasses.LadeChatFreunde;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
@@ -63,10 +62,6 @@ public class StartseiteServlet extends HttpServlet {
 				beitragList.add(beitrag);
 			}
 			request.setAttribute("beitragList", beitragList);
-			
-			// Chatfreunde
-			LadeChatFreunde cfs = new LadeChatFreunde();
-			request.setAttribute("chatfreunde", cfs.getChatfreunde(session));
 			
 			// Weiterleitung
 			request.getRequestDispatcher("Startseite.jsp").forward(request, response);
