@@ -47,7 +47,7 @@ public class LinkeSpalteTag extends TagSupport {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return SKIP_BODY;
+		return EVAL_PAGE;
 	}
 	
 	public String getHtmlCode() {

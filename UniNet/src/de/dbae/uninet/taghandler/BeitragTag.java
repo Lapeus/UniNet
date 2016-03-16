@@ -31,6 +31,7 @@ public class BeitragTag extends TagSupport {
 			br.close();
 			isr.close();
 			is.close();
+			kopfzeile = kopfzeile.replace("USERID", beitrag.getUserID() + "");
 			kopfzeile = kopfzeile.replace("NAME", beitrag.getName());
 			kopfzeile = kopfzeile.replace("TIMESTAMP", beitrag.getTimeStamp());
 			kopfzeile = kopfzeile.replace("NACHRICHT", beitrag.getNachricht());

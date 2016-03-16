@@ -88,11 +88,7 @@ div.rechteSpalte {
 	border-radius: 5px;
 }
 
-div.beitrag {
-	background-color: white;
-}
-
-div.profilseite {
+div.beitrag, div.profilseite, div.beitragPosten {
 	background-color: white;
 }
 
@@ -100,7 +96,7 @@ body {
 	background-color: #b7c5e2;
 }
 
-a.verfasser {
+.verfasser {
 	font-size: 20px;
 	color: #3b5998;
 	font-weight: bold; 
@@ -152,6 +148,10 @@ li.kommentareAnzeigen {
 li.chatfreunde {
 	background-color: white;
 	border-radius: 3px;
+}
+
+textarea {
+	resize: none;
 }
 
 

@@ -53,12 +53,13 @@ public class StartseiteServlet extends HttpServlet {
 			ResultSet rs = pStmt.executeQuery();
 			List<Beitrag> beitragList = new ArrayList<Beitrag>();
 			while (rs.next()) {
-				String name = rs.getString(1) + " " + rs.getString(2);
+				int userID = rs.getInt(1);
+				String name = rs.getString(2) + " " + rs.getString(3);
 				String timeStamp = "Zeitstempel P";//rs.getString(3) + " " + rs.getBoolean(4);
-				String nachricht = rs.getString(3);
-				int anzahlLikes = rs.getInt(4);
-				int anzahlKommentare = rs.getInt(5);
-				Beitrag beitrag = new Beitrag(name, timeStamp, nachricht, anzahlLikes, anzahlKommentare);
+				String nachricht = rs.getString(4);
+				int anzahlLikes = rs.getInt(5);
+				int anzahlKommentare = rs.getInt(6);
+				Beitrag beitrag = new Beitrag(userID, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare);
 				beitragList.add(beitrag);
 			}
 			request.setAttribute("beitragList", beitragList);
