@@ -16,7 +16,7 @@
 <page:seitenAufbau chatfreunde='${ chatfreunde }'>
 <!-- Seiteninhalt einfuegen -->
 <c:forEach var="beitrag" items="${ beitragList }">
-	<page:beitrag beitrag="${ beitrag }"></page:beitrag>
+	<page:beitrag beitrag="${ beitrag }" page="StartseiteServlet"></page:beitrag>
 </c:forEach>
 </page:seitenAufbau>
 </body>

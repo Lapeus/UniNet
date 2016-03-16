@@ -15,7 +15,7 @@
 	</label><br><br>
 	<div>
 	<ul class="nav nav-pills border">
-  		<li role="presentation" class="like"><a href="#">Interessiert mich nicht besonders</a></li>
+  		<li role="presentation" class="like"><a href="BeitragServlet?page=PAGE&beitragsID=BEITRAGSID&name=Like">Interessiert mich nicht besonders</a></li>
   		<li role="presentation" class="kommentareAnzeigen"><a href="#">Alle Kommentare anzeigen</a></li>
 	</ul>
 	<label class="anzahlLikes"><p><p>ANZAHLLIKES Leute interessiert das nicht besonders</label>

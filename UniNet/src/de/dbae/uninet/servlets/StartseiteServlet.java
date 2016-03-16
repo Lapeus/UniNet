@@ -58,7 +58,8 @@ public class StartseiteServlet extends HttpServlet {
 				String nachricht = rs.getString(4);
 				int anzahlLikes = rs.getInt(5);
 				int anzahlKommentare = rs.getInt(6);
-				Beitrag beitrag = new Beitrag(userID, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare);
+				int beitragsID = rs.getInt(7);
+				Beitrag beitrag = new Beitrag(userID, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID);
 				beitragList.add(beitrag);
 			}
 			request.setAttribute("beitragList", beitragList);

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
 import de.dbae.uninet.sqlClasses.ProfilSql;
@@ -64,7 +66,8 @@ public class ProfilServlet extends HttpServlet {
 				String nachricht = rs.getString(4);
 				int anzahlLikes = rs.getInt(5);
 				int anzahlKommentare = rs.getInt(6);
-				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare);
+				int beitragsID = rs.getInt(7);
+				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID);
 				beitragList.add(beitrag);
 			}
 			request.setAttribute("beitragList", beitragList);
@@ -74,7 +77,7 @@ public class ProfilServlet extends HttpServlet {
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			rs = pStmt.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				String name = rs.getString(1) + " " + rs.getString(2);
 				String uni = rs.getString(3);
 				String studiengang = rs.getString(4);
@@ -83,6 +86,13 @@ public class ProfilServlet extends HttpServlet {
 				request.setAttribute("uni", uni);
 				request.setAttribute("studiengang", studiengang);
 				request.setAttribute("studienbeginn", studienbeginn);
+			}
+			sql = sqlSt.getAnzahlFreunde();
+			pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, userID);
+			rs = pStmt.executeQuery();
+			if (rs.next()) {
+				request.setAttribute("anzFreunde", rs.getInt(1));
 			}
 			
 			// Chatfreunde
@@ -108,7 +118,66 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String name = request.getParameter("name");
+		switch (name) {
+		case "BeitragPosten":
+			posteBeitrag(request, response);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void posteBeitrag(HttpServletRequest request, HttpServletResponse response) {
+		session = request.getSession();
+		Connection con = new DBConnection().getCon();
+		System.out.println("Verbindung wurde geöffnet (ProfilBeitragPosten)");
+		ProfilSql sqlSt = new ProfilSql();
+		String beitrag = request.getParameter("beitrag");
+		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
+		String sichtbarkeit = request.getParameter("sichtbarkeit");
+		boolean sichtbar = true;
+		if (sichtbarkeit.equals("Freunde")) {
+			sichtbar = false;
+		}
+		try {
+			// Beitrag anlegen
+			String sql = sqlSt.getBeitragAnlegenSql1();
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setString(1, beitrag);
+			pStmt.setInt(2, verfasserID);
+			pStmt.setBoolean(3, sichtbar);
+			pStmt.executeUpdate();
+			
+			// BeitragsID abfragen
+			sql = sqlSt.getBeitragAnlegenSql2();
+			pStmt = con.prepareStatement(sql);
+			ResultSet rs = pStmt.executeQuery();
+			int beitragsID;
+			if (rs.next()) {
+				beitragsID = rs.getInt(1);
+				// Chronikbeitrag eintragen
+				sql = sqlSt.getBeitragAnlegenSql3();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, beitragsID);
+				pStmt.executeUpdate();
+				doGet(request, response);
+			} else {
+				System.out.println("Problem beim Anlegen des Beitrags");
+			}
+		} catch (Exception e) {
+			System.out.println("SQL Fehler aufgetreten");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+					System.out.println("Die Verbindung wurde geschlossen");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

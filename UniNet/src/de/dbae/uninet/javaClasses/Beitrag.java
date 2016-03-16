@@ -8,14 +8,16 @@ public class Beitrag {
 	private String nachricht;
 	private int likes;
 	private int kommentare;
+	private int beitragsID;
 	
-	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare) {
-		this.userID = userID;
+	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID) {
+		this.setUserID(userID);
 		this.setName(name);
 		this.setTimeStamp(timeStamp);
 		this.setNachricht(nachricht);
 		this.setLikes(likes);
 		this.setKommentare(kommentare);
+		this.setBeitragsID(beitragsID);
 	}
 
 	public int getUserID() {
@@ -64,6 +66,14 @@ public class Beitrag {
 
 	public void setKommentare(int kommentare) {
 		this.kommentare = kommentare;
+	}
+
+	public int getBeitragsID() {
+		return beitragsID;
+	}
+
+	public void setBeitragsID(int beitragsID) {
+		this.beitragsID = beitragsID;
 	}
 	
 }

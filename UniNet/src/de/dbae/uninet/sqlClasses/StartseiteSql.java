@@ -6,7 +6,7 @@ public class StartseiteSql {
 	}
 	
 	public String getBeitraegeSql() {
-		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare FROM (beitragsView INNER JOIN freundeView ON VerfasserID = Nutzer) WHERE freund = ?;";
+		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID FROM (beitragsView INNER JOIN freundeView ON VerfasserID = Nutzer) WHERE freund = ?;";
 		return sql;
 	}
 	

@@ -17,37 +17,41 @@
 </page:kopfzeile>
 <div class="mainPart">
 	<div class="linkeSpalte">
+		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
 		<label class="verfasser">Persönliche Infos</label>
 		<ul class="list-group">
 			<li class="list-group-item">Universität:<br>${ uni }</li>
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>
 			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>
+			<li class="list-group-item">Freunde: ${ anzFreunde }</li>
 		</ul>
 	</div>
 	
 	<page:mittlereSpalte>
 	<div class="row">
 		<div class="col-md-1"></div>
-		<div class="col-md-10 beitragPosten">
-			<label class="verfasser">${ name }</label>
-			<form action="ProfilServlet" method="post">
-				<div class="form-group">
-					<textarea class="form-control" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
-					<div class="form-inline pull-right">
-						<!-- Sichtbarkeitsbutton -->
-						<select class="form-control" name="sichtbarkeit">
-							<option>Freunde</option>
-							<option>Öffentlich</option>
-						</select>
-						<button type="submit" class="btn btn-default">Posten</button>
+		<div class="col-md-10">
+			<div class="row"><label class="profilName">${ name }</label></div><br>
+			<div class="row">
+				<form action="ProfilServlet?name=BeitragPosten" method="post">
+					<div class="form-group">
+						<textarea class="form-control" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
+						<div class="form-inline pull-right">
+							<!-- Sichtbarkeitsbutton -->
+							<select class="form-control" name="sichtbarkeit">
+								<option>Freunde</option>
+								<option>Öffentlich</option>
+							</select>
+							<button type="submit" class="btn btn-default">Posten</button>
+						</div>
+						<br>
 					</div>
-					<br>
-				</div>
-			</form><br>
+				</form><br>
+			</div>
 		</div>
 	</div><br>
 	<c:forEach var="beitrag" items="${ beitragList }">
-		<page:beitrag beitrag="${ beitrag }"></page:beitrag>
+		<page:beitrag beitrag="${ beitrag }" page="ProfilServlet"></page:beitrag>
 	</c:forEach>
 	</page:mittlereSpalte>
 	

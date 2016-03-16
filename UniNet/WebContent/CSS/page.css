@@ -88,7 +88,7 @@ div.rechteSpalte {
 	border-radius: 5px;
 }
 
-div.beitrag, div.profilseite, div.beitragPosten {
+div.beitrag, div.profilseite {
 	background-color: white;
 }
 
@@ -131,6 +131,12 @@ label.anzahlKommentare {
 	float: right;
 }
 
+label.profilName {
+	font-size: 30px;
+	color: #3b5998;
+	font-weight: bold; 
+}
+
 ul.border {
 	border-top: 1px solid #ebebeb;
 	border-bottom: 1px solid #ebebeb;
@@ -152,6 +158,13 @@ li.chatfreunde {
 
 textarea {
 	resize: none;
+}
+
+img.profilbild {
+	margin-left: 25%;
+	margin-bottom: 25%;
+	width: 50%;
+	height: 50%;
 }
 
 

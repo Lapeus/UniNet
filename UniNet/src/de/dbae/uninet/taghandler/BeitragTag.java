@@ -14,6 +14,7 @@ public class BeitragTag extends TagSupport {
 	private static final long serialVersionUID = 4129407379981290381L;
 	
 	private Beitrag beitrag;
+	private String page;
 
 	public int doStartTag() {
 		Writer out = pageContext.getOut();
@@ -32,6 +33,8 @@ public class BeitragTag extends TagSupport {
 			isr.close();
 			is.close();
 			kopfzeile = kopfzeile.replace("USERID", beitrag.getUserID() + "");
+			kopfzeile = kopfzeile.replace("BEITRAGSID", beitrag.getBeitragsID() + "");
+			kopfzeile = kopfzeile.replace("PAGE", page);
 			kopfzeile = kopfzeile.replace("NAME", beitrag.getName());
 			kopfzeile = kopfzeile.replace("TIMESTAMP", beitrag.getTimeStamp());
 			kopfzeile = kopfzeile.replace("NACHRICHT", beitrag.getNachricht());
@@ -44,15 +47,20 @@ public class BeitragTag extends TagSupport {
 		}
 		return EVAL_PAGE;
 	}
-
-	public int doEndTag() {
-		return EVAL_PAGE;
-	}
+	
 	public Beitrag getBeitrag() {
 		return beitrag;
 	}
 
 	public void setBeitrag(Beitrag beitrag) {
 		this.beitrag = beitrag;
+	}
+	
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
 	}
 }
