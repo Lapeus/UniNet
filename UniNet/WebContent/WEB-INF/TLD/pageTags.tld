@@ -59,4 +59,15 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<!-- Tag, der eine Nqachricht erstellt -->
+		<name>nachricht</name>
+		<tag-class>de.dbae.uninet.taghandler.NachrichtenTag</tag-class>
+		<attribute>
+			<!-- BeitragsObjekt -->
+			<name>nachricht</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>
