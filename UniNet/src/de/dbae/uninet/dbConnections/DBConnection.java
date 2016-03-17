@@ -17,8 +17,8 @@ public class DBConnection {
 	// Eure lokalen Daten hier einsetzen und obige auskommentieren
 	
 	static final String DB_SERVER = "localhost:5432";
-	static final String DB_NAME = "postgres";
-	static final String PASSWORD = "sicher123";
+	static final String DB_NAME = "UniNet";
+	static final String PASSWORD = "P3rd0x:)";
 	static final String USER = "postgres";
 
 	static final String URL = "jdbc:postgresql://"+DB_SERVER+ "/"+DB_NAME;

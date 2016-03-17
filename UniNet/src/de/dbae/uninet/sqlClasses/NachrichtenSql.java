@@ -6,7 +6,7 @@ public class NachrichtenSql {
 	}
 	
 	public String getNachrichtenListe() {
-		String sql = "SELECT vorname, nachname, nachricht FROM nachrichten INNER JOIN (SELECT userid AS userid1, vorname AS EmpfaengerVorname, nachname AS EmpfaengerNachname FROM nutzer) AS temp ON empfaengerid = userid1 INNER JOIN nutzer ON senderid = userid WHERE Empfaengerid =? OR Senderid=? ORDER BY nachrichtid";
+		String sql = "SELECT vorname, nachname, nachricht FROM nachrichten JOIN nutzer ON (senderid = userid) WHERE senderid = ? AND empfaengerid = ? OR senderid = ? AND empfaengerid = ? ORDER BY nachrichtid;";
 		return sql;
 	}
 	
