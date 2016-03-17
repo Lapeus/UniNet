@@ -31,7 +31,7 @@
 			     <textarea class="form-control send-message" rows="3" placeholder="Antworte jetzt..." name="nachricht"></textarea>
 			 </div>
 			 <div class="btn-panel">
-			     <a href="NachrcihtenServlet" class=" col-lg-3 btn send-message-btn " role="button">Datei hinzufügen</a>
+			     <a href="NachrichtenServlet" class=" col-lg-3 btn send-message-btn " role="button" name="reload">Reload</a>
 			     <input type="submit" class="col-lg-4 text-right btn send-message-btn pull-right" name="senden"/>
 			 </div>
 		 </form>
