@@ -91,7 +91,7 @@ public class NachrichtenServlet extends HttpServlet {
 			PreparedStatement pStmt = con.prepareStatement(nSql.getNachrichtenListe());
 			// ONLY FOR TESTING FIX Integer.parseInt(session.getAttribute("UserID").toString())
 			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
-			pStmt.setInt(2, 2);
+			pStmt.setInt(2, Integer.parseInt(session.getAttribute("UserID").toString()));
 			ResultSet result = pStmt.executeQuery();
 			while (result.next()) {
 				String name = result.getString(1) +" "+ result.getString(2);

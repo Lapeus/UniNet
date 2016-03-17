@@ -17,26 +17,25 @@
 <jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
+<page:linkeSpalte use="standard"></page:linkeSpalte>
 <page:mittlereSpalte>
-
-
-<div class="container">
-    <div class="row">
-            <div class="msg-wrap">
-                <c:forEach items="${ nachrichten }" var="nachrichten">
-                	<page:nachricht nachricht="${ nachrichten }"></page:nachricht>
-                </c:forEach>
-            </div>
-            <form action="NachrichtenServlet" method="POST">
-	            <div class="send-wrap">
-	                <textarea class="form-control send-message" rows="3" placeholder="Antworte jetzt..." name="nachricht"></textarea>
-	            </div>
-	            <div class="btn-panel">
-	                <a href="" class=" col-lg-3 btn send-message-btn " role="button">Datei hinzufügen</a>
-	                <input type="submit" class="col-lg-4 text-right btn send-message-btn pull-right" name="senden"/>
-	            </div>
-            </form>
-    </div>
+<div class="row">
+	<div class="msg-warp">
+		 <div class="msg-wrap">
+		 	<c:forEach items="${ nachrichten }" var="nachrichten">
+		    	<page:nachricht nachricht="${ nachrichten }"></page:nachricht>
+		 	</c:forEach>
+		 </div>
+		 <form action="NachrichtenServlet" method="POST">
+			 <div class="send-wrap">
+			     <textarea class="form-control send-message" rows="3" placeholder="Antworte jetzt..." name="nachricht"></textarea>
+			 </div>
+			 <div class="btn-panel">
+			     <a href="" class=" col-lg-3 btn send-message-btn " role="button">Datei hinzufügen</a>
+			     <input type="submit" class="col-lg-4 text-right btn send-message-btn pull-right" name="senden"/>
+			 </div>
+		 </form>
+	</div>
 </div>
 </page:mittlereSpalte>:
 <page:rechteSpalte chatfreunde="${ chatfreunde }"></page:rechteSpalte>
