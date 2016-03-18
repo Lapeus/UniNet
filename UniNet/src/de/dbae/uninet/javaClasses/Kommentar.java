@@ -12,8 +12,9 @@ public class Kommentar {
 	private List<Unterkommentar> kommentarList = new ArrayList<Unterkommentar>();
 	private int zielID;
 	private int userIDsession;
+	private String timeStamp;
 	
-	public Kommentar(int userID, int kommID, String name, String kommentar, List<Unterkommentar> kommentarList, int zielID, int userIDsession) {
+	public Kommentar(int userID, int kommID, String name, String kommentar, List<Unterkommentar> kommentarList, int zielID, int userIDsession, String timeStamp) {
 		this.setUserID(userID);
 		this.setKommID(kommID);
 		this.setName(name);
@@ -21,6 +22,7 @@ public class Kommentar {
 		this.setKommentarList(kommentarList);
 		this.setZielID(zielID);
 		this.setUserIDsession(userIDsession);
+		this.setTimeStamp(timeStamp);
 	}
 
 	public int getUserID() {
@@ -77,5 +79,13 @@ public class Kommentar {
 
 	public void setUserIDsession(int userIDsession) {
 		this.userIDsession = userIDsession;
+	}
+
+	public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 }

@@ -10,13 +10,15 @@ public class Unterkommentar {
 	private String kommentar;
 	private int antwortAufKommID;
 	private List<KommentarZuUnterkommentar> kommentarList;
+	private String timeStamp;
 	
-	public Unterkommentar(int userID, int kommID, String name, String kommentar, int antwortAufKommID) {
+	public Unterkommentar(int userID, int kommID, String name, String kommentar, int antwortAufKommID, String timeStamp) {
 		this.setUserID(userID);
 		this.setKommID(kommID);
 		this.setName(name);
 		this.setKommentar(kommentar);
 		this.setAntwortAufKommID(antwortAufKommID);
+		this.setTimeStamp(timeStamp);
 	}
 
 	public int getUserID() {
@@ -65,5 +67,13 @@ public class Unterkommentar {
 
 	public void setAntwortAufKommID(int antwortAufKommID) {
 		this.antwortAufKommID = antwortAufKommID;
+	}
+
+	public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 }

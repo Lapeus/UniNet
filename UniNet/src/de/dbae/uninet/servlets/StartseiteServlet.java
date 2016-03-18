@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
@@ -55,11 +59,17 @@ public class StartseiteServlet extends HttpServlet {
 			while (rs.next()) {
 				int id = rs.getInt(1);
 				String name = rs.getString(2) + " " + rs.getString(3);
-				String timeStamp = "Zeitstempel P";//rs.getString(3) + " " + rs.getBoolean(4);
 				String nachricht = rs.getString(4);
 				int anzahlLikes = rs.getInt(5);
 				int anzahlKommentare = rs.getInt(6);
 				int beitragsID = rs.getInt(7);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+				String timeStamp = sdf.format(new Date(rs.getDate(8).getTime())) + " " + rs.getTime(9).toString();
+				if (rs.getBoolean(10)) {
+					timeStamp += " Ö";
+				} else {
+					timeStamp += " P";
+				}
 				sql = sqlSt.getLikeAufBeitragSql();
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);

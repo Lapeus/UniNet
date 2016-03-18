@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -111,10 +113,16 @@ public class BeitragServlet extends HttpServlet {
 			if (rs.next()) {
 				int id = rs.getInt(1);
 				String name = rs.getString(2) + " " + rs.getString(3);
-				String timeStamp = "Zeitstempel P";//rs.getString(3) + " " + rs.getBoolean(4);
 				String nachricht = rs.getString(4);
 				int anzahlLikes = rs.getInt(5);
 				int anzahlKommentare = rs.getInt(6);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+				String timeStamp = sdf.format(new Date(rs.getDate(7).getTime())) + " " + rs.getTime(8).toString();
+				if (rs.getBoolean(9)) {
+					timeStamp += " Ö";
+				} else {
+					timeStamp += " P";
+				}
 				sql = sqlSt.getLikeAufBeitragSql();
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
@@ -163,6 +171,8 @@ public class BeitragServlet extends HttpServlet {
 				int kommID = rs.getInt(2);
 				String name = rs.getString(3) + " " + rs.getString(4);
 				String kommentar = rs.getString(5);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+				String timeStamp = sdf.format(new Date(rs.getDate(6).getTime())) + " " + rs.getTime(7).toString();
 				// SQL Abfrage der Unterkommentare
 				sql = sqlSt.getUnterkommentare();
 				pStmt = con.prepareStatement(sql);
@@ -175,7 +185,8 @@ public class BeitragServlet extends HttpServlet {
 					int kommID2 = rs2.getInt(2);
 					String name2 = rs2.getString(3) + " " + rs2.getString(4);
 					String kommentar2 = rs2.getString(5);
-					Unterkommentar ukomm = new Unterkommentar(userID2, kommID2, name2, kommentar2, kommID);
+					String timeStamp2 = sdf.format(new Date(rs2.getDate(6).getTime())) + " " + rs2.getTime(7).toString();
+					Unterkommentar ukomm = new Unterkommentar(userID2, kommID2, name2, kommentar2, kommID, timeStamp2);
 					// SQL Abfrage der KommentareZuUnterkommentare
 					sql = sqlSt.getKommentareZuUnterkommentare();
 					pStmt = con.prepareStatement(sql);
@@ -188,12 +199,13 @@ public class BeitragServlet extends HttpServlet {
 						int kommID3 = rs3.getInt(2);
 						String name3 = rs3.getString(3) + " " + rs3.getString(4);
 						String kommentar3 = rs3.getString(5);
-						kzukommList.add(new KommentarZuUnterkommentar(userID3, kommID3, name3, kommentar3, name2, userID2));
+						String timeStamp3 = sdf.format(new Date(rs3.getDate(6).getTime())) + " " + rs3.getTime(7).toString();
+						kzukommList.add(new KommentarZuUnterkommentar(userID3, kommID3, name3, kommentar3, name2, userID2, timeStamp3));
 					}
 					ukomm.setKommentarList(kzukommList);
 					unterkommentarList.add(ukomm);
 				}
-				Kommentar komm = new Kommentar(userID, kommID, name, kommentar, unterkommentarList, beitragsID, userIDsession);
+				Kommentar komm = new Kommentar(userID, kommID, name, kommentar, unterkommentarList, beitragsID, userIDsession, timeStamp);
 				kommentarList.add(komm);
 			}
 		} catch (Exception e) {
@@ -265,6 +277,8 @@ public class BeitragServlet extends HttpServlet {
 			pStmt.setInt(1, beitragsID);
 			pStmt.setString(2, request.getParameter("kommentar"));
 			pStmt.setInt(3, userID);
+			pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+			pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
 			System.out.println(pStmt.toString());
 			pStmt.executeUpdate();
 		} catch (Exception e) {
@@ -409,6 +423,8 @@ public class BeitragServlet extends HttpServlet {
 			pStmt.setInt(1, kommID);
 			pStmt.setString(2, request.getParameter("kommentar"));
 			pStmt.setInt(3, userID);
+			pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+			pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
 			pStmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("SQL Fehler in BeitragServlet");

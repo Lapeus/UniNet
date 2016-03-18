@@ -30,7 +30,7 @@ public class ProfilSql {
 	}
 	
 	public String getBeitraegeSql() {
-		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID FROM beitragsView WHERE VerfasserID = ?";
+		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit FROM beitragsView WHERE VerfasserID = ?";
 		return sql;
 	}
 	
@@ -40,7 +40,7 @@ public class ProfilSql {
 	}
 	
 	public String getBeitragAnlegenSql1() {
-		String sql = "INSERT INTO beitraege (beitrag, verfasserID, sichtbarkeit) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO beitraege (beitrag, verfasserID, sichtbarkeit, datum, uhrzeit) VALUES (?, ?, ?, ?, ?)";
 		return sql;
 	}
 	
