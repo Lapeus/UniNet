@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -62,11 +64,17 @@ public class ProfilServlet extends HttpServlet {
 			while (rs.next()) {
 				int id = rs.getInt(1);
 				String name = rs.getString(2) + " " + rs.getString(3);
-				String timeStamp = "Zeitstempel P";//rs.getString(3) + " " + rs.getBoolean(4);
 				String nachricht = rs.getString(4);
 				int anzahlLikes = rs.getInt(5);
 				int anzahlKommentare = rs.getInt(6);
 				int beitragsID = rs.getInt(7);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+				String timeStamp = sdf.format(new Date(rs.getDate(8).getTime())) + " " + rs.getTime(9).toString();
+				if (rs.getBoolean(10)) {
+					timeStamp += " Ö";
+				} else {
+					timeStamp += " P";
+				}
 				sql = sqlSt.getLikeAufBeitragSql();
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
@@ -87,14 +95,26 @@ public class ProfilServlet extends HttpServlet {
 			pStmt.setInt(1, userID);
 			rs = pStmt.executeQuery();
 			if (rs.next()) {
-				String name = rs.getString(1) + " " + rs.getString(2);
-				String uni = rs.getString(3);
-				String studiengang = rs.getString(4);
-				String studienbeginn = rs.getString(5);
-				request.setAttribute("name", name);
-				request.setAttribute("uni", uni);
-				request.setAttribute("studiengang", studiengang);
-				request.setAttribute("studienbeginn", studienbeginn);
+				request.setAttribute("name", rs.getString(1) + " " + rs.getString(2));
+				request.setAttribute("studiengang", rs.getString(3));
+				SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
+				request.setAttribute("studienbeginn", sdf.format(new Date(rs.getDate(4).getTime())));
+				if (rs.getString(5) != null) {
+					request.setAttribute("geburtstag", getInfoString("Geburtstag:<br>" + sdf.format(new Date(rs.getDate(5).getTime()))));
+				}
+				if (rs.getString(6) != null && !rs.getString(6).equals("")) {
+					request.setAttribute("wohnort", getInfoString("Wohnort:<br>" + rs.getString(6)));
+				}
+				if (rs.getString(7) != null && !rs.getString(7).equals("")) {
+					request.setAttribute("hobbys", getInfoString("Hobbys:<br>" + rs.getString(7)));
+				}
+				if (rs.getString(8) != null && !rs.getString(8).equals("")) {
+					request.setAttribute("interessen", getInfoString("Interessen:<br>" + rs.getString(8)));
+				}
+				if (rs.getString(9) != null && !rs.getString(9).equals("")) {
+					request.setAttribute("ueberMich", getInfoString("Über mich:<br>" + rs.getString(9)));
+				}
+				request.setAttribute("email", rs.getString(10));
 			}
 			sql = sqlSt.getAnzahlFreunde();
 			pStmt = con.prepareStatement(sql);
@@ -156,6 +176,8 @@ public class ProfilServlet extends HttpServlet {
 			pStmt.setString(1, beitrag);
 			pStmt.setInt(2, verfasserID);
 			pStmt.setBoolean(3, sichtbar);
+			pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+			pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
 			pStmt.executeUpdate();
 			
 			// BeitragsID abfragen
@@ -187,6 +209,10 @@ public class ProfilServlet extends HttpServlet {
 				}
 			}
 		}
+	}
+	
+	private String getInfoString(String info) {
+		return "<li class='list-group-item'>" + info + "</li>";
 	}
 
 }

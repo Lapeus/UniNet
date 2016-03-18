@@ -8,14 +8,16 @@ public class KommentarZuUnterkommentar {
 	private String kommentar;
 	private String antwortAufKommName;
 	private int antwortAufKommID;
+	private String timeStamp;
 	
-	public KommentarZuUnterkommentar(int userID, int kommID, String name, String kommentar, String antwortAufKommName, int antwortAufKommID) {
+	public KommentarZuUnterkommentar(int userID, int kommID, String name, String kommentar, String antwortAufKommName, int antwortAufKommID, String timeStamp) {
 		this.setUserID(userID);
 		this.setKommID(kommID);
 		this.setName(name);
 		this.setKommentar(kommentar);
 		this.setAntwortAufKommName(antwortAufKommName);
 		this.setAntwortAufKommID(antwortAufKommID);
+		this.setTimeStamp(timeStamp);
 	}
 
 	public int getUserID() {
@@ -64,5 +66,13 @@ public class KommentarZuUnterkommentar {
 
 	public void setAntwortAufKommID(int antwortAufKommID) {
 		this.antwortAufKommID = antwortAufKommID;
+	}
+
+	public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 }

@@ -20,11 +20,18 @@
 		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
 		<label class="verfasser">Persönliche Infos</label>
 		<ul class="list-group">
-			<li class="list-group-item">Universität:<br>${ uni }</li>
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>
 			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>
-			<li class="list-group-item">Freunde: ${ anzFreunde }</li>
+			<li class="list-group-item">E-Mail:<br>${ email }</li>
+			${ geburtstag }
+			${ wohnort }
+			${ hobbys }
+			${ interessen }
+			${ ueberMich }
 		</ul>
+		<form action="ProfilBearbeitenServlet" method="get">
+			<button style="width: 100%;" type="submit" class="btn btn-success">Informationen bearbeiten</button>
+		</form>
 	</page:linkeSpalte>
 	
 	<page:mittlereSpalte>

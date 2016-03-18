@@ -16,12 +16,12 @@ public class BeitragSql {
 	}
 	
 	public String getKommentar() {
-		String sql = "INSERT INTO kommentare (beitragsID, kommentar, verfasserID) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO kommentare (beitragsID, kommentar, verfasserID, datum, uhrzeit) VALUES (?, ?, ?, ?, ?)";
 		return sql;
 	}
 	 
 	public String getBeitrag() {
-		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare FROM beitragsView WHERE beitragsID = ?";
+		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, Datum, Uhrzeit, Sichtbarkeit FROM beitragsView WHERE beitragsID = ?";
 		return sql;
 	}
 	
@@ -36,7 +36,7 @@ public class BeitragSql {
 	}
 	
 	public String getKommentare() {
-		String sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar FROM kommentare INNER JOIN Nutzer ON verfasserID = userID WHERE beitragsID = ?";
+		String sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentare INNER JOIN Nutzer ON verfasserID = userID WHERE beitragsID = ?";
 		return sql;
 	}
 	
@@ -46,7 +46,7 @@ public class BeitragSql {
 	}
 	
 	public String getUnterkommentare() {
-		String sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar FROM unterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
+		String sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM unterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
 		return sql;
 	}
 	
@@ -56,12 +56,12 @@ public class BeitragSql {
 	}
 	
 	public String getInsertUnterkommentar() {
-		String sql = "INSERT INTO unterkommentare (antwortAuf, kommentar, verfasserID) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO unterkommentare (antwortAuf, kommentar, verfasserID, datum, uhrzeit) VALUES (?, ?, ?, ?, ?)";
 		return sql;
 	}
 	
 	public String getKommentareZuUnterkommentare() {
-		String sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar FROM kommentareZuUnterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
+		String sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentareZuUnterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
 		return sql;
 	}
 	
@@ -71,7 +71,7 @@ public class BeitragSql {
 	}
 	
 	public String getInsertKommentarZuUnterkommentar() {
-		String sql = "INSERT INTO kommentareZuUnterkommentare (antwortAuf, kommentar, verfasserID) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO kommentareZuUnterkommentare (antwortAuf, kommentar, verfasserID, datum, uhrzeit) VALUES (?, ?, ?, ?, ?)";
 		return sql;
 	}
 	

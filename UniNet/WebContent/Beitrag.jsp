@@ -23,7 +23,7 @@
 			</div>
 			<div class="col-md-10">
 				<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a><br>
-				<label class="zeitstempel">TIMESTAMP</label>
+				<label class="zeitstempel">${beitrag.timeStamp}</label>
 			</div> <!-- col-md-10 -->
 			<div class="col-md-1">
 				<a href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=BeitragLoeschen" title="Beitrag löschen">${beitrag.loeschenErlaubt}</a>

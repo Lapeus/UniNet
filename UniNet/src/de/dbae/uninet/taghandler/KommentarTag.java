@@ -45,7 +45,7 @@ public class KommentarTag extends TagSupport {
 		if (userID == kommentar.getUserID()) {
 			erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KommentarLoeschen&id=" + kommentar.getKommID() + "'>Löschen</a></div>";
 		}
-		erg += "<div class='col-md-8'><a class='zeitstempel'>ZEITSTEMPEL</a></div></div>"; 
+		erg += "<div class='col-md-8'><a class='zeitstempel'>" + kommentar.getTimeStamp() + "</a></div></div>"; 
 		// Hier muessen die Unterkommentare eingefuegt werden
 		for (Unterkommentar komm : kommentar.getKommentarList()) {
 			erg += "<div class='row border-left'><div class='col-md-1'>";
@@ -57,7 +57,7 @@ public class KommentarTag extends TagSupport {
 			if (userID == komm.getUserID()) {
 				erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KommLoeschen&id=" + komm.getKommID() + "'>Löschen</a></div>"; 
 			}
-			erg += "<div class='col-md-8'><a class='zeitstempel'>ZEITSTEMPEL</a></div></div>"; 
+			erg += "<div class='col-md-8'><a class='zeitstempel'>" + komm.getTimeStamp() + "</a></div></div>"; 
 			erg += "</div></div>";
 			// Hier muessen die KommentareZuUnterkommentare eingefuegt werden
 			for (KommentarZuUnterkommentar kzukomm : komm.getKommentarList()) {
@@ -71,7 +71,7 @@ public class KommentarTag extends TagSupport {
 				if (userID == kzukomm.getUserID()) {
 					erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KzukommLoeschen&id=" + kzukomm.getKommID() + "'>Löschen</a></div>"; 	
 				}
-				erg += "<div class='col-md-8'><a class='zeitstempel'>ZEITSTEMPEL</a></div></div>"; 
+				erg += "<div class='col-md-8'><a class='zeitstempel'>" + kzukomm.getTimeStamp() + "</a></div></div>"; 
 				erg += "</div></div>";
 			}
 		}
