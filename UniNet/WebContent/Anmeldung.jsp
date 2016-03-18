@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Willkommen bei UniNet</title>
 </head>
-<body >
+<body>
 	<jsp:include page="/AnmeldePassivServlet"></jsp:include>
 	<form class="form-inline containerColor" action="AnmeldeAktivServlet" method="post">
 		<div class="row"><br></div>

@@ -74,7 +74,8 @@ public class ProfilServlet extends HttpServlet {
 				ResultSet rs2 = pStmt.executeQuery();
 				if (rs2.next()) {
 					boolean like = rs2.getInt(1) == 0 ? false : true;
-					Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like);
+					String loeschenErlaubt = userID == id ? "X" : "";
+					Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
 					beitragList.add(beitrag);
 				}
 			}

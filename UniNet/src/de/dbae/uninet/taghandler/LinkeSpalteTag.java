@@ -16,9 +16,9 @@ public class LinkeSpalteTag extends TagSupport {
 		erg += "<div class='linkeSpalte'>";
 		if (use.equals("standard")) {
 			erg += "<ul class='nav nav-pills nav-stacked menueSpalte'>";
-			erg += "<li role='presentation'><a href='#'>Profil anzeigen</a></li>";
+			erg += "<li role='presentation'><a href='ProfilServlet'>Profil anzeigen</a></li>";
 			erg += "<li role='presentation'><a href='#'>Profil bearbeiten</a></li><br>";
-			erg += "<li role='presentation'><a href='#'>Nachrichten</a></li>";
+			erg += "<li role='presentation'><a href='NachrichtenServlet'>Nachrichten</a></li>";
 			erg += "<li role='presentation'><a href='#'>Veranstaltungen</a></li>";
 			erg += "<li role='presentation'><a href='#'>Gruppen</a></li></ul>"; 
 			try {
@@ -54,9 +54,9 @@ public class LinkeSpalteTag extends TagSupport {
 		String erg = "";
 		erg += "<div class='linkeSpalte'>";
 		erg += "<ul class='nav nav-pills nav-stacked menueSpalte'>";
-		erg += "<li role='presentation'><a href='#'>Profil anzeigen</a></li>";
+		erg += "<li role='presentation'><a href='ProfilServlet'>Profil anzeigen</a></li>";
 		erg += "<li role='presentation'><a href='#'>Profil bearbeiten</a></li><br>";
-		erg += "<li role='presentation'><a href='#'>Nachrichten</a></li>";
+		erg += "<li role='presentation'><a href='NachrichtenServlet'>Nachrichten</a></li>";
 		erg += "<li role='presentation'><a href='#'>Veranstaltungen</a></li>";
 		erg += "<li role='presentation'><a href='#'>Gruppen</a></li></ul></div>"; 
 		return erg;

@@ -1,5 +1,7 @@
 package de.dbae.uninet.javaClasses;
 
+import java.util.List;
+
 public class Beitrag {
 
 	private int userID;
@@ -10,8 +12,10 @@ public class Beitrag {
 	private int kommentare;
 	private int beitragsID;
 	private boolean like;
+	private List<Kommentar> kommentarList;
+	private String loeschenErlaubt;
 	
-	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID, boolean like) {
+	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID, boolean like, String loeschenErlaubt) {
 		this.setUserID(userID);
 		this.setName(name);
 		this.setTimeStamp(timeStamp);
@@ -20,6 +24,7 @@ public class Beitrag {
 		this.setKommentare(kommentare);
 		this.setBeitragsID(beitragsID);
 		this.setLike(like);
+		this.setLoeschenErlaubt(loeschenErlaubt);
 	}
 
 	public int getUserID() {
@@ -84,6 +89,22 @@ public class Beitrag {
 
 	public void setLike(boolean like) {
 		this.like = like;
+	}
+
+	public List<Kommentar> getKommentarList() {
+		return kommentarList;
+	}
+
+	public void setKommentarList(List<Kommentar> kommentarList) {
+		this.kommentarList = kommentarList;
+	}
+
+	public String getLoeschenErlaubt() {
+		return loeschenErlaubt;
+	}
+
+	public void setLoeschenErlaubt(String loeschenErlaubt) {
+		this.loeschenErlaubt = loeschenErlaubt;
 	}
 	
 }

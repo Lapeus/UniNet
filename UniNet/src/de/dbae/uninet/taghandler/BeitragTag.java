@@ -32,6 +32,7 @@ public class BeitragTag extends TagSupport {
 			br.close();
 			isr.close();
 			is.close();
+			kopfzeile = kopfzeile.replace("LOESCHENERLAUBT", beitrag.getLoeschenErlaubt());
 			kopfzeile = kopfzeile.replace("USERID", beitrag.getUserID() + "");
 			kopfzeile = kopfzeile.replace("BEITRAGSID", beitrag.getBeitragsID() + "");
 			kopfzeile = kopfzeile.replace("PAGE", page);

@@ -41,6 +41,7 @@ public class StartseiteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (Startseite)");
 		StartseiteSql sqlSt = new StartseiteSql();
@@ -48,11 +49,11 @@ public class StartseiteServlet extends HttpServlet {
 			// Beitraege
 			String sql = sqlSt.getBeitraegeSql();
 			PreparedStatement pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
 			List<Beitrag> beitragList = new ArrayList<Beitrag>();
 			while (rs.next()) {
-				int userID = rs.getInt(1);
+				int id = rs.getInt(1);
 				String name = rs.getString(2) + " " + rs.getString(3);
 				String timeStamp = "Zeitstempel P";//rs.getString(3) + " " + rs.getBoolean(4);
 				String nachricht = rs.getString(4);
@@ -66,7 +67,8 @@ public class StartseiteServlet extends HttpServlet {
 				ResultSet rs2 = pStmt.executeQuery();
 				if (rs2.next()) {
 					boolean like = rs2.getInt(1) == 0 ? false : true;
-					Beitrag beitrag = new Beitrag(userID, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like);
+					String loeschenErlaubt = userID == id ? "X" : "";
+					Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
 					beitragList.add(beitrag);
 				}
 			}

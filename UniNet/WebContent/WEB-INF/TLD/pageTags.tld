@@ -60,12 +60,32 @@
 		</attribute>
 	</tag>
 	<tag>
+		<name>kommentar</name>
+		<tag-class>de.dbae.uninet.taghandler.KommentarTag</tag-class>
+		<attribute>
+			<name>kommentar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
 		<!-- Tag, der eine Nqachricht erstellt -->
 		<name>nachricht</name>
 		<tag-class>de.dbae.uninet.taghandler.NachrichtenTag</tag-class>
 		<attribute>
-			<!-- BeitragsObjekt -->
+			<!-- NachrichtObjekt -->
 			<name>nachricht</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der das AntwortTextfeld erstellt -->
+		<name>kommentarAntwort</name>
+		<tag-class>de.dbae.uninet.taghandler.KommentarAntwortTag</tag-class>
+		<attribute>
+			<!-- Anzeigen Boolean -->
+			<name>anzeigen</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
