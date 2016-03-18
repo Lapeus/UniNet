@@ -14,4 +14,9 @@ public class NachrichtenSql {
 		String sql = "INSERT INTO Nachrichten (senderID, empfaengerID, nachricht) VALUES (?, ?, ?)";
 		return sql;
 	}
+	
+	public String getFreundeSql () {
+		String sql = "SELECT Vorname, Nachname, userID FROM (FreundeView INNER JOIN Studenten ON Freund = StudentID INNER JOIN Nutzer ON StudentID = UserID) WHERE Nutzer = ?";
+		return sql;
+	}
 }

@@ -57,7 +57,7 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 		NachrichtenSql sqlSt = new NachrichtenSql();
 		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
 		try {
-			String sql = sqlSt.getFreundeOnlineSql();
+			String sql = sqlSt.getFreundeSql();
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
 			ResultSet rs = pStmt.executeQuery();
