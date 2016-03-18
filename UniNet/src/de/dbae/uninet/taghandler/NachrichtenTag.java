@@ -28,10 +28,6 @@ public class NachrichtenTag extends TagSupport {
 		}
 		return EVAL_PAGE;
 	}
-	
-	public int doEndTag() {
-		return EVAL_PAGE;
-	}
 
 	public Nachricht getNachricht() {
 		return nachricht;

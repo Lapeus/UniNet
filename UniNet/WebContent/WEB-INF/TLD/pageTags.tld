@@ -69,12 +69,28 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der eine Nqachricht erstellt -->
+		<!-- Tag, der eine Nachricht erstellt -->
 		<name>nachricht</name>
 		<tag-class>de.dbae.uninet.taghandler.NachrichtenTag</tag-class>
 		<attribute>
 			<!-- NachrichtObjekt -->
 			<name>nachricht</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der einen Chat erstellt -->
+		<name>chat</name>
+		<tag-class>de.dbae.uninet.taghandler.ChatTag</tag-class>
+		<attribute>
+			<!-- Chat -->
+			<name>idUser</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+		<name>idFreund</name> 
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

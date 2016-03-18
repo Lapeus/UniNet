@@ -15,8 +15,13 @@ public class NachrichtenSql {
 		return sql;
 	}
 	
-	public String getFreundeSql () {
+	public String getFreundeSql() {
 		String sql = "SELECT Vorname, Nachname, userID FROM (FreundeView INNER JOIN Studenten ON Freund = StudentID INNER JOIN Nutzer ON StudentID = UserID) WHERE Nutzer = ? ORDER BY online DESC, nachname, vorname";
+		return sql;
+	}
+	
+	public String getName() {
+		String sql = "SELECT Vorname, Nachname FROM nutzer WHERE userid = ?";
 		return sql;
 	}
 }

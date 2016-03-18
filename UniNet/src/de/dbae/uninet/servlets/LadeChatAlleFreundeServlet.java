@@ -46,11 +46,10 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
 	}
 	
-	public List<ChatFreund> getChatfreunde(HttpSession session) {
+	private List<ChatFreund> getChatfreunde(HttpSession session) {
 		// Freunde (Online)
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (Startseite)");
@@ -87,4 +86,5 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 		System.out.println("Chatfreunde: " + chatfreunde);
 		return chatfreunde;
 	}
+	
 }
