@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -87,14 +89,26 @@ public class ProfilServlet extends HttpServlet {
 			pStmt.setInt(1, userID);
 			rs = pStmt.executeQuery();
 			if (rs.next()) {
-				String name = rs.getString(1) + " " + rs.getString(2);
-				String uni = rs.getString(3);
-				String studiengang = rs.getString(4);
-				String studienbeginn = rs.getString(5);
-				request.setAttribute("name", name);
-				request.setAttribute("uni", uni);
-				request.setAttribute("studiengang", studiengang);
-				request.setAttribute("studienbeginn", studienbeginn);
+				request.setAttribute("name", rs.getString(1) + " " + rs.getString(2));
+				request.setAttribute("studiengang", rs.getString(3));
+				SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
+				request.setAttribute("studienbeginn", sdf.format(new Date(rs.getDate(4).getTime())));
+				if (rs.getString(5) != null) {
+					request.setAttribute("geburtstag", getInfoString("Geburtstag:<br>" + sdf.format(new Date(rs.getDate(5).getTime()))));
+				}
+				if (!rs.getString(6).equals("")) {
+					request.setAttribute("wohnort", getInfoString("Wohnort:<br>" + rs.getString(6)));
+				}
+				if (!rs.getString(7).equals("")) {
+					request.setAttribute("hobbys", getInfoString("Hobbys:<br>" + rs.getString(7)));
+				}
+				if (!rs.getString(8).equals("")) {
+					request.setAttribute("interessen", getInfoString("Interessen:<br>" + rs.getString(8)));
+				}
+				if (!rs.getString(9).equals("")) {
+					request.setAttribute("ueberMich", getInfoString("Über mich:<br>" + rs.getString(9)));
+				}
+				request.setAttribute("email", rs.getString(10));
 			}
 			sql = sqlSt.getAnzahlFreunde();
 			pStmt = con.prepareStatement(sql);
@@ -187,6 +201,10 @@ public class ProfilServlet extends HttpServlet {
 				}
 			}
 		}
+	}
+	
+	private String getInfoString(String info) {
+		return "<li class='list-group-item'>" + info + "</li>";
 	}
 
 }
