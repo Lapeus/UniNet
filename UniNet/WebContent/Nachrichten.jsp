@@ -14,7 +14,7 @@
 <title>UniNet - Nachrichten</title>
 </head>
 <body>
-<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
+<jsp:include page="/LadeChatAlleFreundeServlet"></jsp:include>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
 <page:linkeSpalte use="standard"></page:linkeSpalte>
@@ -38,7 +38,7 @@
 	</div>
 </div>
 </page:mittlereSpalte>
-<page:rechteSpalte chatfreunde="${ chatfreunde }"></page:rechteSpalte>
+<page:rechteSpalte chatfreunde="${ chatfreundeAlle }"></page:rechteSpalte>
 </div>
 </body>
 </html>
