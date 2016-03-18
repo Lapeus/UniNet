@@ -28,7 +28,7 @@
 		 </div>
 		 <form action="NachrichtenServlet" method="POST">
 			 <div class="send-wrap">
-			     <textarea class="form-control send-message" rows="3" placeholder="Antworte jetzt..." name="nachricht"></textarea>
+			     <textarea class="form-control send-message" rows="3" placeholder="Schreibe jetzt..." name="nachricht"></textarea>
 			 </div>
 			 <div class="btn-panel">
 			     <a href="NachrichtenServlet" class=" col-lg-3 btn send-message-btn " role="button" name="reload">Reload</a>

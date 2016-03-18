@@ -7,6 +7,8 @@
 <head>
 <link rel="stylesheet" href="/UniNet/CSS/bootstrap.css">
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Willkommen bei UniNet</title>
 </head>
@@ -120,5 +122,9 @@
 			</div>
 		</div>
 	</form>
+	Lass die mal da zum testen
+	<p>Envelope icon: <span class="glyphicon glyphicon-envelope"></span></p> 
+	<p>Search icon: <span class="glyphicon glyphicon-search"></span></p>
+	<p>Print icon: <span class="glyphicon glyphicon-print"></span></p>
 </body>
 </html>
