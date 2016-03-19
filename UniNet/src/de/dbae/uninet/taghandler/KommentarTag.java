@@ -37,7 +37,7 @@ public class KommentarTag extends TagSupport {
 		// Kommentar
 		String erg = "";
 		erg += "<p><div class='row'><div class='col-md-1'>";
-		erg += "<a href='#'><img class='media-object kommentarbild2' src='Testbild.jpg' alt='Testbild'></a></div>";
+		erg += "<a href='#'><img class='media-object kommentarbild' src='Testbild.jpg' alt='Testbild'></a></div>";
 		erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'>" + kommentar.getName() + "</h5>";
 		erg += kommentar.getKommentar();
 		erg += "<div class='row'><div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=AntwortAufKommentar&kommID=" + kommentar.getKommID() + "'>Antworten</a></div>";
@@ -49,7 +49,7 @@ public class KommentarTag extends TagSupport {
 		// Hier muessen die Unterkommentare eingefuegt werden
 		for (Unterkommentar komm : kommentar.getKommentarList()) {
 			erg += "<div class='row border-left'><div class='col-md-1'>";
-			erg += "<a href='#'><img class='media-object kommentarbild2' src='Testbild.jpg' alt='Testbild'></a></div>";
+			erg += "<a href='#'><img class='media-object kommentarbild' src='Testbild.jpg' alt='Testbild'></a></div>";
 			erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'>" + komm.getName() + "</h5>";
 			erg += komm.getKommentar();
 			// Antwort auf Unterkommentar
@@ -62,11 +62,11 @@ public class KommentarTag extends TagSupport {
 			// Hier muessen die KommentareZuUnterkommentare eingefuegt werden
 			for (KommentarZuUnterkommentar kzukomm : komm.getKommentarList()) {
 				erg += "<div class='row border-left'><p><div class='col-md-1'>";
-				erg += "<a href='#'><img class='media-object kommentarbild2' src='Testbild.jpg' alt='Testbild'></a></div>";
+				erg += "<a href='#'><img class='media-object kommentarbild' src='Testbild.jpg' alt='Testbild'></a></div>";
 				erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'>" + kzukomm.getName() + "</h5>";
 				erg += "<a href='ProfilServlet?userID=" + kzukomm.getAntwortAufKommID() + "'><u>" + kzukomm.getAntwortAufKommName() + "</u></a> " + kzukomm.getKommentar();
 				// Antwort auf Unterkommentar
-				erg += "<div class='row'>";//<div class='col-md-2'><a href='BeitragServlet?name=AntwortAufUnterkommentar&kommID=" + kzukomm.getAntwortAufKommID() + "&userName=" + kzukomm.getName() + "&userID=" + kzukomm.getUserID() + "'>Antworten</a></div>";
+				erg += "<div class='row'>";
 				erg += "<div class='col-md-2'></div>";
 				if (userID == kzukomm.getUserID()) {
 					erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KzukommLoeschen&id=" + kzukomm.getKommID() + "'>Löschen</a></div>"; 	

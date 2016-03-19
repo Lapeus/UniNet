@@ -19,7 +19,7 @@
 	<div class="col-md-10 beitrag">
 		<div class="row kopf"><br>
 			<div class="col-md-1">
-				<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
+				<a href='#'><img class="media-object kommentarbild profil" alt="Testbild" src="Testbild.jpg"></a>
 			</div>
 			<div class="col-md-10">
 				<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a><br>
@@ -35,14 +35,14 @@
 		<div>
 			<ul class="nav nav-pills border">
   				<li role="presentation" class="like ${liClass}"><a href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=Like">Interessiert mich nicht besonders</a></li>
-  				<li role="presentation"><a href="#">Melden</a></li>
+  				<li role="presentation"><a href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=Melden">Melden</a></li>
   				<li role="presentation" class="kommentareAnzeigen"><a href="#">Alle Kommentare anzeigen</a></li>
 			</ul>
-			<label class="anzahlLikes"><p><p>${beitrag.likes} Leute interessiert das nicht besonders</label>
+			<label class="anzahlLikes"><p><p>${beitrag.likes} Personen interessiert das nicht besonders</label>
 			<label class="anzahlKommentare">${beitrag.kommentare} Kommentare</label></div>
 			<div class="row">
 				<div class="col-md-1">
-					<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
+					<a href='#'><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>
 				</div>
 				<div class="col-md-11">
 					<form action="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=Kommentar" method="post">
@@ -56,7 +56,7 @@
 			<page:kommentarAntwort anzeigen="${anzeigen}">
 				<div class="row">
 					<div class="col-md-1">
-						<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
+						<a><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>
 					</div>
 					<div class="col-md-11">
 						<form action="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=KommentarAntwort&tiefe=${tiefe}&kommID=${kommID}" method="post">

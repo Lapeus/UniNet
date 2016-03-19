@@ -1,6 +1,7 @@
 package de.dbae.uninet.servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,9 +72,9 @@ public class ProfilServlet extends HttpServlet {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 				String timeStamp = sdf.format(new Date(rs.getDate(8).getTime())) + " " + rs.getTime(9).toString();
 				if (rs.getBoolean(10)) {
-					timeStamp += " Ö";
+					timeStamp += " <span class='glyphicon glyphicon-globe'></span>";
 				} else {
-					timeStamp += " P";
+					timeStamp += " <span class='glyphicon glyphicon-user'></span>";
 				}
 				sql = sqlSt.getLikeAufBeitragSql();
 				pStmt = con.prepareStatement(sql);
@@ -82,7 +83,7 @@ public class ProfilServlet extends HttpServlet {
 				ResultSet rs2 = pStmt.executeQuery();
 				if (rs2.next()) {
 					boolean like = rs2.getInt(1) == 0 ? false : true;
-					String loeschenErlaubt = userID == id ? "X" : "";
+					String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
 					Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
 					beitragList.add(beitrag);
 				}
@@ -166,7 +167,7 @@ public class ProfilServlet extends HttpServlet {
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
 		String sichtbarkeit = request.getParameter("sichtbarkeit");
 		boolean sichtbar = true;
-		if (sichtbarkeit.equals("Freunde")) {
+		if (sichtbarkeit.startsWith("Privat")) {
 			sichtbar = false;
 		}
 		try {

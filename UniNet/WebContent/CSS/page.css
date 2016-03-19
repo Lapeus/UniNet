@@ -2,6 +2,7 @@
 
 .containerColor {
 	background-color: #3b5998;
+	color: white;
 }
 
 .containerColor2 {
@@ -112,6 +113,9 @@ label.zeitstempel {
 }
 
 a.zeitstempel {
+	font-size: 12px;
+	font-weight: bold;
+	vertical-align: bottom;
 	color: gray;
 }
 
@@ -183,9 +187,13 @@ img.profilbild {
 	height: 50%;
 }
 
-img.kommentarbild2 {
+img.kommentarbild {
 	width: 32px;
 	height: 32px;
+}
+
+img.profil {
+	margin-top: 25%;
 }
 
 h5.kommentarVerfasser {

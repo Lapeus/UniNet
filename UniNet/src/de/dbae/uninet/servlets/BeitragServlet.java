@@ -82,6 +82,10 @@ public class BeitragServlet extends HttpServlet {
 				break;
 			case "KommentarAntwort":
 				kommentarAntworten(request, response);
+				break;
+			case "Melden":
+				melden(request, response);
+				break;
 			default:
 				break;
 			}
@@ -119,9 +123,9 @@ public class BeitragServlet extends HttpServlet {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 				String timeStamp = sdf.format(new Date(rs.getDate(7).getTime())) + " " + rs.getTime(8).toString();
 				if (rs.getBoolean(9)) {
-					timeStamp += " Ö";
+					timeStamp += " <span class='glyphicon glyphicon-globe'></span>";
 				} else {
-					timeStamp += " P";
+					timeStamp += " <span class='glyphicon glyphicon-user'></span>";
 				}
 				sql = sqlSt.getLikeAufBeitragSql();
 				pStmt = con.prepareStatement(sql);
@@ -130,7 +134,7 @@ public class BeitragServlet extends HttpServlet {
 				ResultSet rs2 = pStmt.executeQuery();
 				if (rs2.next()) {
 					boolean like = rs2.getInt(1) == 0 ? false : true;
-					String loeschenErlaubt = userID == id ? "X" : "";
+					String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
 					beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
 					beitrag.setKommentarList(getKommentare(con, beitragsID, userID));
 					request.setAttribute("beitrag", beitrag);
@@ -425,6 +429,44 @@ public class BeitragServlet extends HttpServlet {
 			pStmt.setInt(3, userID);
 			pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
 			pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
+			pStmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("SQL Fehler in BeitragServlet");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+					System.out.println("Verbindung erfolgreich beendet!");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			try {
+				response.sendRedirect(page);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void melden(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+		int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
+		String page = request.getParameter("page");
+		if (page == null) {
+			page = "BeitragServlet?beitragsID=" + request.getParameter("beitragsID");
+		}
+		Connection con = new DBConnection().getCon();
+		System.out.println("Verbindung wurde geöffnet (Beitrag)");
+		BeitragSql sqlSt = new BeitragSql();
+		try {
+			String sql = sqlSt.getBeitragMelden();
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, beitragsID);
+			pStmt.setInt(2, userID);
 			pStmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("SQL Fehler in BeitragServlet");

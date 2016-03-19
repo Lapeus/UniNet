@@ -66,9 +66,9 @@ public class StartseiteServlet extends HttpServlet {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 				String timeStamp = sdf.format(new Date(rs.getDate(8).getTime())) + " " + rs.getTime(9).toString();
 				if (rs.getBoolean(10)) {
-					timeStamp += " Ö";
+					timeStamp += " <span class='glyphicon glyphicon-globe'></span>";
 				} else {
-					timeStamp += " P";
+					timeStamp += " <span class='glyphicon glyphicon-user'></span>";
 				}
 				sql = sqlSt.getLikeAufBeitragSql();
 				pStmt = con.prepareStatement(sql);
@@ -77,7 +77,7 @@ public class StartseiteServlet extends HttpServlet {
 				ResultSet rs2 = pStmt.executeQuery();
 				if (rs2.next()) {
 					boolean like = rs2.getInt(1) == 0 ? false : true;
-					String loeschenErlaubt = userID == id ? "X" : "";
+					String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
 					Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
 					beitragList.add(beitrag);
 				}

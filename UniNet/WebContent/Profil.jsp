@@ -18,7 +18,7 @@
 <div class="mainPart">
 	<page:linkeSpalte>
 		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
-		<label class="verfasser">Persönliche Infos</label>
+		<label class="verfasser" style="text-align: middle;">Persönliche Infos</label>
 		<ul class="list-group">
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>
 			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>
@@ -45,11 +45,11 @@
 						<textarea class="form-control" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
 						<div class="form-inline pull-right">
 							<!-- Sichtbarkeitsbutton -->
-							<select class="form-control" name="sichtbarkeit">
-								<option>Freunde</option>
-								<option>Öffentlich</option>
+							<select class="form-control glyphicon" name="sichtbarkeit">
+								<option>Privat &#xe008;</option>
+								<option>Öffentlich &#xe135;</option>
 							</select>
-							<button type="submit" class="btn btn-default">Posten</button>
+							<button type="submit" class="btn containerColor">Posten</button>
 						</div>
 						<br>
 					</div>

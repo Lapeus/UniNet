@@ -75,5 +75,10 @@ public class BeitragSql {
 		return sql;
 	}
 	
+	public String getBeitragMelden() {
+		String sql = "INSERT INTO beitragMeldungen VALUES (?, ?)";
+		return sql;
+	}
+	
 	
 }

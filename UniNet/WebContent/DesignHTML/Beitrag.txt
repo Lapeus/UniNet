@@ -3,7 +3,7 @@
 	<div class="col-md-10 beitrag">
 	<div class="row kopf"><br>
 	<div class="col-md-1">
-		<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
+		<a href='#'><img class="media-object kommentarbild profil" alt="Testbild" src="Testbild.jpg"></a>
 	</div>
 	<div class="col-md-10">
 	<a class="verfasser" href="ProfilServlet?userID=USERID">NAME</a><br>
@@ -17,14 +17,14 @@
 	<div>
 	<ul class="nav nav-pills border">
   		<li role="presentation" class="like CLASS"><a href="BeitragServlet?page=PAGE&beitragsID=BEITRAGSID&name=Like">Interessiert mich nicht besonders</a></li>
-  		<li role="presentation"><a href="#">Melden</a></li>
+  		<li role="presentation"><a href="BeitragServlet?page=PAGE&beitragsID=BEITRAGSID&name=Melden">Melden</a></li>
   		<li role="presentation" class="kommentareAnzeigen"><a href="BeitragServlet?beitragsID=BEITRAGSID">Alle Kommentare anzeigen</a></li>
 	</ul>
-	<label class="anzahlLikes"><p><p>ANZAHLLIKES Leute interessiert das nicht besonders</label>
+	<label class="anzahlLikes"><p><p>ANZAHLLIKES Personen interessiert das nicht besonders</label>
 	<label class="anzahlKommentare">ANZAHLKOMMENTARE Kommentare</label></div>
 	<div class="row">
 	<div class="col-md-1">
-		<img class="img-responsive" alt="Testbild" src="Testbild.jpg">
+		<a href='#'><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>
 	</div>
 	<div class="col-md-11">
 	<form action="BeitragServlet?page=PAGE&beitragsID=BEITRAGSID&name=Kommentar" method="post">
