@@ -1,13 +1,16 @@
 package de.dbae.uninet.servlets;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -82,40 +85,59 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				String sql = sqlSt.ueberpruefeAnmeldedaten();
 				PreparedStatement pStmt = con.prepareStatement(sql);
 				pStmt.setString(1, email);
-				pStmt.setString(2, password);
 				ResultSet rs = pStmt.executeQuery();
 
 				if (!rs.next()) {
 					// Wenn die Anmeldedaten nicht in der DB sind
 
-					meldung1 = "Bitte überprüfen Sie ihre Anmeldedaten";
+					meldung1 = "Ihre E-Mail-Adresse konnte nicht zugeordnet werden";
 					request.setAttribute("meldung", meldung1);
 					request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 				} else {
 					// Wenn die Anmeldedaten in der DB sind
 					
-					// Setze den User auf Online (#christian)
-					sql = sqlSt.getOnlineUpdate();
-					pStmt = con.prepareStatement(sql);
-					pStmt.setInt(1, Integer.parseInt(userid));
-					pStmt.executeUpdate();
-					// Setze die UserID fuer das SessionTracking
-					HttpSession userSession = request.getSession();
-					userSession.setAttribute("UserID", userid);
-					// Teste ob es sich um einen Studenten oder LocalAdmin handelt (#christian)
-					sql = sqlSt.getStudentenIDs();
-					pStmt = con.prepareStatement(sql);
-					rs = pStmt.executeQuery();
-					List<String> studentenIDs = new ArrayList<String>();
-					while (rs.next()) {
-						studentenIDs.add(rs.getString(1));
+					// Teste, ob Passwort passt
+					String hash = "";
+					String password1 = password + rs.getString(2);
+					try {
+						MessageDigest digest = MessageDigest.getInstance("MD5");
+						digest.update(password1.getBytes(), 0, password1.length());
+						hash = new BigInteger(1, digest.digest()).toString();
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					// Wenn es ein Student ist, leite an Startseite weiter
-					if (studentenIDs.contains(userid)) {
-						response.sendRedirect("StartseiteServlet");
-					// Sonst an die LocalAdmin Verwaltung
+					// Teste ob die Passwörter übereinstimmen
+					System.out.println(hash);
+					System.out.println(rs.getString(1));
+					if (!hash.equals(rs.getString(1))) {
+						meldung1 = "Es wurde ein falsches Passwort eingegeben!";
+						request.setAttribute("meldung", meldung1);
+						request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 					} else {
-						response.sendRedirect("LocalAdminServlet");
+						// Setze den User auf Online (#christian)
+						sql = sqlSt.getOnlineUpdate();
+						pStmt = con.prepareStatement(sql);
+						pStmt.setInt(1, Integer.parseInt(userid));
+						pStmt.executeUpdate();
+						// Setze die UserID fuer das SessionTracking
+						HttpSession userSession = request.getSession();
+						userSession.setAttribute("UserID", userid);
+						// Teste ob es sich um einen Studenten oder LocalAdmin handelt (#christian)
+						sql = sqlSt.getStudentenIDs();
+						pStmt = con.prepareStatement(sql);
+						rs = pStmt.executeQuery();
+						List<String> studentenIDs = new ArrayList<String>();
+						while (rs.next()) {
+							studentenIDs.add(rs.getString(1));
+						}
+						// Wenn es ein Student ist, leite an Startseite weiter
+						if (studentenIDs.contains(userid)) {
+							response.sendRedirect("StartseiteServlet");
+						// Sonst an die LocalAdmin Verwaltung
+						} else {
+							response.sendRedirect("LocalAdminServlet");
+						}
 					}
 				}
 			} catch (Exception e) {
@@ -147,14 +169,30 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				try {
 					if (password1.equals(password2)) {
 						// PASSWÖRTER GLEICH
-						
+						// Passwort hashen
+						String hash = "";
+						String salt = "";
+						try {
+							MessageDigest digest = MessageDigest.getInstance("MD5");
+							Random random = new Random();
+							byte[] salt2 = new byte[16];
+							random.nextBytes(salt2);
+							password1 += salt2;
+							digest.update(password1.getBytes(), 0, password1.length());
+							hash = new BigInteger(1, digest.digest()).toString();
+							salt = salt2.toString();
+						} catch (NoSuchAlgorithmException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						// Nutzer Registrierung in Tabbelle speichern
 						PreparedStatement pStmtNutzer = con.prepareStatement(sqlSt.getRegistrierungNutzerSql());
 						pStmtNutzer.setBoolean(1, bAnrede);
 						pStmtNutzer.setString(2, vorname);
 						pStmtNutzer.setString(3, nachname);
 						pStmtNutzer.setString(4, email);
-						pStmtNutzer.setString(5, password1);
+						pStmtNutzer.setString(5, hash);
+						pStmtNutzer.setString(6, salt);
 						pStmtNutzer.execute();
 						// Statement für userid
 						String stUserid = sqlSt.getNutzerId();

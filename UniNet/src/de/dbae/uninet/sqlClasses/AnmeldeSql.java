@@ -7,7 +7,7 @@ public class AnmeldeSql {
 	
 	// Methods
 	public String getRegistrierungNutzerSql() {
-		String sql = "INSERT INTO Nutzer (anrede, vorname, nachname, email, passwort)  VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO Nutzer (anrede, vorname, nachname, email, passwort, salt)  VALUES (?,?,?,?,?,?)";
 		return sql; 
 	}
 	
@@ -32,7 +32,7 @@ public class AnmeldeSql {
 	}
 	
 	public String ueberpruefeAnmeldedaten() {
-		String sql = "SELECT email,passwort FROM nutzer WHERE email=? AND passwort=?";
+		String sql = "SELECT passwort, salt FROM nutzer WHERE email=?";
 		return sql;
 	}
 	
