@@ -24,6 +24,7 @@ import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
 import de.dbae.uninet.javaClasses.Unterkommentar;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
+import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
  * Servlet implementation class BeitragServlet
@@ -486,6 +487,61 @@ public class BeitragServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		
+	}
+	
+	public List<Beitrag> getBeitraege(HttpServletRequest request, Connection con, String seite, int userID) {
+		List<Beitrag> beitragsList = new ArrayList<Beitrag>();
+		HttpSession session = request.getSession();
+		System.out.println("Verbindung wurde geöffnet (" + seite + ")");
+		try {
+			// Beitraege
+			String sql = "";
+			switch (seite) {
+			case "Startseite":
+				sql = new StartseiteSql().getBeitraegeSql();
+				break;
+			case "Profilseite":
+				sql = new ProfilSql().getBeitraegeSql();
+			default:
+				break;
+			}
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, userID);
+			ResultSet rs = pStmt.executeQuery();
+			List<Beitrag> beitragList = new ArrayList<Beitrag>();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String name = rs.getString(2) + " " + rs.getString(3);
+				String nachricht = rs.getString(4);
+				int anzahlLikes = rs.getInt(5);
+				int anzahlKommentare = rs.getInt(6);
+				int beitragsID = rs.getInt(7);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+				String timeStamp = sdf.format(new Date(rs.getDate(8).getTime())) + " " + rs.getTime(9).toString();
+				if (rs.getBoolean(10)) {
+					timeStamp += " <span class='glyphicon glyphicon-globe'></span>";
+				} else {
+					timeStamp += " <span class='glyphicon glyphicon-user'></span>";
+				}
+				sql = new BeitragSql().getLikeAufBeitragSql();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, beitragsID);
+				pStmt.setInt(2, Integer.parseInt(session.getAttribute("UserID").toString()));
+				ResultSet rs2 = pStmt.executeQuery();
+				if (rs2.next()) {
+					boolean like = rs2.getInt(1) == 0 ? false : true;
+					String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
+					Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
+					beitragList.add(beitrag);
+				}
+			}
+			return beitragList;
+		} catch (Exception e) {
+			System.out.println("Fehler im BeitragsServlet");
+			e.printStackTrace();
+			return null;
 		}
 	}
 
