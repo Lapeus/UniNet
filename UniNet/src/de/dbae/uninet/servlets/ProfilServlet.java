@@ -1,5 +1,6 @@
 package de.dbae.uninet.servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
@@ -63,7 +67,8 @@ public class ProfilServlet extends HttpServlet {
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
 			if (rs.next()) {
-				request.setAttribute("name", rs.getString(1) + " " + rs.getString(2));
+				String name = rs.getString(1) + " " + rs.getString(2);
+				request.setAttribute("name", name);
 				request.setAttribute("studiengang", rs.getString(3));
 				SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
 				request.setAttribute("studienbeginn", sdf.format(new Date(rs.getDate(4).getTime())));
@@ -83,6 +88,9 @@ public class ProfilServlet extends HttpServlet {
 					request.setAttribute("ueberMich", getInfoString("Über mich:<br>" + rs.getString(9)));
 				}
 				request.setAttribute("email", rs.getString(10));
+				if (name.equals("Jurassic Park")) {
+					soundAbspielen();
+				}
 			}
 			sql = sqlSt.getAnzahlFreunde();
 			pStmt = con.prepareStatement(sql);
@@ -109,6 +117,19 @@ public class ProfilServlet extends HttpServlet {
 				}
 			} catch (SQLException ignored) {}
 		}
+	}
+	
+	private void soundAbspielen() {
+		try {
+            AudioInputStream ais = AudioSystem
+                .getAudioInputStream(
+                new File("C:\\Users\\chris_000\\Dropbox\\IMIT\\Jurassic Park.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(ais);
+            clip.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 	}
 
 	/**

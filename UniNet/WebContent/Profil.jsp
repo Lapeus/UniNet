@@ -18,7 +18,7 @@
 <div class="mainPart">
 	<page:linkeSpalte>
 		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
-		<label class="verfasser" style="text-align: middle;">Persönliche Infos</label>
+		<label class="verfasser" style="text-align: center; width: 100%">Persönliche Infos</label>
 		<ul class="list-group">
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>
 			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>

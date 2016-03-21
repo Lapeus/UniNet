@@ -492,7 +492,6 @@ public class BeitragServlet extends HttpServlet {
 	}
 	
 	public List<Beitrag> getBeitraege(HttpServletRequest request, Connection con, String seite, int userID) {
-		List<Beitrag> beitragsList = new ArrayList<Beitrag>();
 		HttpSession session = request.getSession();
 		System.out.println("Verbindung wurde geöffnet (" + seite + ")");
 		try {
