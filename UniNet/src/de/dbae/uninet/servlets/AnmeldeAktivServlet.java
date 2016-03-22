@@ -104,7 +104,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						digest.update(password1.getBytes(), 0, password1.length());
 						hash = new BigInteger(1, digest.digest()).toString();
 					} catch (NoSuchAlgorithmException e) {
-						// TODO Auto-generated catch block
+						System.out.println("Passwort Hash Fehler");
 						e.printStackTrace();
 					}
 					// Teste ob die Passwörter übereinstimmen
