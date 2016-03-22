@@ -45,6 +45,7 @@ public class StartseiteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection con = new DBConnection().getCon();
+		System.out.println("Verbindung wurde geöffnet (StartseiteServlet)");
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
 		request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Startseite", userID));
 		try {

@@ -25,6 +25,7 @@ import de.dbae.uninet.javaClasses.Unterkommentar;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
+import de.dbae.uninet.sqlClasses.VeranstaltungenSql;
 
 /**
  * Servlet implementation class BeitragServlet
@@ -499,23 +500,30 @@ public class BeitragServlet extends HttpServlet {
 		
 	}
 	
-	public List<Beitrag> getBeitraege(HttpServletRequest request, Connection con, String seite, int userID) {
+	public List<Beitrag> getBeitraege(HttpServletRequest request, Connection con, String seite, int userID, String... optionalParams) {
 		HttpSession session = request.getSession();
-		System.out.println("Verbindung wurde geöffnet (" + seite + ")");
 		try {
 			// Beitraege
 			String sql = "";
+			PreparedStatement pStmt = con.prepareStatement(sql);
 			switch (seite) {
 			case "Startseite":
 				sql = new StartseiteSql().getBeitraegeSql();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, userID);
 				break;
 			case "Profilseite":
 				sql = new ProfilSql().getBeitraegeSql();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, userID);
+				break;
+			case "Veranstaltungen":
+				sql = new VeranstaltungenSql().getBeitraege();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
 			default:
 				break;
 			}
-			PreparedStatement pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
 			List<Beitrag> beitragList = new ArrayList<Beitrag>();
 			while (rs.next()) {
@@ -552,6 +560,7 @@ public class BeitragServlet extends HttpServlet {
 					beitragList.add(beitrag);
 				}
 			}
+			System.out.println(beitragList.size());
 			return beitragList;
 		} catch (Exception e) {
 			System.out.println("Fehler im BeitragsServlet");

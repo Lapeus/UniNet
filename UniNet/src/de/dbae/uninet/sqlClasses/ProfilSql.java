@@ -30,7 +30,7 @@ public class ProfilSql {
 	}
 	
 	public String getBeitraegeSql() {
-		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit FROM beitragsView WHERE VerfasserID = ?";
+		String sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit FROM beitragsView INNER JOIN chronikbeitraege USING (beitragsID) WHERE VerfasserID = ?";
 		return sql;
 	}
 	
@@ -38,21 +38,5 @@ public class ProfilSql {
 		String sql = "SELECT COUNT(beitragsID) FROM beitraglikes WHERE beitragsID = ? AND studentID = ?";
 		return sql;
 	}
-	
-	public String getBeitragAnlegenSql1() {
-		String sql = "INSERT INTO beitraege (beitrag, verfasserID, sichtbarkeit, datum, uhrzeit) VALUES (?, ?, ?, ?, ?)";
-		return sql;
-	}
-	
-	public String getBeitragAnlegenSql2() {
-		String sql = "SELECT MAX(beitragsID) FROM beitraege";
-		return sql;
-	}
-	
-	public String getBeitragAnlegenSql3() {
-		String sql = "INSERT INTO chronikbeitraege VALUES (?)";
-		return sql;
-	}
-	
 	
 }

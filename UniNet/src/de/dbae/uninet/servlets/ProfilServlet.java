@@ -26,6 +26,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
+import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
 
@@ -153,7 +154,7 @@ public class ProfilServlet extends HttpServlet {
 		session = request.getSession();
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (ProfilBeitragPosten)");
-		ProfilSql sqlSt = new ProfilSql();
+		BeitragSql sqlSt = new BeitragSql();
 		String beitrag = request.getParameter("beitrag");
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
 		String sichtbarkeit = request.getParameter("sichtbarkeit");
@@ -180,7 +181,7 @@ public class ProfilServlet extends HttpServlet {
 			if (rs.next()) {
 				beitragsID = rs.getInt(1);
 				// Chronikbeitrag eintragen
-				sql = sqlSt.getBeitragAnlegenSql3();
+				sql = sqlSt.getBeitragAnlegenSqlChronik();
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				pStmt.executeUpdate();

@@ -85,5 +85,29 @@ public class BeitragSql {
 		return sql;
 	}
 	
+	public String getBeitragAnlegenSql1() {
+		String sql = "INSERT INTO beitraege (beitrag, verfasserID, sichtbarkeit, datum, uhrzeit) VALUES (?, ?, ?, ?, ?)";
+		return sql;
+	}
+	
+	public String getBeitragAnlegenSql2() {
+		String sql = "SELECT MAX(beitragsID) FROM beitraege";
+		return sql;
+	}
+	
+	public String getBeitragAnlegenSqlChronik() {
+		String sql = "INSERT INTO chronikbeitraege VALUES (?)";
+		return sql;
+	}
+	
+	public String getBeitragAnlegenSqlVeranstaltung() {
+		String sql = "INSERT INTO veranstaltungsbeitraege VALUES (?, ?)";
+		return sql;
+	}
+	
+	public String getBeitragAnlegenSqlGruppe() {
+		String sql = "INSERT INTO gruppenbeitraege VALUES (?, ?)";
+		return sql;
+	}
 	
 }

@@ -35,8 +35,7 @@
 	</page:linkeSpalte>
 	
 	<page:mittlereSpalte>
-	<div class="row">
-		<div class="col-md-1"></div>
+	<div class="row"><div class="col-md-1"></div>
 		<div class="col-md-10">
 			<div class="row"><label class="profilName">${ name }</label></div><br>
 			<c:if test="${beitragPosten == true}">

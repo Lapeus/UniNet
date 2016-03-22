@@ -44,7 +44,7 @@ public class LadeChatFreundeServlet extends HttpServlet{
 	public List<ChatFreund> getChatfreunde(HttpSession session) {
 		// Freunde (Online)
 		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (Startseite)");
+		System.out.println("Verbindung wurde geöffnet (LadeChatFreunde)");
 		StartseiteSql sqlSt = new StartseiteSql();
 		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
 		try {
