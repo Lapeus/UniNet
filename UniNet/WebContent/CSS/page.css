@@ -139,7 +139,7 @@ label.anzahlLikes {
 }
 
 
-label.anzahlKommentare {
+.anzahlKommentare {
 	font-size: 14px;
 	color: gray;
 	font-weight: lighter;
@@ -196,7 +196,7 @@ img.profil {
 	margin-top: 25%;
 }
 
-h5.kommentarVerfasser {
+.kommentarVerfasser {
 	color: #3b5998;
 	font-weight: bold;
 }

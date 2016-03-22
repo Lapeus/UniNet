@@ -108,8 +108,6 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						e.printStackTrace();
 					}
 					// Teste ob die Passwörter übereinstimmen
-					System.out.println(hash);
-					System.out.println(rs.getString(1));
 					if (!hash.equals(rs.getString(1))) {
 						meldung1 = "Es wurde ein falsches Passwort eingegeben!";
 						request.setAttribute("meldung", meldung1);

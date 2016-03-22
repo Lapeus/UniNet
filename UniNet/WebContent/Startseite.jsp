@@ -13,11 +13,10 @@
 </head>
 <body>
 <jsp:include page="/LadeChatFreundeServlet"></jsp:include>
-<page:seitenAufbau chatfreunde='${ chatfreunde }'>
-<!-- Seiteninhalt einfuegen -->
-<c:forEach var="beitrag" items="${ beitragList }">
-	<page:beitrag beitrag="${ beitrag }" page="StartseiteServlet"></page:beitrag>
-</c:forEach>
+<page:seitenAufbau chatfreunde="${chatfreunde}">
+	<c:forEach var="beitrag" items="${ beitragList }">
+		<page:beitrag beitrag="${ beitrag }" page="VeranstaltungenServlet"></page:beitrag>
+	</c:forEach>
 </page:seitenAufbau>
 </body>
 </html>

@@ -18,7 +18,7 @@
 <div class="mainPart">
 	<page:linkeSpalte>
 		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
-		<label class="verfasser" style="text-align: middle;">Persönliche Infos</label>
+		<label class="verfasser" style="text-align: center; width: 100%">Persönliche Infos</label>
 		<ul class="list-group">
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>
 			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>
@@ -39,22 +39,24 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
 			<div class="row"><label class="profilName">${ name }</label></div><br>
-			<div class="row">
-				<form action="ProfilServlet?name=BeitragPosten" method="post">
-					<div class="form-group">
-						<textarea class="form-control" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
-						<div class="form-inline pull-right">
-							<!-- Sichtbarkeitsbutton -->
-							<select class="form-control glyphicon" name="sichtbarkeit">
-								<option>Privat &#xe008;</option>
-								<option>Öffentlich &#xe135;</option>
-							</select>
-							<button type="submit" class="btn containerColor">Posten</button>
+			<c:if test="${beitragPosten == true}">
+				<div class="row">
+					<form action="ProfilServlet?name=BeitragPosten" method="post">
+						<div class="form-group">
+							<textarea class="form-control" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
+							<div class="form-inline pull-right">
+								<!-- Sichtbarkeitsbutton -->
+								<select class="form-control glyphicon" name="sichtbarkeit">
+									<option>Privat &#xe008;</option>
+									<option>Öffentlich &#xe135;</option>
+								</select>
+								<button type="submit" class="btn containerColor">Posten</button>
+							</div>
+							<br>
 						</div>
-						<br>
-					</div>
-				</form><br>
-			</div>
+					</form><br>
+				</div>
+			</c:if>
 		</div>
 	</div><br>
 	<c:forEach var="beitrag" items="${ beitragList }">

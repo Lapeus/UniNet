@@ -7,8 +7,6 @@
 <head>
 <link rel="stylesheet" href="/UniNet/CSS/bootstrap.css">
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
-
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Willkommen bei UniNet</title>
 </head>
@@ -22,7 +20,7 @@
 		</div>
 		<div class="form-group">
 			<label class="sr-only" for="email">E-Mail Adresse</label> 
-			<input type="email" class="form-control" id="email" placeholder="E-Mail" name="email">
+			<input autofocus type="email" class="form-control" id="email" placeholder="E-Mail" name="email">
 		</div>
 		<div class="form-group">
 			<label class="sr-only" for="password">Passwort</label>

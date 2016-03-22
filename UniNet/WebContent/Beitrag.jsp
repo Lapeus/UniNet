@@ -22,7 +22,16 @@
 				<a href='#'><img class="media-object kommentarbild profil" alt="Testbild" src="Testbild.jpg"></a>
 			</div>
 			<div class="col-md-10">
-				<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a><br>
+				<c:choose>
+					<c:when test="${beitrag.nichtChronik}">
+						<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a> <span class="glyphicon glyphicon-arrow-right" style="color: #3b5998;"></span>
+						<a class="verfasser" href="#">${beitrag.ortName}</a><br>
+		
+					</c:when>
+					<c:when test="${!beitrag.nichtChronik}">
+						<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a><br>
+					</c:when>
+				</c:choose>
 				<label class="zeitstempel">${beitrag.timeStamp}</label>
 			</div> <!-- col-md-10 -->
 			<div class="col-md-1">

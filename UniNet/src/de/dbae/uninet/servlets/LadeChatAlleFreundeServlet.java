@@ -46,7 +46,7 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		doGet(request, response);
 	}
 	
 	private List<ChatFreund> getChatfreunde(HttpSession session) {
@@ -64,7 +64,8 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 				String vorname = rs.getString(1);
 				String nachname = rs.getString(2);
 				int userID = rs.getInt(3);
-				ChatFreund freund = new ChatFreund(vorname, nachname, userID);
+				boolean online = rs.getBoolean(4);
+				ChatFreund freund = new ChatFreund(vorname, nachname, userID, online);
 				chatfreunde.add(freund);
 			}
 			for (ChatFreund chatFreund : chatfreunde) {

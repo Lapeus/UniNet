@@ -54,7 +54,7 @@ public class LadeChatFreundeServlet extends HttpServlet{
 				String vorname = rs.getString(1);
 				String nachname = rs.getString(2);
 				int userID = rs.getInt(3);
-				ChatFreund freund = new ChatFreund(vorname, nachname, userID);
+				ChatFreund freund = new ChatFreund(vorname, nachname, userID, true);
 				chatfreunde.add(freund);
 			}
 		} catch (Exception e) {

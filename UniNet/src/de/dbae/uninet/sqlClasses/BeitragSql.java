@@ -80,5 +80,10 @@ public class BeitragSql {
 		return sql;
 	}
 	
+	public String getOrtNameSql() {
+		String sql = "SELECT name FROM beitragsOrt WHERE beitragsID = ?";
+		return sql;
+	}
+	
 	
 }
