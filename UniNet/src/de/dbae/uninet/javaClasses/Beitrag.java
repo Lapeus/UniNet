@@ -14,6 +14,9 @@ public class Beitrag {
 	private boolean like;
 	private List<Kommentar> kommentarList;
 	private String loeschenErlaubt;
+	private boolean nichtChronik = false;
+	// Name der Gruppe oder der Veranstaltung, sofern vorhanden
+	private String ortName = "";
 	
 	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID, boolean like, String loeschenErlaubt) {
 		this.setUserID(userID);
@@ -105,6 +108,22 @@ public class Beitrag {
 
 	public void setLoeschenErlaubt(String loeschenErlaubt) {
 		this.loeschenErlaubt = loeschenErlaubt;
+	}
+
+	public boolean isNichtChronik() {
+		return nichtChronik;
+	}
+
+	public void setNichtChronik(boolean nichtChronik) {
+		this.nichtChronik = nichtChronik;
+	}
+
+	public String getOrtName() {
+		return ortName;
+	}
+
+	public void setOrtName(String ortName) {
+		this.ortName = ortName;
 	}
 	
 }

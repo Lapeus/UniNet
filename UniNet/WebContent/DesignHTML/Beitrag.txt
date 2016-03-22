@@ -21,7 +21,7 @@
   		<li role="presentation" class="kommentareAnzeigen"><a href="BeitragServlet?beitragsID=BEITRAGSID">Alle Kommentare anzeigen</a></li>
 	</ul>
 	<label class="anzahlLikes"><p><p>ANZAHLLIKES Personen interessiert das nicht besonders</label>
-	<label class="anzahlKommentare">ANZAHLKOMMENTARE Kommentare</label></div>
+	<label class="anzahlKommentare"><a class="anzahlKommentare" href="BeitragServlet?beitragsID=BEITRAGSID">ANZAHLKOMMENTARE Kommentare</a></label></div>
 	<div class="row">
 	<div class="col-md-1">
 		<a href='#'><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>

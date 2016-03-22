@@ -139,7 +139,7 @@ label.anzahlLikes {
 }
 
 
-label.anzahlKommentare {
+.anzahlKommentare {
 	font-size: 14px;
 	color: gray;
 	font-weight: lighter;

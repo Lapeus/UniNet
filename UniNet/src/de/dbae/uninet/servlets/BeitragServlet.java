@@ -138,6 +138,14 @@ public class BeitragServlet extends HttpServlet {
 					String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
 					beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
 					beitrag.setKommentarList(getKommentare(con, beitragsID, userID));
+					sql = sqlSt.getOrtNameSql();
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, beitragsID);
+					ResultSet rs3 = pStmt.executeQuery();
+					if (rs3.next()) {
+						beitrag.setNichtChronik(true);
+						beitrag.setOrtName(rs3.getString(1));
+					}
 					request.setAttribute("beitrag", beitrag);
 					if (like) {
 						request.setAttribute("liClass", "geliket");
@@ -533,6 +541,14 @@ public class BeitragServlet extends HttpServlet {
 					boolean like = rs2.getInt(1) == 0 ? false : true;
 					String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
 					Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
+					sql = new BeitragSql().getOrtNameSql();
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, beitragsID);
+					ResultSet rs3 = pStmt.executeQuery();
+					if (rs3.next()) {
+						beitrag.setNichtChronik(true);
+						beitrag.setOrtName(rs3.getString(1));
+					}
 					beitragList.add(beitrag);
 				}
 			}

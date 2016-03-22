@@ -19,7 +19,7 @@ public class LinkeSpalteTag extends TagSupport {
 			erg += "<li role='presentation'><a href='ProfilServlet'>Profil anzeigen</a></li>";
 			erg += "<li role='presentation'><a href='ProfilBearbeitenServlet'>Profil bearbeiten</a></li><br>";
 			erg += "<li role='presentation'><a href='NachrichtenServlet'>Nachrichten</a></li>";
-			erg += "<li role='presentation'><a href='#'>Veranstaltungen</a></li>";
+			erg += "<li role='presentation'><a href='VeranstaltungenServlet?tab=beitraege'>Veranstaltungen</a></li>";
 			erg += "<li role='presentation'><a href='#'>Gruppen</a></li></ul>"; 
 			try {
 				out.append(erg);
@@ -57,7 +57,7 @@ public class LinkeSpalteTag extends TagSupport {
 		erg += "<li role='presentation'><a href='ProfilServlet'>Profil anzeigen</a></li>";
 		erg += "<li role='presentation'><a href='ProfilBearbeitenServlet'>Profil bearbeiten</a></li><br>";
 		erg += "<li role='presentation'><a href='NachrichtenServlet'>Nachrichten</a></li>";
-		erg += "<li role='presentation'><a href='#'>Veranstaltungen</a></li>";
+		erg += "<li role='presentation'><a href='VeranstaltungenServlet?tab=beitraege'>Veranstaltungen</a></li>";
 		erg += "<li role='presentation'><a href='#'>Gruppen</a></li></ul></div>"; 
 		return erg;
 	}

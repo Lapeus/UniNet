@@ -55,9 +55,12 @@ public class ProfilServlet extends HttpServlet {
 		System.out.println("Verbindung wurde geöffnet (Profil)");
 		ProfilSql sqlSt = new ProfilSql();
 		String user = request.getParameter("userID");
+		boolean eigenesProfil = false;
 		if (user == null) {
 			user = session.getAttribute("UserID").toString();
+			eigenesProfil = true;
 		}
+		request.setAttribute("beitragPosten", eigenesProfil);
 		int userID = Integer.parseInt(user);
 		try {
 			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Profilseite", userID));
