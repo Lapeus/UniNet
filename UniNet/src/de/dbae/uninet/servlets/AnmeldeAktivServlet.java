@@ -42,7 +42,11 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Leer
+		Connection con = new DBConnection().getCon();
+		AnmeldeSql sqlSt = new AnmeldeSql();
+		felderFuellen(request);
+		String uni = request.getParameter("uni");
+		updateStudiengaenge(request, response, con, sqlSt, uni);
 	}
 
 	/**
@@ -56,14 +60,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		String meldung = "";
 		String meldung1 = "";
-		if (request.getParameter("laden") != null) {
-			// UNIS LADEN
-			
-			// Felder bei reloead befuellen
-			felderFuellen(request);
-			String uni = request.getParameter("uni");
-			updateStudiengaenge(request, response, con, sqlSt, uni);
-		} else if (request.getParameter("anmelden") != null) {
+		
+		if (request.getParameter("anmelden") != null) {
 			// ANMELDEN
 
 			try {
@@ -104,7 +102,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						digest.update(password1.getBytes(), 0, password1.length());
 						hash = new BigInteger(1, digest.digest()).toString();
 					} catch (NoSuchAlgorithmException e) {
-						// TODO Auto-generated catch block
+						System.out.println("Passwort Hash Fehler");
 						e.printStackTrace();
 					}
 					// Teste ob die Passwörter übereinstimmen
@@ -256,6 +254,11 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				// Studiengaenge updaten
 				updateStudiengaenge(request, response, con, sqlSt, uni);
 			}
+		} else {
+			// Felder bei reloead befuellen
+			felderFuellen(request);
+			String uni = request.getParameter("uni");
+			updateStudiengaenge(request, response, con, sqlSt, uni);
 		}
 	}
 

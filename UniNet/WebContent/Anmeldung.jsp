@@ -73,14 +73,11 @@
 			<div class="col-sm-8">
 				<div class="row">
 					<div class="col-sm-3">
-						<select class="form-control" name="uni">
+						<select class="form-control" name="uni" onchange="this.form.submit()">
 							<c:forEach var="uni" items="${ unis }">
 								<option>${ uni }</option>
 							</c:forEach>
 						</select>
-					</div>
-					<div class="col-sm-1">
-						<input class="form-control" type="submit" value="OK" name="laden"/>
 					</div>
 				</div>
 			</div>	
@@ -89,7 +86,7 @@
 			<label for="studiengang" class="col-sm-2 control-label">Studiengang</label>
 			<div class="col-sm-8">
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<select class="form-control" name="studiengang">
 							<c:forEach var="uni" items="${ studiengaenge }">
 								<option>${ uni }</option>
