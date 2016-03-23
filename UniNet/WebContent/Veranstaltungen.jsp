@@ -18,7 +18,10 @@
 		<label class="verfasser"><a class="verfasser" href="VeranstaltungenServlet?name=Uebersicht">Veranstaltungen</a></label>
 		<ul class="nav nav-pills nav-stacked">
 			<c:forEach var="veranstaltung" items="${veranstaltungList}">
-				<li role="presentation"><a href="VeranstaltungenServlet?tab=${tab}&id=${veranstaltung.id}">${veranstaltung.name}</a></li>
+				<li role="presentation">
+					<a href="VeranstaltungenServlet?tab=${tab}&id=${veranstaltung.id}"><b>${veranstaltung.name}</b></a>
+				</li>
+				
 			</c:forEach>
 		</ul>
 	</page:linkeSpalte>
@@ -65,12 +68,12 @@
 				</ul>
 				<c:choose>
 					<c:when test="${!eingetragen}">
-						<form action="VeranstaltungenServlet?name=Einschreiben" method="post">
+						<form action="VeranstaltungenServlet?id=${id}&name=Einschreiben" method="post">
 							<button class="btn btn-success" type="submit">Einschreiben</button>
 						</form>
 					</c:when>
 					<c:when test="${eingetragen}">
-						<form action="VeranstaltungenServlet?name=Ausschreiben" method="post">
+						<form action="VeranstaltungenServlet?id=${id}&name=Ausschreiben" method="post">
 							<button class="btn btn-danger" type="submit">Ausschreiben</button>
 						</form>
 					</c:when>

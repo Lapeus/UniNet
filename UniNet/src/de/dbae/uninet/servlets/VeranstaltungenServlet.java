@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.BeitragSql;
-import de.dbae.uninet.sqlClasses.ProfilSql;
 import de.dbae.uninet.sqlClasses.VeranstaltungenSql;
 
 /**
@@ -50,7 +49,8 @@ public class VeranstaltungenServlet extends HttpServlet {
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (VeranstaltungenGet)");
 		try {
-			String sql = new VeranstaltungenSql().getVeranstaltungen();
+			VeranstaltungenSql sqlSt = new VeranstaltungenSql();
+			String sql = sqlSt.getVeranstaltungen();
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
@@ -61,8 +61,27 @@ public class VeranstaltungenServlet extends HttpServlet {
 				veranstaltungList.add(new Veranstaltung(id, bezeichnung));
 			}
 			request.setAttribute("veranstaltungList", veranstaltungList);
+			switch (name) {
+			case "Veranstaltung":
+				veranstaltung(request, response);
+				break;
+			case "Uebersicht":
+			case "Suche":
+				request.setAttribute("tab", "infos");
+				uebersicht(request, response);
+				break;
+			case "Einschreiben":
+				einAusSchreiben(request, response, true);
+				break;
+			case "Ausschreiben":
+				einAusSchreiben(request, response, false);
+				break;	
+			default:
+				break;
+			}
 		} catch (Exception e) {
 			System.err.println("SQL Fehler in VeranstaltungenServlet");
+			e.printStackTrace();
 		} finally {
 			if (con != null) {
 				try {
@@ -73,17 +92,6 @@ public class VeranstaltungenServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-		}
-		switch (name) {
-		case "Veranstaltung":
-			veranstaltung(request, response);
-			break;
-		case "Uebersicht":
-			request.setAttribute("tab", "infos");
-			uebersicht(request, response);
-			break;
-		default:
-			break;
 		}
 	}
 
@@ -99,7 +107,6 @@ public class VeranstaltungenServlet extends HttpServlet {
 		case "BeitragPosten":
 			posteBeitrag(request, response);
 			break;
-
 		default:
 			doGet(request, response);
 			break;
@@ -107,6 +114,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 	}
 	
 	private void uebersicht(HttpServletRequest request, HttpServletResponse response) {
+		boolean suche = request.getParameter("suche") != null;
 		session = request.getSession();
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (VeranstaltungenUebersicht)");
@@ -114,18 +122,28 @@ public class VeranstaltungenServlet extends HttpServlet {
 		try {
 			String sql = new VeranstaltungenSql().getAlleVeranstaltungen();
 			PreparedStatement pStmt = con.prepareStatement(sql);
-			//pStmt.setInt(1, userID);
+			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
 			List<Veranstaltung> veranstaltungen = new ArrayList<Veranstaltung>();
 			while (rs.next()) {
 				int id = rs.getInt(1);
 				String bezeichnung = rs.getString(2);
-				veranstaltungen.add(new Veranstaltung(id, bezeichnung));
+				boolean anzeigen = false;
+				if (suche) {
+					String such = request.getParameter("suche");
+					if (bezeichnung.toLowerCase().contains(such.toLowerCase())) {
+						anzeigen = true;
+					}
+				}
+				if (!suche || anzeigen) {
+					veranstaltungen.add(new Veranstaltung(id, bezeichnung));
+				}
 			}
 			request.setAttribute("veranstaltungen", veranstaltungen);
 			request.getRequestDispatcher("Veranstaltungsuebersicht.jsp").forward(request, response);
 		} catch (Exception e) {
 			System.out.println("SQL Fehler in VeranstaltungenServlet");
+			e.printStackTrace();
 		} finally {
 			if (con != null) {
 				try {
@@ -139,6 +157,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void veranstaltung(HttpServletRequest request, HttpServletResponse response) {
 		session = request.getSession();
 		Connection con = new DBConnection().getCon();
@@ -262,5 +281,47 @@ public class VeranstaltungenServlet extends HttpServlet {
 				}
 			}
 		}
+	}
+	
+	private void einAusSchreiben(HttpServletRequest request, HttpServletResponse response, boolean einschreiben) {
+		Connection con = new DBConnection().getCon();
+		System.out.println("Verbindung wurde geöffnet (VeranstaltungenServletEinAus)");
+		VeranstaltungenSql sqlSt = new VeranstaltungenSql();
+		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
+		String sql;
+		String page = "VeranstaltungenServlet?name=Uebersicht";
+		try {
+			int id = Integer.parseInt(request.getParameter("id"));
+			if (einschreiben)
+				sql = sqlSt.getEinschreiben();
+			else
+				sql = sqlSt.getAusschreiben();
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, id);
+			pStmt.setInt(2, userID);
+			pStmt.executeUpdate();
+			if (einschreiben)
+				page = "VeranstaltungenServlet?name=Veranstaltung&id=" + id + "&tab=beitraege";
+		} catch (Exception e) {
+			System.err.println("SQL Fehler in VeranstaltungenServlet EinAus");
+			e.printStackTrace();
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+					System.out.println("Die Verbindung wurde erfolgreich beendet!");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			try {
+				response.sendRedirect(page);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }

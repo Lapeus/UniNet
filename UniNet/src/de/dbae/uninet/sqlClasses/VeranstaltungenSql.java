@@ -28,8 +28,18 @@ public class VeranstaltungenSql {
 	
 	public String getAlleVeranstaltungen() {
 		String sql = "SELECT DISTINCT veranstaltungsID, Name "
-				+ "FROM veranstaltungsmitglieder INNER JOIN veranstaltungen USING (veranstaltungsID)"
-				+ "ORDER BY Name";
+				+ "FROM veranstaltungsmitglieder INNER JOIN veranstaltungen USING (veranstaltungsID) INNER JOIN studenten USING (uniID) "
+				+ "WHERE studenten.studentID = ? ORDER BY Name";
+		return sql;
+	}
+	
+	public String getEinschreiben() {
+		String sql = "INSERT INTO veranstaltungsmitglieder VALUES (?, ?)";
+		return sql;
+	}
+	
+	public String getAusschreiben() {
+		String sql = "DELETE FROM veranstaltungsmitglieder WHERE veranstaltungsID = ? AND studentID = ?";
 		return sql;
 	}
 	

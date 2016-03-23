@@ -27,7 +27,7 @@
 		<div class="row">
 			<form action="VeranstaltungenServlet?name=Suche" method="post">
 				<div class="col-md-4">
-					<input class="form-control" type="text">
+					<input class="form-control" type="text" name="suche">
 				</div>
 				<div class="col-md-2">
 					<button class="btn containerColor" type="submit">Suchen</button>
