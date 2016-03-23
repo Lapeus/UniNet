@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.ChatFreund;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.VeranstaltungenSql;
@@ -205,6 +206,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 				request.setAttribute("infosActive", "active");
 				break;
 			case "mitglieder":
+				request.setAttribute("mitglieder", getMitglieder(request, con));
 				request.setAttribute("mitgliederActive", "active");
 				break;
 			default:
@@ -323,5 +325,33 @@ public class VeranstaltungenServlet extends HttpServlet {
 			}
 		}
 		
+	}
+	
+	private List<ChatFreund> getMitglieder(HttpServletRequest request, Connection con) throws Exception {
+		boolean sortByV = true;
+		if (request.getParameter("sortByV") != null && request.getParameter("sortByV").equals("false")) {
+			sortByV = false;
+		}
+		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
+		VeranstaltungenSql sqlSt = new VeranstaltungenSql();
+		String sql;
+		if (sortByV) {
+			sql = sqlSt.getMitgliederV();
+			request.setAttribute("vornameLink", "text-decoration: underline");
+		} else {
+			sql = sqlSt.getMitgliederN();
+			request.setAttribute("nachnameLink", "text-decoration: underline");
+		}
+		PreparedStatement pStmt = con.prepareStatement(sql);
+		pStmt.setInt(1, Integer.parseInt(request.getParameter("id")));
+		ResultSet rs = pStmt.executeQuery();
+		while(rs.next()) {
+			String vorname = rs.getString(1);
+			String nachname = rs.getString(2);
+			int userID = rs.getInt(3);
+			chatfreunde.add(new ChatFreund(vorname, nachname, userID, false));
+		}
+		request.setAttribute("anzahl", chatfreunde.size());
+		return chatfreunde;
 	}
 }

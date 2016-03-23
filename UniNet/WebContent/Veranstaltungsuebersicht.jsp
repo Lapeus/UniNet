@@ -15,10 +15,10 @@
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
 	<page:linkeSpalte>
-		<label class="verfasser">Veranstaltungen</label>
-		<ul class="nav nav-pills nav-stacked">
+		<label class="verfasser" style="width:100%; text-align: center;">Veranstaltungen</label>
+		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
 			<c:forEach var="veranstaltung" items="${veranstaltungList}">
-				<li role="presentation"><a href="VeranstaltungenServlet?tab=beitraege&id=${veranstaltung.id}">${veranstaltung.name}</a></li>
+				<li role="presentation"><a class="schwarz" href="VeranstaltungenServlet?tab=beitraege&id=${veranstaltung.id}">${veranstaltung.name}</a></li>
 			</c:forEach>
 		</ul>
 	</page:linkeSpalte>

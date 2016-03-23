@@ -15,11 +15,11 @@
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
 	<page:linkeSpalte>
-		<label class="verfasser"><a class="verfasser" href="VeranstaltungenServlet?name=Uebersicht">Veranstaltungen</a></label>
-		<ul class="nav nav-pills nav-stacked">
+		<label class="verfasser" style="width:100%; text-align: center;"><a class="verfasser" href="VeranstaltungenServlet?name=Uebersicht">Veranstaltungen</a></label>
+		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
 			<c:forEach var="veranstaltung" items="${veranstaltungList}">
 				<li role="presentation">
-					<a href="VeranstaltungenServlet?tab=${tab}&id=${veranstaltung.id}"><b>${veranstaltung.name}</b></a>
+					<a class="schwarz" href="VeranstaltungenServlet?tab=${tab}&id=${veranstaltung.id}">${veranstaltung.name}</a>
 				</li>
 				
 			</c:forEach>
@@ -80,7 +80,29 @@
 				</c:choose>
 			</c:when>
 			<c:when test="${tab == 'mitglieder'}">
-				Tolle Mitglieder
+				<div class="row">
+					<div class="col-md-3">
+						<label class="schwarz" style="font-size: 14px;">Insgesamt: ${anzahl}</label>
+					</div>
+					<div class="col-md-9">
+						<label class="pull-right" style="font-size: 12px;">alphabetisch sortiert nach 
+							<a class="blau" style="${vornameLink}" href="VeranstaltungenServlet?id=${id}&tab=mitglieder&sortByV=true">Vorname</a>
+							 / 
+							<a class="blau" style="${nachnameLink}" href="VeranstaltungenServlet?id=${id}&tab=mitglieder&sortByV=false">Nachname</a>
+						</label>
+					</div>
+				</div><br>
+				<div class="row" style="background-color: white;"><br>
+					<ul class="nav nav-pills">
+						<c:forEach var="mitglied" items="${mitglieder}">
+							<div class="col-md-4">
+								<li role="presentation">
+									<p><a class="mitglieder" href="ProfilServlet?userID=${mitglied.userID}"><b>${mitglied.vorname} ${mitglied.nachname}</b></a>
+								</li>
+							</div>
+						</c:forEach>
+					</ul>
+				</div>
 			</c:when>
 		</c:choose>
 	</page:mittlereSpalte>

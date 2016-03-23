@@ -63,7 +63,7 @@
 				<page:kommentar kommentar="${kommentar}"></page:kommentar>
 			</c:forEach>
 			<page:kommentarAntwort anzeigen="${anzeigen}">
-				<div class="row">
+				<p><div class="row">
 					<div class="col-md-1">
 						<a><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>
 					</div>

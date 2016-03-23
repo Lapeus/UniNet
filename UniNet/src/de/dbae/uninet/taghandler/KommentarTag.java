@@ -61,7 +61,7 @@ public class KommentarTag extends TagSupport {
 			erg += "</div></div>";
 			// Hier muessen die KommentareZuUnterkommentare eingefuegt werden
 			for (KommentarZuUnterkommentar kzukomm : komm.getKommentarList()) {
-				erg += "<div class='row border-left'><p><div class='col-md-1'>";
+				erg += "<div class='row border-left'><div class='col-md-1'>";
 				erg += "<a href='#'><img class='media-object kommentarbild' src='Testbild.jpg' alt='Testbild'></a></div>";
 				erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'><a class='kommentarVerfasser' href='ProfilServlet?userID=" + kzukomm.getUserID() + "'>" + kzukomm.getName() + "</a></h5>";
 				erg += "<a href='ProfilServlet?userID=" + kzukomm.getAntwortAufKommID() + "'><u>" + kzukomm.getAntwortAufKommName() + "</u></a> " + kzukomm.getKommentar();
@@ -75,7 +75,7 @@ public class KommentarTag extends TagSupport {
 				erg += "</div></div>";
 			}
 		}
-		erg += "</div></div><br>";
+		erg += "</div></div>";
 		return erg;
 	}
 }
