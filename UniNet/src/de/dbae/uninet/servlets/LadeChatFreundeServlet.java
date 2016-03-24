@@ -31,16 +31,16 @@ public class LadeChatFreundeServlet extends HttpServlet{
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		request.setAttribute("chatfreunde", getChatfreunde(session));
+		setChatfreunde(request);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 	
-	public List<ChatFreund> getChatfreunde(HttpSession session) {
+	public void setChatfreunde(HttpServletRequest request) {
 		// Freunde (Online)
+		HttpSession session = request.getSession();
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (LadeChatFreunde)");
 		StartseiteSql sqlSt = new StartseiteSql();
@@ -70,8 +70,7 @@ public class LadeChatFreundeServlet extends HttpServlet{
 				}
 			}
 		}
-		System.out.println("Chatfreunde: " + chatfreunde);
-		return chatfreunde;
+		request.setAttribute("chatfreunde", chatfreunde);
 	}
 
 }

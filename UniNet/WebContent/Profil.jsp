@@ -11,7 +11,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>UniNet - Profilseite</title>
 </head>
-<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <body>
 <page:kopfzeile>
 </page:kopfzeile>
@@ -29,9 +28,11 @@
 			${ interessen }
 			${ ueberMich }
 		</ul>
-		<form action="ProfilBearbeitenServlet" method="get">
-			<button style="width: 100%;" type="submit" class="btn btn-success">Informationen bearbeiten</button>
-		</form>
+		<c:if test="${beitragPosten == true}">
+			<form action="ProfilBearbeitenServlet" method="get">
+				<button style="width: 100%;" type="submit" class="btn btn-success">Informationen bearbeiten</button>
+			</form>
+		</c:if>
 	</page:linkeSpalte>
 	
 	<page:mittlereSpalte>
@@ -59,7 +60,7 @@
 		</div>
 	</div><br>
 	<c:forEach var="beitrag" items="${ beitragList }">
-		<page:beitrag beitrag="${ beitrag }" page="ProfilServlet"></page:beitrag>
+		<page:beitrag beitrag="${ beitrag }" page="ProfilServlet&userID=${userID}"></page:beitrag>
 	</c:forEach>
 	</page:mittlereSpalte>
 	

@@ -51,16 +51,21 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Chatfreunde
+		new LadeChatFreundeServlet().setChatfreunde(request);
+				
 		session = request.getSession();
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (Profil)");
 		ProfilSql sqlSt = new ProfilSql();
 		String user = request.getParameter("userID");
+		System.out.println(user);
 		boolean eigenesProfil = false;
 		if (user == null) {
 			user = session.getAttribute("UserID").toString();
 			eigenesProfil = true;
 		}
+		request.setAttribute("userID", user);
 		request.setAttribute("beitragPosten", eigenesProfil);
 		int userID = Integer.parseInt(user);
 		try {
@@ -103,11 +108,6 @@ public class ProfilServlet extends HttpServlet {
 			if (rs.next()) {
 				request.setAttribute("anzFreunde", rs.getInt(1));
 			}
-			
-			// Chatfreunde
-			LadeChatFreundeServlet cfs = new LadeChatFreundeServlet();
-			request.setAttribute("chatfreunde", cfs.getChatfreunde(session));
-		
 			// Weiterleitung
 			request.getRequestDispatcher("Profil.jsp").forward(request, response);
 		} catch (Exception e) {
@@ -155,7 +155,7 @@ public class ProfilServlet extends HttpServlet {
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (ProfilBeitragPosten)");
 		BeitragSql sqlSt = new BeitragSql();
-		String beitrag = request.getParameter("beitrag");
+		String beitrag = request.getAttribute("beitrag").toString();
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
 		String sichtbarkeit = request.getParameter("sichtbarkeit");
 		boolean sichtbar = true;
@@ -185,7 +185,11 @@ public class ProfilServlet extends HttpServlet {
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				pStmt.executeUpdate();
-				response.sendRedirect("ProfilServlet");
+				String page = "ProfilServlet";
+				if (request.getParameter("page") != null) {
+					page = request.getParameter("page");
+				}
+				response.sendRedirect(page);
 			} else {
 				System.out.println("Problem beim Anlegen des Beitrags");
 			}

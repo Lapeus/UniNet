@@ -48,7 +48,7 @@ public class BeitragTag extends TagSupport {
 		erg += "<label class='anzahlLikes'><p><p>" + beitrag.getLikes() + " Personen interessiert das nicht besonders</label>";
 		erg += "<label class='anzahlKommentare'><a class='anzahlKommentare' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "'>" + beitrag.getKommentare() + " Kommentare</a></label></div>";
 		erg += "<div class='row'><div class='col-md-1'><a href='#'><img class='media-object kommentarbild' alt='Testbild' src='Testbild.jpg'></a></div>";
-		erg += "<div class='col-md-11'><form action='BeitragServlet?page=" + page + "&beitragsID=" + beitrag.getBeitragsID() + "name=Kommentar' method='post'>";
+		erg += "<div class='col-md-11'><form action='BeitragServlet?page=" + page + "&beitragsID=" + beitrag.getBeitragsID() + "&name=Kommentar' method='post'>";
 		erg += "<input type='text' class='form-control' name='kommentar' placeholder='Schreibe einen Kommentar...'></form></div></div><p></div></div><br>";
 		return erg;
 	}

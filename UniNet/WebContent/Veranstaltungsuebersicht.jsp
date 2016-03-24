@@ -11,14 +11,13 @@
 <title>UniNet - Veranstaltungen</title>
 </head>
 <body>
-<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
 	<page:linkeSpalte>
 		<label class="verfasser" style="width:100%; text-align: center;">Veranstaltungen</label>
 		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
 			<c:forEach var="veranstaltung" items="${veranstaltungList}">
-				<li role="presentation"><a class="schwarz" href="VeranstaltungenServlet?tab=beitraege&id=${veranstaltung.id}">${veranstaltung.name}</a></li>
+				<li role="presentation"><a class="schwarz" href="VeranstaltungenServlet?tab=beitraege&veranstaltungsID=${veranstaltung.id}">${veranstaltung.name}</a></li>
 			</c:forEach>
 		</ul>
 	</page:linkeSpalte>
@@ -40,7 +39,7 @@
 				<div class="row">
 					<div class="col-md-1"></div>
 					<div class="col-md-8">
-						<label><a class="blau" href="VeranstaltungenServlet?tab=infos&id=${veranstaltung.id}">${veranstaltung.name}</a></label>
+						<label><a class="blau" href="VeranstaltungenServlet?tab=infos&veranstaltungsID=${veranstaltung.id}">${veranstaltung.name}</a></label>
 					</div>
 				</div>
 			</c:forEach>

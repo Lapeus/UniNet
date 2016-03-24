@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
+import de.dbae.uninet.javaClasses.ChatFreund;
 import de.dbae.uninet.javaClasses.Kommentar;
 import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
 import de.dbae.uninet.javaClasses.Unterkommentar;
@@ -46,7 +47,11 @@ public class BeitragServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Lade Chatfreunde
+		new LadeChatFreundeServlet().setChatfreunde(request);
+		
 		String name = request.getParameter("name");
+		request.setAttribute("beitragAnzeigen", true);
 		HttpSession session = request.getSession();
 		if (request.getParameter("anzeigen") == null) {
 			request.setAttribute("anzeigen", false);
@@ -87,6 +92,9 @@ public class BeitragServlet extends HttpServlet {
 				break;
 			case "Melden":
 				melden(request, response);
+				break;
+			case "LikesAnzeigen":
+				likesAnzeigen(request, response);
 				break;
 			default:
 				break;
@@ -236,6 +244,13 @@ public class BeitragServlet extends HttpServlet {
 		if (page == null) {
 			page = "BeitragServlet?beitragsID=" + beitragsID;
 		}
+		if (page.equals("ProfilServlet")) {
+			page += "?userID=" + request.getParameter("userID");
+		} else if (page.equals("VeranstaltungenServlet")) {
+			page += "?tab=" + request.getParameter("tab");
+			page += "&veranstaltungsID=" + request.getParameter("veranstaltungsID");
+		}
+		System.out.println(page);
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (Beitrag)");
 		BeitragSql sqlSt = new BeitragSql();
@@ -282,6 +297,12 @@ public class BeitragServlet extends HttpServlet {
 		if (page == null) {
 			page = "BeitragServlet?beitragsID=" + beitragsID;
 		}
+		if (page.equals("ProfilServlet")) {
+			page += "?userID=" + request.getParameter("userID");
+		} else if (page.equals("VeranstaltungenServlet")) {
+			page += "?tab=" + request.getParameter("tab");
+			page += "&veranstaltungsID=" + request.getParameter("veranstaltungsID");
+		}
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (Beitrag)");
 		BeitragSql sqlSt = new BeitragSql();
@@ -289,7 +310,7 @@ public class BeitragServlet extends HttpServlet {
 			String sql = sqlSt.getKommentar();
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, beitragsID);
-			pStmt.setString(2, request.getParameter("kommentar"));
+			pStmt.setString(2, request.getAttribute("kommentar").toString());
 			pStmt.setInt(3, userID);
 			pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
 			pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
@@ -435,7 +456,7 @@ public class BeitragServlet extends HttpServlet {
 			}
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, kommID);
-			pStmt.setString(2, request.getParameter("kommentar"));
+			pStmt.setString(2, request.getAttribute("kommentar").toString());
 			pStmt.setInt(3, userID);
 			pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
 			pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
@@ -468,6 +489,12 @@ public class BeitragServlet extends HttpServlet {
 		String page = request.getParameter("page");
 		if (page == null) {
 			page = "BeitragServlet?beitragsID=" + request.getParameter("beitragsID");
+		}
+		if (page.equals("ProfilServlet")) {
+			page += "?userID=" + request.getParameter("userID");
+		} else if (page.equals("VeranstaltungenServlet")) {
+			page += "?tab=" + request.getParameter("tab");
+			page += "&veranstaltungsID=" + request.getParameter("veranstaltungsID");
 		}
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (Beitrag)");
@@ -566,6 +593,61 @@ public class BeitragServlet extends HttpServlet {
 			System.out.println("Fehler im BeitragsServlet");
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	private void likesAnzeigen(HttpServletRequest request, HttpServletResponse response) {
+		int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
+		String sortBy = request.getParameter("sortBy");
+		if (sortBy == null) {
+			sortBy = "Zeit";
+		}
+		Connection con = new DBConnection().getCon();
+		System.out.println("Verbindung wurde geöffnet (BeitragLikesAnzeigen)");
+		BeitragSql sqlSt = new BeitragSql();
+		try {
+			String sql = sqlSt.getLikePersonen();
+			switch (sortBy) {
+			case "Vorname":
+				sql += "ORDER BY Vorname, Nachname";
+				request.setAttribute("vornameLink", "text-decoration: underline;");
+				break;
+			case "Nachname":
+				sql += "ORDER BY Nachname, Vorname";
+				request.setAttribute("nachnameLink", "text-decoration: underline;");
+				break;
+			default:
+				request.setAttribute("zeitLink", "text-decoration: underline;");
+				break;
+			}
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, beitragsID);
+			ResultSet rs = pStmt.executeQuery();
+			List<ChatFreund> user = new ArrayList<ChatFreund>();
+			while (rs.next()) {
+				int userID = rs.getInt(1);
+				String vorname = rs.getString(2);
+				String nachname = rs.getString(3);
+				user.add(new ChatFreund(vorname, nachname, userID, false));
+			}
+			request.setAttribute("user", user);
+			request.setAttribute("anzahl", user.size());
+			request.setAttribute("beitragAnzeigen", false);
+			request.setAttribute("beitragsID", beitragsID);
+			request.getRequestDispatcher("Beitrag.jsp").forward(request, response);
+		} catch (Exception e) {
+			System.out.println("SQL Fehler in BeitragServlet");
+			e.printStackTrace();
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+					System.out.println("Verbindung erfolgreich beendet!");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

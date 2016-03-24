@@ -42,6 +42,9 @@ public class VeranstaltungenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Chatfreunde
+		new LadeChatFreundeServlet().setChatfreunde(request);
+				
 		String name = request.getParameter("name");
 		if (name == null) {
 			name = "Veranstaltung";
@@ -100,6 +103,9 @@ public class VeranstaltungenServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Chatfreunde
+		new LadeChatFreundeServlet().setChatfreunde(request);
+				
 		String name = request.getParameter("name");
 		if (name == null) {
 			name = "";
@@ -164,8 +170,8 @@ public class VeranstaltungenServlet extends HttpServlet {
 		Connection con = new DBConnection().getCon();
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
 		// VeranstaltungsID lesen und setzen
-		String id = request.getParameter("id");
-		request.setAttribute("id", id);
+		String id = request.getParameter("veranstaltungsID");
+		request.setAttribute("veranstaltungsID", id);
 		// Aktuellen Tab lesen und setzen
 		String tab = request.getParameter("tab");
 		request.setAttribute("tab", tab);
@@ -233,7 +239,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (VeranstaltungBeitragPosten)");
 		BeitragSql sqlSt = new BeitragSql();
-		String beitrag = request.getParameter("beitrag");
+		String beitrag = request.getAttribute("beitrag").toString();
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
 		String sichtbarkeit = request.getParameter("sichtbarkeit");
 		boolean sichtbar = true;
@@ -262,10 +268,10 @@ public class VeranstaltungenServlet extends HttpServlet {
 				sql = sqlSt.getBeitragAnlegenSqlVeranstaltung();
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
-				int veranstaltungsID = Integer.parseInt(request.getParameter("id"));
+				int veranstaltungsID = Integer.parseInt(request.getParameter("veranstaltungsID"));
 				pStmt.setInt(2, veranstaltungsID);
 				pStmt.executeUpdate();
-				response.sendRedirect("VeranstaltungenServlet?tab=beitraege&id=" + veranstaltungsID);
+				response.sendRedirect("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + veranstaltungsID);
 			} else {
 				System.out.println("Problem beim Anlegen des Beitrags");
 			}
@@ -293,7 +299,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 		String sql;
 		String page = "VeranstaltungenServlet?name=Uebersicht";
 		try {
-			int id = Integer.parseInt(request.getParameter("id"));
+			int id = Integer.parseInt(request.getParameter("veranstaltungsID"));
 			if (einschreiben)
 				sql = sqlSt.getEinschreiben();
 			else
@@ -303,7 +309,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 			pStmt.setInt(2, userID);
 			pStmt.executeUpdate();
 			if (einschreiben)
-				page = "VeranstaltungenServlet?name=Veranstaltung&id=" + id + "&tab=beitraege";
+				page = "VeranstaltungenServlet?name=Veranstaltung&veranstaltungsID=" + id + "&tab=beitraege";
 		} catch (Exception e) {
 			System.err.println("SQL Fehler in VeranstaltungenServlet EinAus");
 			e.printStackTrace();
@@ -319,6 +325,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 			}
 			try {
 				response.sendRedirect(page);
+				System.out.println("Weiterleitung an :" + page);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -334,16 +341,16 @@ public class VeranstaltungenServlet extends HttpServlet {
 		}
 		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
 		VeranstaltungenSql sqlSt = new VeranstaltungenSql();
-		String sql;
+		String sql = sqlSt.getMitglieder();
 		if (sortByV) {
-			sql = sqlSt.getMitgliederV();
+			sql += "Vorname, Nachname";
 			request.setAttribute("vornameLink", "text-decoration: underline");
 		} else {
-			sql = sqlSt.getMitgliederN();
+			sql += "Nachname, Vorname";
 			request.setAttribute("nachnameLink", "text-decoration: underline");
 		}
 		PreparedStatement pStmt = con.prepareStatement(sql);
-		pStmt.setInt(1, Integer.parseInt(request.getParameter("id")));
+		pStmt.setInt(1, Integer.parseInt(request.getParameter("veranstaltungsID")));
 		ResultSet rs = pStmt.executeQuery();
 		while(rs.next()) {
 			String vorname = rs.getString(1);

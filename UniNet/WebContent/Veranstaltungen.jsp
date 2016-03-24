@@ -11,7 +11,6 @@
 <title>UniNet - Veranstaltungen</title>
 </head>
 <body>
-<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
 	<page:linkeSpalte>
@@ -19,9 +18,8 @@
 		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
 			<c:forEach var="veranstaltung" items="${veranstaltungList}">
 				<li role="presentation">
-					<a class="schwarz" href="VeranstaltungenServlet?tab=${tab}&id=${veranstaltung.id}">${veranstaltung.name}</a>
+					<a class="schwarz" href="VeranstaltungenServlet?tab=${tab}&veranstaltungsID=${veranstaltung.id}">${veranstaltung.name}</a>
 				</li>
-				
 			</c:forEach>
 		</ul>
 	</page:linkeSpalte>
@@ -29,17 +27,17 @@
 		<label class="verfasser">${veranstaltung.name}</label><br><br>
 		<ul class="nav nav-tabs">
 			<c:if test="${eingetragen}">
-				<li role="presentation" class="${beitraegeActive}"><a href="VeranstaltungenServlet?tab=beitraege&id=${id}">Beiträge</a></li>
+				<li role="presentation" class="${beitraegeActive}"><a href="VeranstaltungenServlet?tab=beitraege&veranstaltungsID=${veranstaltungsID}">Beiträge</a></li>
 			</c:if>
-			<li role="presentation" class="${infosActive}"><a href="VeranstaltungenServlet?tab=infos&id=${id}">Infos</a></li>
-			<li role="presentation" class="${mitgliederActive}"><a href="VeranstaltungenServlet?tab=mitglieder&id=${id}">Mitglieder</a></li>
+			<li role="presentation" class="${infosActive}"><a href="VeranstaltungenServlet?tab=infos&veranstaltungsID=${veranstaltungsID}">Infos</a></li>
+			<li role="presentation" class="${mitgliederActive}"><a href="VeranstaltungenServlet?tab=mitglieder&veranstaltungsID=${veranstaltungsID}">Mitglieder</a></li>
 		</ul>
 		<br>
 		<c:choose>
 			<c:when test="${tab == 'beitraege' && eingetragen}">
 				<div class="row"><div class="col-md-1"></div>
 					<div class="col-md-10"><div class="row">
-					<form action="VeranstaltungenServlet?id=${id}&name=BeitragPosten" method="post">
+					<form action="VeranstaltungenServlet?veranstaltungsID=${veranstaltungsID}&name=BeitragPosten" method="post">
 						<div class="form-group">
 							<textarea class="form-control" rows="4" name="beitrag" placeholder="Teile deinen Kommilitonen etwas mit..." required></textarea>
 							<div class="form-inline pull-right">
@@ -56,7 +54,7 @@
 					</div></div>
 				</div><br>
 				<c:forEach var="beitrag" items="${ beitragList }">
-					<page:beitrag beitrag="${ beitrag }" page="VeranstaltungenServlet"></page:beitrag>
+					<page:beitrag beitrag="${ beitrag }" page="VeranstaltungenServlet&tab=beitraege&veranstaltungsID=${veranstaltungsID}"></page:beitrag>
 				</c:forEach>
 			</c:when>
 			<c:when test="${tab == 'infos'}">
@@ -68,12 +66,12 @@
 				</ul>
 				<c:choose>
 					<c:when test="${!eingetragen}">
-						<form action="VeranstaltungenServlet?id=${id}&name=Einschreiben" method="post">
+						<form action="VeranstaltungenServlet?veranstaltungsID=${veranstaltungsID}&name=Einschreiben" method="post">
 							<button class="btn btn-success" type="submit">Einschreiben</button>
 						</form>
 					</c:when>
 					<c:when test="${eingetragen}">
-						<form action="VeranstaltungenServlet?id=${id}&name=Ausschreiben" method="post">
+						<form action="VeranstaltungenServlet?veranstaltungsID=${veranstaltungsID}&name=Ausschreiben" method="post">
 							<button class="btn btn-danger" type="submit">Ausschreiben</button>
 						</form>
 					</c:when>
@@ -86,9 +84,9 @@
 					</div>
 					<div class="col-md-9">
 						<label class="pull-right" style="font-size: 12px;">alphabetisch sortiert nach 
-							<a class="blau" style="${vornameLink}" href="VeranstaltungenServlet?id=${id}&tab=mitglieder&sortByV=true">Vorname</a>
+							<a class="blau" style="${vornameLink}" href="VeranstaltungenServlet?veranstaltungsID=${veranstaltungsID}&tab=mitglieder&sortByV=true">Vorname</a>
 							 / 
-							<a class="blau" style="${nachnameLink}" href="VeranstaltungenServlet?id=${id}&tab=mitglieder&sortByV=false">Nachname</a>
+							<a class="blau" style="${nachnameLink}" href="VeranstaltungenServlet?veranstaltungsID=${veranstaltungsID}&tab=mitglieder&sortByV=false">Nachname</a>
 						</label>
 					</div>
 				</div><br>

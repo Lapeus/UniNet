@@ -12,13 +12,12 @@
 <title>UniNet - Startseite</title>
 </head>
 <body>
-<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <page:seitenAufbau chatfreunde="${chatfreunde}">
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
 			<div class="row">
-				<form action="ProfilServlet?id=${id}&name=BeitragPosten" method="post">
+				<form action="ProfilServlet?id=${id}&name=BeitragPosten&page=StartseiteServlet" method="post">
 					<div class="form-group">
 						<textarea class="form-control" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
 						<div class="form-inline pull-right">
@@ -35,7 +34,7 @@
 		</div>
 	</div><br>
 	<c:forEach var="beitrag" items="${ beitragList }">
-		<page:beitrag beitrag="${ beitrag }" page="VeranstaltungenServlet"></page:beitrag>
+		<page:beitrag beitrag="${ beitrag }" page="StartseiteServlet"></page:beitrag>
 	</c:forEach>
 </page:seitenAufbau>
 </body>

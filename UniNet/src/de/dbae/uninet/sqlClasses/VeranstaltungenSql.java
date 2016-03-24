@@ -13,15 +13,9 @@ public class VeranstaltungenSql {
 		return sql;
 	}
 	
-	public String getMitgliederV() {
+	public String getMitglieder() {
 		String sql = "SELECT Vorname, Nachname, StudentID "
-				+ "FROM veranstaltungsmitglieder INNER JOIN nutzer ON studentID = userID WHERE veranstaltungsID = ? ORDER BY Vorname, Nachname";
-		return sql;
-	}
-	
-	public String getMitgliederN() {
-		String sql = "SELECT Vorname, Nachname, StudentID "
-				+ "FROM veranstaltungsmitglieder INNER JOIN nutzer ON studentID = userID WHERE veranstaltungsID = ? ORDER BY Nachname, Vorname";
+				+ "FROM veranstaltungsmitglieder INNER JOIN nutzer ON studentID = userID WHERE veranstaltungsID = ? ORDER BY ";
 		return sql;
 	}
 	

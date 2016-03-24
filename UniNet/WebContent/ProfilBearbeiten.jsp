@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
 </head>
 <body>
-<jsp:include page="/LadeChatFreundeServlet"></jsp:include>
 <page:seitenAufbau chatfreunde="${chatfreunde}">
 	<form action="ProfilBearbeitenServlet" method="post">
 		<div class="row">

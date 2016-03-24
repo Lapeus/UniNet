@@ -44,6 +44,9 @@ public class StartseiteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Chatfreunde
+		new LadeChatFreundeServlet().setChatfreunde(request);
+		
 		Connection con = new DBConnection().getCon();
 		System.out.println("Verbindung wurde geöffnet (StartseiteServlet)");
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());

@@ -42,6 +42,9 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Chatfreunde
+		new LadeChatFreundeServlet().setChatfreunde(request);
+				
 		session = request.getSession();
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		Connection con = new DBConnection().getCon();

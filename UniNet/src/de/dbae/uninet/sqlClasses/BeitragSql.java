@@ -110,4 +110,9 @@ public class BeitragSql {
 		return sql;
 	}
 	
+	public String getLikePersonen() {
+		String sql = "SELECT userID, vorname, nachname FROM nutzer INNER JOIN beitragLikes ON userID=studentID WHERE beitragsID = ? ";
+		return sql;
+	}
+	
 }
