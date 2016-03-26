@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
-import de.dbae.uninet.javaClasses.ChatFreund;
+import de.dbae.uninet.javaClasses.Student;
 
 public class SeitenAufbauTag extends TagSupport {
 	
 	private static final long serialVersionUID = 929940257312046566L;
-	private List<ChatFreund> chatfreunde;
+	private List<Student> chatfreunde;
 	private Writer out;
 
 	public int doStartTag() {
@@ -43,11 +43,11 @@ public class SeitenAufbauTag extends TagSupport {
 		return EVAL_PAGE;
 	}
 
-	public List<ChatFreund> getChatfreunde() {
+	public List<Student> getChatfreunde() {
 		return chatfreunde;
 	}
 
-	public void setChatfreunde(List<ChatFreund> chatfreunde) {
+	public void setChatfreunde(List<Student> chatfreunde) {
 		this.chatfreunde = chatfreunde;
 	}
 }

@@ -45,8 +45,11 @@ public class BeitragTag extends TagSupport {
 		erg += "<li role='presentation' class='like " + geliket + "'><a href='BeitragServlet?page=" + page + "&beitragsID=" + beitrag.getBeitragsID() + "&name=Like'>Interessiert mich nicht besonders</a></li>";
 		erg += "<li role='presentation'><a href='BeitragServlet?page=" + page + "&beitragsID=" + beitrag.getBeitragsID() + "&name=Melden'>Melden</a></li>";
 		erg += "<li role='presentation' class='kommentareAnzeigen'><a href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "'>Alle Kommentare anzeigen</a></li></ul>";
-		erg += "<label class='anzahlLikes'><p><p>" + beitrag.getLikes() + " Personen interessiert das nicht besonders</label>";
-		erg += "<label class='anzahlKommentare'><a class='anzahlKommentare' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "'>" + beitrag.getKommentare() + " Kommentare</a></label></div>";
+		erg += "<label class='anzahlLikes'><p><p>";
+		String likePersonen = beitrag.getLikes() == 1 ? "Eine Person" : beitrag.getLikes() + " Personen";
+		erg += "<a class='blau' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=LikesAnzeigen'>" + likePersonen + " interessiert das nicht besonders</a></label>";
+		String kommentare = beitrag.getKommentare() == 1 ? "1 Kommentar" : beitrag.getKommentare() + " Kommentare";
+		erg += "<label class='anzahlKommentare'><a class='anzahlKommentare' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "'>" + kommentare + "</a></label></div>";
 		erg += "<div class='row'><div class='col-md-1'><a href='#'><img class='media-object kommentarbild' alt='Testbild' src='Testbild.jpg'></a></div>";
 		erg += "<div class='col-md-11'><form action='BeitragServlet?page=" + page + "&beitragsID=" + beitrag.getBeitragsID() + "&name=Kommentar' method='post'>";
 		erg += "<input type='text' class='form-control' name='kommentar' placeholder='Schreibe einen Kommentar...'></form></div></div><p></div></div><br>";

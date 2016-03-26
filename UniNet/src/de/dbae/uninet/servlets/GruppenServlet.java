@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
-import de.dbae.uninet.javaClasses.ChatFreund;
+import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Gruppe;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.GruppenSql;
@@ -38,7 +38,6 @@ public class GruppenServlet extends HttpServlet {
      */
     public GruppenServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -169,12 +168,13 @@ public class GruppenServlet extends HttpServlet {
 			request.setAttribute("infosActive", "active");
 			break;
 		case "mitglieder":
-			request.setAttribute("mitglieder", getMitglieder(request, con));
+			request.setAttribute("mitglieder", getMitglieder(request));
 			request.setAttribute("mitgliederActive", "active");
 			break;
 		case "bearbeiten":
 			request.setAttribute("bearbeitenActive", "active");
-			request.setAttribute("mitglieder", getMitglieder(request, con));
+			request.setAttribute("mitglieder", getMitglieder(request));
+			request.setAttribute("freunde", getFreunde(request));
 		default:
 			break;
 		}
@@ -182,8 +182,6 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void posteBeitrag(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (GruppenBeitragPosten)");
 		BeitragSql sqlSt = new BeitragSql();
 		String beitrag = request.getAttribute("beitrag").toString();
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
@@ -223,8 +221,6 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void verlassen(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		Connection con = new DBConnection().getCon();
-		System.out.println("Die Verbindung wurde geöffnet (GruppenServlet)");
 		GruppenSql sqlSt = new GruppenSql();
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		int id = Integer.parseInt(request.getParameter("gruppenID"));
@@ -235,15 +231,14 @@ public class GruppenServlet extends HttpServlet {
 		pStmt.executeUpdate();
 		response.sendRedirect("GruppenServlet?name=Uebersicht");
 		//TODO Was passiert wenn der Admin die Gruppe verlaesst
-		
 	}
 	
-	private List<ChatFreund> getMitglieder(HttpServletRequest request, Connection con) throws SQLException {
+	private List<Student> getMitglieder(HttpServletRequest request) throws SQLException {
 		boolean sortByV = true;
 		if (request.getParameter("sortByV") != null && request.getParameter("sortByV").equals("false")) {
 			sortByV = false;
 		}
-		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
+		List<Student> mitglieder = new ArrayList<Student>();
 		GruppenSql sqlSt = new GruppenSql();
 		String sql = sqlSt.getMitglieder();
 		if (sortByV) {
@@ -260,16 +255,14 @@ public class GruppenServlet extends HttpServlet {
 			String vorname = rs.getString(1);
 			String nachname = rs.getString(2);
 			int userID = rs.getInt(3);
-			chatfreunde.add(new ChatFreund(vorname, nachname, userID, false));
+			mitglieder.add(new Student(vorname, nachname, userID));
 		}
-		request.setAttribute("anzahlMitglieder", chatfreunde.size());
-		return chatfreunde;
+		request.setAttribute("anzahlMitglieder", mitglieder.size());
+		return mitglieder;
 	}
 	
 	private void gruenden(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindungen wurde geöffnet (GruppeGruenden)");
 		GruppenSql sqlSt = new GruppenSql();
 		String sql = sqlSt.getGruppeGruenden();
 		PreparedStatement pStmt = con.prepareStatement(sql);
@@ -294,8 +287,6 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void loeschen(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (GruppenServlet)");
 		GruppenSql sqlSt = new GruppenSql();
 		String sql = sqlSt.getGruppeLoeschen();
 		PreparedStatement pStmt = con.prepareStatement(sql);
@@ -305,8 +296,6 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void beschreibungAendern(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (GruppenServlet)");
 		GruppenSql sqlSt = new GruppenSql();
 		String sql = sqlSt.getBeschreibungAendern();
 		PreparedStatement pStmt = con.prepareStatement(sql);
@@ -317,21 +306,42 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void mitgliederBearbeiten(HttpServletRequest request, HttpServletResponse response, boolean zufuegen) throws SQLException, IOException {
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (GruppenServlet)");
 		GruppenSql sqlSt = new GruppenSql();
 		String sql = sqlSt.getMitgliederZufuegen();
 		if (!zufuegen) {
 			sql = sqlSt.getVerlassen();
 		}
-		// TODO userID muss gesetzt werden
 		int gruppenID = Integer.parseInt(request.getParameter("gruppenID"));
-		int userID = Integer.parseInt(request.getParameter("userID"));
+		int userID = Integer.parseInt(request.getParameter("mitgliedID"));
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, gruppenID);
 		pStmt.setInt(2, userID);
 		pStmt.executeUpdate();
 		response.sendRedirect("GruppenServlet?gruppenID=" + gruppenID + "&tab=bearbeiten");
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Student> getFreunde(HttpServletRequest request) throws SQLException {
+		List<Student> freunde = new ArrayList<Student>();
+		GruppenSql sqlSt = new GruppenSql();
+		String sql = sqlSt.getFreunde();
+		int gruppenID = Integer.parseInt(request.getParameter("gruppenID"));
+		PreparedStatement pStmt = con.prepareStatement(sql);
+		pStmt.setInt(1, gruppenID);
+		ResultSet rs = pStmt.executeQuery();
+		while (rs.next()) {
+			int id = rs.getInt(1);
+			String vorname = rs.getString(2);
+			String nachname = rs.getString(3);
+			boolean mitglied = false;
+			for (Student student : (ArrayList<Student>)request.getAttribute("mitglieder")) {
+				if (student.getUserID() == id)
+					mitglied = true;
+			}
+			if (!mitglied)
+				freunde.add(new Student(vorname, nachname, id));
+		}
+		return freunde;
 	}
 
 }

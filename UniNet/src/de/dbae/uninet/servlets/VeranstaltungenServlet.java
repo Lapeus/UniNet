@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
-import de.dbae.uninet.javaClasses.ChatFreund;
+import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.VeranstaltungenSql;
@@ -263,12 +263,12 @@ public class VeranstaltungenServlet extends HttpServlet {
 		response.sendRedirect(page);	
 	}
 	
-	private List<ChatFreund> getMitglieder(HttpServletRequest request, Connection con) throws SQLException {
+	private List<Student> getMitglieder(HttpServletRequest request, Connection con) throws SQLException {
 		boolean sortByV = true;
 		if (request.getParameter("sortByV") != null && request.getParameter("sortByV").equals("false")) {
 			sortByV = false;
 		}
-		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
+		List<Student> mitglieder = new ArrayList<Student>();
 		VeranstaltungenSql sqlSt = new VeranstaltungenSql();
 		String sql = sqlSt.getMitglieder();
 		if (sortByV) {
@@ -285,9 +285,9 @@ public class VeranstaltungenServlet extends HttpServlet {
 			String vorname = rs.getString(1);
 			String nachname = rs.getString(2);
 			int userID = rs.getInt(3);
-			chatfreunde.add(new ChatFreund(vorname, nachname, userID, false));
+			mitglieder.add(new Student(vorname, nachname, userID));
 		}
-		request.setAttribute("anzahl", chatfreunde.size());
-		return chatfreunde;
+		request.setAttribute("anzahl", mitglieder.size());
+		return mitglieder;
 	}
 }

@@ -16,13 +16,13 @@ import de.dbae.uninet.javaClasses.Emoticon;
  * Servlet implementation class HilfeServlet
  */
 @WebServlet("/HilfeServlet")
-public class HilfeServlet extends HttpServlet {
+public class EmoticonServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HilfeServlet() {
+    public EmoticonServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

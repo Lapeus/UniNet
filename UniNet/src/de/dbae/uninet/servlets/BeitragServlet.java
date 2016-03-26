@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
-import de.dbae.uninet.javaClasses.ChatFreund;
+import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Kommentar;
 import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
 import de.dbae.uninet.javaClasses.Unterkommentar;
@@ -124,7 +124,6 @@ public class BeitragServlet extends HttpServlet {
 	
 	private void kompletterLoad(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ServletException, IOException {
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
-		System.out.println("Verbindung wurde geöffnet (Beitrag)");
 		BeitragSql sqlSt = new BeitragSql();
 		String beitragId = request.getParameter("beitragsID");
 		int beitragsID = Integer.parseInt(beitragId);
@@ -165,6 +164,8 @@ public class BeitragServlet extends HttpServlet {
 					beitrag.setNichtChronik(true);
 					beitrag.setOrtName(rs3.getString(1));
 				}
+				request.setAttribute("beitragLikesPersonen", beitrag.getLikes() == 1 ? "Eine Person" : beitrag.getLikes() + " Personen");
+				request.setAttribute("beitragKommentare", beitrag.getKommentare() == 1 ? "1 Kommentar" : beitrag.getKommentare() + " Kommentare");
 				request.setAttribute("beitrag", beitrag);
 				if (like) {
 					request.setAttribute("liClass", "geliket");
@@ -483,12 +484,12 @@ public class BeitragServlet extends HttpServlet {
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, beitragsID);
 		ResultSet rs = pStmt.executeQuery();
-		List<ChatFreund> user = new ArrayList<ChatFreund>();
+		List<Student> user = new ArrayList<Student>();
 		while (rs.next()) {
 			int userID = rs.getInt(1);
 			String vorname = rs.getString(2);
 			String nachname = rs.getString(3);
-			user.add(new ChatFreund(vorname, nachname, userID, false));
+			user.add(new Student(vorname, nachname, userID));
 		}
 		request.setAttribute("user", user);
 		request.setAttribute("anzahl", user.size());

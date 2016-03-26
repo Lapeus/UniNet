@@ -54,7 +54,6 @@ public class ProfilServlet extends HttpServlet {
 		con = dbcon.getCon();
 		ProfilSql sqlSt = new ProfilSql();
 		String user = request.getParameter("userID");
-		System.out.println(user);
 		boolean eigenesProfil = false;
 		if (user == null) {
 			user = session.getAttribute("UserID").toString();

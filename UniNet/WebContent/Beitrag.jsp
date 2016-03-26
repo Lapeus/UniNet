@@ -48,9 +48,9 @@
 			  				<li role="presentation" class="kommentareAnzeigen"><a href="#">Alle Kommentare anzeigen</a></li>
 						</ul>
 						<label class="anzahlLikes"><p><p>
-							<a class="blau" href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=LikesAnzeigen">${beitrag.likes} Personen interessiert das nicht besonders</a>
+							<a class="blau" href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=LikesAnzeigen">${beitragLikesPersonen} interessiert das nicht besonders</a>
 						</label>
-						<label class="anzahlKommentare">${beitrag.kommentare} Kommentare</label>
+						<label class="anzahlKommentare">${beitragKommentare}</label>
 					</div>
 					<div class="row">
 						<div class="col-md-1">
@@ -76,7 +76,7 @@
 								</form>
 							</div> <!-- col-md-11 -->
 						</div> <!-- row --><p>
-					</page:kommentarAntwort><br>
+					</page:kommentarAntwort>
 				</c:when>
 				
 				<c:when test="${!beitragAnzeigen}">

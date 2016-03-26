@@ -17,8 +17,12 @@
 		<label class="verfasser" style="width:100%; text-align: center;"><a class="verfasser" href="GruppenServlet?name=Uebersicht">Gruppen</a></label>
 		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
 			<c:forEach var="gruppe" items="${gruppenList}">
+				<c:set var="nextTab" value="${tab}"></c:set>
+				<c:if test="${nextTab == 'bearbeiten'}">
+					<c:set var="nextTab" value="beitraege"></c:set>
+				</c:if>
 				<li role="presentation">
-					<a class="schwarz" href="GruppenServlet?tab=${tab}&gruppenID=${gruppe.id}">${gruppe.name}</a>
+					<a class="schwarz" href="GruppenServlet?tab=${nextTab}&gruppenID=${gruppe.id}">${gruppe.name}</a>
 				</li>
 			</c:forEach>
 		</ul>
@@ -97,9 +101,29 @@
 				<div class="row">
 					<label class="blau">Beschreibung ändern</label>
 					<form action="GruppenServlet?tab=bearbeiten&gruppenID=${gruppenID}&name=BeschreibungBearbeiten" method="post">
-						<textarea style="resize: none;" class="form-control" type="text" name="beschreibung" placeholder="Bitte beschreiben Sie den Zweck dieser Gruppe"></textarea>
+						<textarea style="resize: none;" class="form-control" type="text" name="beschreibung" placeholder="Bitte beschreiben Sie den Zweck dieser Gruppe">${gruppe.beschreibung}</textarea>
 						<button class="btn btn-success pull-right" type="submit">Speichern</button>
 					</form>
+				</div><br>
+				<div class="row">
+					<label class="blau">Mitglieder zufügen</label>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<form action="GruppenServlet?gruppenID=${gruppenID}&tab=bearbeiten&name=MitgliedZufuegen" method="post">
+							<div class="col-md-4">
+								<select class="form-control" name="mitgliedID">
+									<c:forEach var="freund" items="${freunde}">
+										<c:if test="${!mitglieder.contains(freund.userID)}">
+											<option value="${freund.userID}">${freund.vorname} ${freund.nachname}</option>
+										</c:if>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="col-md-1">
+								<button class="btn containerColor" type="submit">OK</button>
+							</div>
+						</form>
+					</div>
 				</div><br>
 				<div class="row">
 					<label class="blau">Mitglieder entfernen</label>
@@ -107,10 +131,10 @@
 						<div class="col-md-1"></div>
 						<form action="GruppenServlet?gruppenID=${gruppenID}&tab=bearbeiten&name=MitgliedEntfernen" method="post">
 							<div class="col-md-4">
-								<select class="form-control" name="mitglied">
+								<select class="form-control" name="mitgliedID">
 									<c:forEach var="mitglied" items="${mitglieder}">
 										<c:if test="${mitglied.userID != gruppe.adminID }">
-											<option>${mitglied.vorname} ${mitglied.nachname}</option>
+											<option value="${mitglied.userID}">${mitglied.vorname} ${mitglied.nachname}</option>
 										</c:if>
 									</c:forEach>
 								</select>

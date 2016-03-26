@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
-import de.dbae.uninet.javaClasses.ChatFreund;
+import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.sqlClasses.NachrichtenSql;
 
 /**
@@ -48,12 +48,12 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private List<ChatFreund> getChatfreunde(HttpSession session) {
+	private List<Student> getChatfreunde(HttpSession session) {
 		// Freunde (Online)
 		DBConnection dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		NachrichtenSql sqlSt = new NachrichtenSql();
-		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
+		List<Student> chatfreunde = new ArrayList<Student>();
 		try {
 			String sql = sqlSt.getFreundeSql();
 			PreparedStatement pStmt = con.prepareStatement(sql);
@@ -64,7 +64,7 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 				String nachname = rs.getString(2);
 				int userID = rs.getInt(3);
 				boolean online = rs.getBoolean(4);
-				ChatFreund freund = new ChatFreund(vorname, nachname, userID, online);
+				Student freund = new Student(vorname, nachname, userID, online);
 				chatfreunde.add(freund);
 			}
 		} catch (Exception e) {

@@ -1,13 +1,16 @@
 package de.dbae.uninet.javaClasses;
 
-public class ChatFreund {
+public class Student {
 
 	private String vorname = "";
 	private String nachname = "";
 	private int userID;
-	private boolean online;
+	private boolean online = false;
 	
-	public ChatFreund(String vorname, String nachname, int userID, boolean online) {
+	public Student(String vorname, String nachname, int userID) {
+		this(vorname, nachname, userID, false);
+	}
+	public Student(String vorname, String nachname, int userID, boolean online) {
 		this.setVorname(vorname);
 		this.setNachname(nachname);
 		this.setUserID(userID);

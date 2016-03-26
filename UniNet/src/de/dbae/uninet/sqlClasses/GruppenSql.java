@@ -57,4 +57,11 @@ public class GruppenSql {
 		String sql = "SELECT MAX(gruppenID) FROM gruppen";
 		return sql;
 	}
+	
+	public String getFreunde() {
+		String sql= "SELECT DISTINCT freund AS freundID, Vorname, Nachname FROM gruppenmitglieder "
+				+ "INNER JOIN freundeview ON studentID = nutzer "
+				+ "INNER JOIN nutzer ON freund = userID WHERE gruppenID = ?";
+		return sql;
+	}
 }

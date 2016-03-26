@@ -12,4 +12,12 @@
     <filter-name>EmoticonFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <filter>
+    <filter-name>UmlauteFilter</filter-name>
+    <filter-class>de.dbae.uninet.filter.UmlauteFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>UmlauteFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

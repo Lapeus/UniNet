@@ -41,7 +41,7 @@ public class KopfzeileTag extends TagSupport {
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='FreundeFindenServlet'>Freunde finden</a></li>";
 		kopfzeile += "</ul>";
 		kopfzeile += "<ul class='nav navbar-nav navbar-right'>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='HilfeServlet'>Hilfe</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='EmoticonServlet'>Hilfe</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='LogoutServlet'>Logout</a></li>";
 		kopfzeile += "</ul>";
 		kopfzeile += "</div></div></nav>";
