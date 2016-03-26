@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Enumeration;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
@@ -18,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
-import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 
 /**
@@ -29,6 +25,7 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private HttpSession session;
+	private Connection con = null;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -47,8 +44,8 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 				
 		session = request.getSession();
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (ProfilBearbeiten)");
+		DBConnection dbcon = new DBConnection();
+		con = dbcon.getCon();
 		ProfilSql sqlSt = new ProfilSql();
 		try {
 			String sql = sqlSt.getInfosBSql();
@@ -73,15 +70,7 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("SQL Fehler in ProfilBearbeitenServlet");
 		} finally {
-			if (con != null) {
-				try {
-					con.close();
-					System.out.println("Verbindung erfolgreich beendet!");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			dbcon.close();
 		}
 	}
 
@@ -91,8 +80,8 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (ProfilBearbeiten)");
+		DBConnection dbcon = new DBConnection();
+		con = dbcon.getCon();
 		ProfilSql sqlSt = new ProfilSql();
 		try {
 			String sql = sqlSt.getAendereNamenSql();
@@ -125,15 +114,7 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			e.printStackTrace();
 			System.out.println("SQL Fehler in ProfilBearbeitenServlet");
 		} finally {
-			if (con != null) {
-				try {
-					con.close();
-					System.out.println("Verbindung erfolgreich beendet!");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			dbcon.close();
 		}
 	}
 

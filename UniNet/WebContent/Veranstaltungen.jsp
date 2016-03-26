@@ -14,7 +14,9 @@
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
 	<page:linkeSpalte>
-		<label class="verfasser" style="width:100%; text-align: center;"><a class="verfasser" href="VeranstaltungenServlet?name=Uebersicht">Veranstaltungen</a></label>
+		<label class="verfasser" style="width:100%; text-align: center;">
+			<a class="verfasser" href="VeranstaltungenServlet?name=Uebersicht">Veranstaltungen</a>
+		</label>
 		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
 			<c:forEach var="veranstaltung" items="${veranstaltungList}">
 				<li role="presentation">

@@ -3,7 +3,6 @@ package de.dbae.uninet.servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,8 +34,8 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (Logout)");
+		DBConnection dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		try {
 			String sql = sqlSt.getOfflineUpdate();
@@ -46,15 +45,7 @@ public class LogoutServlet extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("Fehler beim Ausloggen");
 		} finally {
-			if (con != null) {
-				try {
-					con.close();
-					System.out.println("Verbindung wurde geschlossen!");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			dbcon.close();
 		}
 		response.sendRedirect("Anmeldung.jsp");
 	}
@@ -63,7 +54,6 @@ public class LogoutServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

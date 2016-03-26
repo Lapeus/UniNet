@@ -24,6 +24,7 @@ import de.dbae.uninet.sqlClasses.AnmeldeSql;
 @WebServlet("/AnmeldePassivServlet")
 public class AnmeldePassivServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private DBConnection dbcon;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -37,8 +38,8 @@ public class AnmeldePassivServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection con = new DBConnection().getCon();
-		System.out.println("Die Verbindung wurde geöffnet (AnmeldePassiv)");
+		dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		
 		String aUni = request.getParameter("uni");
@@ -61,14 +62,7 @@ public class AnmeldePassivServlet extends HttpServlet {
 		} catch (NullPointerException npe) {
 			request.setAttribute("meldung", "Der Server ist nicht erreichbar");
 		} finally {
-			try {
-				if (con != null) {
-					con.close();
-					System.out.println("Die Verbindung wurde erfolgreich beendet!");
-				}
-			} catch (SQLException ignored) {
-				ignored.printStackTrace();
-			}
+			dbcon.close();
 		}
 	}
 

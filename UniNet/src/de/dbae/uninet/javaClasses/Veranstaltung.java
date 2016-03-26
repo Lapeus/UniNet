@@ -70,4 +70,5 @@ public class Veranstaltung {
 	public void setSonstiges(String sonstiges) {
 		this.sonstiges = sonstiges;
 	}
+	
 }

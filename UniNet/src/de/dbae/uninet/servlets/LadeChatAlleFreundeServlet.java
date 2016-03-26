@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +50,8 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 	
 	private List<ChatFreund> getChatfreunde(HttpSession session) {
 		// Freunde (Online)
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (LadeChatAlleFreunde)");
+		DBConnection dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
 		NachrichtenSql sqlSt = new NachrichtenSql();
 		List<ChatFreund> chatfreunde = new ArrayList<ChatFreund>();
 		try {
@@ -68,23 +67,11 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 				ChatFreund freund = new ChatFreund(vorname, nachname, userID, online);
 				chatfreunde.add(freund);
 			}
-			for (ChatFreund chatFreund : chatfreunde) {
-				System.out.println(chatFreund.getNachname());
-			}
 		} catch (Exception e) {
 			System.out.println("SQL-Fehler ist aufgetreten (ChatFrende)");
 		} finally {
-			if (con != null) {
-				try {
-					con.close();
-					System.out.println("Die Verbindung wurde erfolgreich beendet!");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			dbcon.close();
 		}
-		System.out.println("Chatfreunde: " + chatfreunde);
 		return chatfreunde;
 	}
 	

@@ -17,7 +17,7 @@ public class SeitenAufbauTag extends TagSupport {
 	public int doStartTag() {
 		out = pageContext.getOut();
 		String erg = "";
-		erg += new KopfzeileTag().getHtmlCode(pageContext.getServletContext());
+		erg += new KopfzeileTag().getHtmlCode();
 		erg += "<div class='mainPart'>";
 		erg += new LinkeSpalteTag().getHtmlCode();
 		erg += "<div class='mittlereSpalte'><div class='row'><div class='col-md-1'></div><div class='col-md-10'>";

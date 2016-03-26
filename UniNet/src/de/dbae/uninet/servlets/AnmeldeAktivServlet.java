@@ -28,6 +28,7 @@ import de.dbae.uninet.sqlClasses.AnmeldeSql;
 @WebServlet("/AnmeldeAktivServlet")
 public class AnmeldeAktivServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private DBConnection dbcon;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -42,7 +43,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Connection con = new DBConnection().getCon();
+		dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		felderFuellen(request);
 		String uni = request.getParameter("uni");
@@ -55,8 +57,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Connection con = new DBConnection().getCon();
-		System.out.println("Die Verbindung wurde gestartet (AnmeldeAktiv)");
+		dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		String meldung = "";
 		String meldung1 = "";
@@ -265,8 +267,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	private void killConnection(Connection con){
 		try {
 			if (con != null) {
-				con.close();
-				System.out.println("Die Verbindung wurde erfolgreich beendet!");
+				dbcon.close();
 			}
 		} catch (Exception ignored) {
 			ignored.printStackTrace();

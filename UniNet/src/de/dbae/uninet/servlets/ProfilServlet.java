@@ -2,15 +2,12 @@ package de.dbae.uninet.servlets;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,13 +19,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import de.dbae.uninet.dbConnections.DBConnection;
-import de.dbae.uninet.javaClasses.Beitrag;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
-import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
  * Servlet implementation class ProfilServlet
@@ -38,6 +32,7 @@ public class ProfilServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private HttpSession session;
+	private Connection con;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -55,8 +50,8 @@ public class ProfilServlet extends HttpServlet {
 		new LadeChatFreundeServlet().setChatfreunde(request);
 				
 		session = request.getSession();
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (Profil)");
+		DBConnection dbcon = new DBConnection();
+		con = dbcon.getCon();
 		ProfilSql sqlSt = new ProfilSql();
 		String user = request.getParameter("userID");
 		System.out.println(user);
@@ -111,15 +106,10 @@ public class ProfilServlet extends HttpServlet {
 			// Weiterleitung
 			request.getRequestDispatcher("Profil.jsp").forward(request, response);
 		} catch (Exception e) {
-			response.getWriter().append("SQL-Fehler");
+			System.out.println("SQL Fehler im ProfilServlet");
 			e.printStackTrace();
 		} finally {
-			try {
-				if (con!=null) {
-					con.close();
-					System.out.println("Die Verbindung wurde erfolgreich beendet!");
-				}
-			} catch (SQLException ignored) {}
+			dbcon.close();
 		}
 	}
 	
@@ -141,19 +131,27 @@ public class ProfilServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
-		switch (name) {
-		case "BeitragPosten":
-			posteBeitrag(request, response);
-			break;
-		default:
-			break;
+		DBConnection dbcon = new DBConnection();
+		con = dbcon.getCon();
+		try {
+			switch (name) {
+			case "BeitragPosten":
+				posteBeitrag(request, response);
+				break;
+			default:
+				doGet(request, response);
+				break;
+			}
+		} catch (Exception e) {
+			System.out.println("SQL Fehler im ProfilServlet");
+			e.printStackTrace();
+		} finally {
+			dbcon.close();
 		}
 	}
 	
-	private void posteBeitrag(HttpServletRequest request, HttpServletResponse response) {
+	private void posteBeitrag(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		session = request.getSession();
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (ProfilBeitragPosten)");
 		BeitragSql sqlSt = new BeitragSql();
 		String beitrag = request.getAttribute("beitrag").toString();
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
@@ -162,49 +160,35 @@ public class ProfilServlet extends HttpServlet {
 		if (sichtbarkeit.startsWith("Privat")) {
 			sichtbar = false;
 		}
-		try {
-			// Beitrag anlegen
-			String sql = sqlSt.getBeitragAnlegenSql1();
-			PreparedStatement pStmt = con.prepareStatement(sql);
-			pStmt.setString(1, beitrag);
-			pStmt.setInt(2, verfasserID);
-			pStmt.setBoolean(3, sichtbar);
-			pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
-			pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
-			pStmt.executeUpdate();
-			
-			// BeitragsID abfragen
-			sql = sqlSt.getBeitragAnlegenSql2();
+		// Beitrag anlegen
+		String sql = sqlSt.getBeitragAnlegenSql1();
+		PreparedStatement pStmt = con.prepareStatement(sql);
+		pStmt.setString(1, beitrag);
+		pStmt.setInt(2, verfasserID);
+		pStmt.setBoolean(3, sichtbar);
+		pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+		pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
+		pStmt.executeUpdate();
+		
+		// BeitragsID abfragen
+		sql = sqlSt.getBeitragAnlegenSql2();
+		pStmt = con.prepareStatement(sql);
+		ResultSet rs = pStmt.executeQuery();
+		int beitragsID;
+		if (rs.next()) {
+			beitragsID = rs.getInt(1);
+			// Chronikbeitrag eintragen
+			sql = sqlSt.getBeitragAnlegenSqlChronik();
 			pStmt = con.prepareStatement(sql);
-			ResultSet rs = pStmt.executeQuery();
-			int beitragsID;
-			if (rs.next()) {
-				beitragsID = rs.getInt(1);
-				// Chronikbeitrag eintragen
-				sql = sqlSt.getBeitragAnlegenSqlChronik();
-				pStmt = con.prepareStatement(sql);
-				pStmt.setInt(1, beitragsID);
-				pStmt.executeUpdate();
-				String page = "ProfilServlet";
-				if (request.getParameter("page") != null) {
-					page = request.getParameter("page");
-				}
-				response.sendRedirect(page);
-			} else {
-				System.out.println("Problem beim Anlegen des Beitrags");
+			pStmt.setInt(1, beitragsID);
+			pStmt.executeUpdate();
+			String page = "ProfilServlet";
+			if (request.getParameter("page") != null) {
+				page = request.getParameter("page");
 			}
-		} catch (Exception e) {
-			System.out.println("SQL Fehler aufgetreten");
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-					System.out.println("Die Verbindung wurde geschlossen");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			response.sendRedirect(page);
+		} else {
+			System.out.println("Problem beim Anlegen des Beitrags");
 		}
 	}
 	

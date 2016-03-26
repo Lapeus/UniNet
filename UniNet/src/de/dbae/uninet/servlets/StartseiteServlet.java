@@ -2,26 +2,14 @@ package de.dbae.uninet.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import de.dbae.uninet.dbConnections.DBConnection;
-import de.dbae.uninet.javaClasses.Beitrag;
-import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
  * Servlet implementation class StartseiteServlet
@@ -30,7 +18,6 @@ import de.dbae.uninet.sqlClasses.StartseiteSql;
 public class StartseiteServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private HttpSession session;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -47,23 +34,18 @@ public class StartseiteServlet extends HttpServlet {
 		// Chatfreunde
 		new LadeChatFreundeServlet().setChatfreunde(request);
 		
-		Connection con = new DBConnection().getCon();
-		System.out.println("Verbindung wurde geöffnet (StartseiteServlet)");
+		DBConnection dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
-		request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Startseite", userID));
 		try {
+			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Startseite", userID));
 			// Weiterleitung
 			request.getRequestDispatcher("Startseite.jsp").forward(request, response);
 		} catch (Exception e) {
-			response.getWriter().append("SQL-Fehler");
+			response.getWriter().append("SQL-Fehler im StartseiteServlet");
 			e.printStackTrace();
 		} finally {
-			try {
-				if (con!=null) {
-					con.close();
-					System.out.println("Die Verbindung wurde erfolgreich beendet!");
-				}
-			} catch (SQLException ignored) {}
+			dbcon.close();
 		}
 	}
 
