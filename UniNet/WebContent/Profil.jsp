@@ -12,9 +12,9 @@
 <title>UniNet - Profilseite</title>
 </head>
 <body>
-<page:kopfzeile>
-</page:kopfzeile>
+<page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
+	<!-- In der linken Spalte sollen das Bild und die persoenlichen Informationen angezeigt werden -->
 	<page:linkeSpalte>
 		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
 		<label class="verfasser" style="text-align: center; width: 100%">Persönliche Infos</label>
@@ -22,20 +22,22 @@
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>
 			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>
 			<li class="list-group-item">E-Mail:<br>${ email }</li>
+			<!-- Hier wird der komplette li-Tag als Attribut gelesen, da er weggelassen wird, wenn das Attribut leer ist -->
 			${ geburtstag }
 			${ wohnort }
 			${ hobbys }
 			${ interessen }
 			${ ueberMich }
 		</ul>
+		<!-- Wenn es das eigene Profil ist, darf man auch die Informationen bearbeiten -->
 		<c:if test="${beitragPosten == true}">
 			<form action="ProfilBearbeitenServlet" method="get">
 				<button style="width: 100%;" type="submit" class="btn btn-success">Informationen bearbeiten</button>
 			</form>
 		</c:if>
 	</page:linkeSpalte>
-	
 	<page:mittlereSpalte>
+	<!-- Beitrag posten -->
 	<div class="row"><div class="col-md-1"></div>
 		<div class="col-md-10">
 			<div class="row"><label class="profilName">${ name }</label></div><br>
@@ -59,11 +61,11 @@
 			</c:if>
 		</div>
 	</div><br>
+	<!-- Bisherige Beitraege anzeigen -->
 	<c:forEach var="beitrag" items="${ beitragList }">
 		<page:beitrag beitrag="${ beitrag }" page="ProfilServlet&userID=${userID}"></page:beitrag>
 	</c:forEach>
 	</page:mittlereSpalte>
-	
 	<page:rechteSpalte chatfreunde="${ chatfreunde }">
 	</page:rechteSpalte>
 </div>

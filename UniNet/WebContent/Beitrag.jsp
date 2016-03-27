@@ -14,16 +14,16 @@
 <body>
 <page:seitenAufbau chatfreunde="${chatfreunde}">
 	<div class="row">
-		<div class="col-md-1"></div>
-		<div class="col-md-10 beitrag">
-			<c:choose>
+		<div class="col-md-1"><!-- Leere Linke Spalte --></div>
+		<div class="col-md-10 beitrag"> <!-- Mittelblock -->
+			<c:choose> <!-- Unterscheidung, ob der Beitrag oder die Likes angezeigt werden sollen -->
 				<c:when test="${beitragAnzeigen}">
 					<div class="row kopf"><br>
 						<div class="col-md-1">
 							<a href='#'><img class="media-object kommentarbild profil" alt="Testbild" src="Testbild.jpg"></a>
 						</div>
 						<div class="col-md-10">
-							<c:choose>
+							<c:choose> <!-- Unterscheidung, ob der Beitrag in der Chronik oder woanders gepostet wurde -->
 								<c:when test="${beitrag.nichtChronik}">
 									<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a> <span class="glyphicon glyphicon-arrow-right" style="color: #3b5998;"></span>
 									<a class="verfasser" href="#">${beitrag.ortName}</a><br>
@@ -35,10 +35,14 @@
 							<label class="zeitstempel">${beitrag.timeStamp}</label>
 						</div> <!-- col-md-10 -->
 						<div class="col-md-1">
-							<a href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=BeitragLoeschen" title="Beitrag löschen">${beitrag.loeschenErlaubt}</a>
+							<!-- Wenn es ein eigener Beitrag ist, darf er geloescht werden -->
+							<c:if test="${beitrag.loeschenErlaubt}"> 
+								<a href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=BeitragLoeschen" title="Beitrag löschen"><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>
+							</c:if>
 						</div>
 					</div> <!-- row kopf -->
 					<label class="beitrag"><br>
+						<!-- Der eigentliche Beitrag -->
 						${beitrag.nachricht}
 					</label><br><br>
 					<div>
@@ -60,12 +64,14 @@
 							<form action="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=Kommentar" method="post">
 								<input type="text" class="form-control" name="kommentar" placeholder="Schreibe einen Kommentar...">
 							</form>
-						</div> <!-- col-md-11 -->
-					</div> <!-- row --><p>
+						</div>
+					</div><p>
+					<!-- Hier werden alle Kommentare geladen -->
 					<c:forEach var="kommentar" items="${beitrag.kommentarList}">
 						<page:kommentar kommentar="${kommentar}"></page:kommentar>
 					</c:forEach>
-					<page:kommentarAntwort anzeigen="${anzeigen}">
+					<!-- Unterscheidung, ob das Antworttextfeld angezeigt werden soll, oder nicht -->
+					<c:if test="${anzeigen}">
 						<p><div class="row">
 							<div class="col-md-1">
 								<a><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>
@@ -76,9 +82,9 @@
 								</form>
 							</div> <!-- col-md-11 -->
 						</div> <!-- row --><p>
-					</page:kommentarAntwort>
+					</c:if>
 				</c:when>
-				
+				<!-- Wenn nicht der Beitrag, sondern die Personen angezeigt werden sollen, die es nicht besonders interessiert -->
 				<c:when test="${!beitragAnzeigen}">
 					<br><a class="blau" href="BeitragServlet?beitragsID=${beitragsID}">zurück zum Beitrag</a>
 					<p><div class="row">

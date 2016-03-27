@@ -13,6 +13,7 @@
 </head>
 <body>
 <page:seitenAufbau chatfreunde="${chatfreunde}">
+	<!-- Beitrag posten -->
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
@@ -33,6 +34,7 @@
 			</div>
 		</div>
 	</div><br>
+	<!-- Alle Beitraege anzeigen -->
 	<c:forEach var="beitrag" items="${ beitragList }">
 		<page:beitrag beitrag="${ beitrag }" page="StartseiteServlet"></page:beitrag>
 	</c:forEach>

@@ -33,13 +33,13 @@ public class ProfilServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HttpSession session;
 	private Connection con;
+	private ProfilSql sqlSt = new ProfilSql();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ProfilServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -52,7 +52,6 @@ public class ProfilServlet extends HttpServlet {
 		session = request.getSession();
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
-		ProfilSql sqlSt = new ProfilSql();
 		String user = request.getParameter("userID");
 		boolean eigenesProfil = false;
 		if (user == null) {
@@ -65,7 +64,7 @@ public class ProfilServlet extends HttpServlet {
 		try {
 			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Profilseite", userID));
 			// Infos
-			String sql = sqlSt.getInfosSql();
+			String sql = sqlSt.getSqlStatement("Infos");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
@@ -95,7 +94,7 @@ public class ProfilServlet extends HttpServlet {
 					soundAbspielen();
 				}
 			}
-			sql = sqlSt.getAnzahlFreunde();
+			sql = sqlSt.getSqlStatement("AnzahlFreunde");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			rs = pStmt.executeQuery();
@@ -160,7 +159,7 @@ public class ProfilServlet extends HttpServlet {
 			sichtbar = false;
 		}
 		// Beitrag anlegen
-		String sql = sqlSt.getBeitragAnlegenSql1();
+		String sql = sqlSt.getSqlStatement("BeitragAnlegen1");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setString(1, beitrag);
 		pStmt.setInt(2, verfasserID);
@@ -170,14 +169,14 @@ public class ProfilServlet extends HttpServlet {
 		pStmt.executeUpdate();
 		
 		// BeitragsID abfragen
-		sql = sqlSt.getBeitragAnlegenSql2();
+		sql = sqlSt.getSqlStatement("BeitragAnlegen2");
 		pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
 		int beitragsID;
 		if (rs.next()) {
 			beitragsID = rs.getInt(1);
 			// Chronikbeitrag eintragen
-			sql = sqlSt.getBeitragAnlegenSqlChronik();
+			sql = sqlSt.getSqlStatement("BeitragAnlegenChronik");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, beitragsID);
 			pStmt.executeUpdate();

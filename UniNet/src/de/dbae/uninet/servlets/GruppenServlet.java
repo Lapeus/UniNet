@@ -32,6 +32,7 @@ public class GruppenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HttpSession session;
 	private Connection con = null;
+	private GruppenSql sqlSt = new GruppenSql();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -55,8 +56,7 @@ public class GruppenServlet extends HttpServlet {
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
-			GruppenSql sqlSt = new GruppenSql();
-			String sql = sqlSt.getGruppen();
+			String sql = sqlSt.getSqlStatement("EigeneGruppen");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
@@ -144,7 +144,7 @@ public class GruppenServlet extends HttpServlet {
 		String tab = request.getParameter("tab");
 		request.setAttribute("tab", tab);
 		// GruppenInfos laden
-		String sql = new GruppenSql().getInfos();
+		String sql = sqlSt.getSqlStatement("Infos");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, id);
 		ResultSet rs = pStmt.executeQuery();
@@ -191,7 +191,7 @@ public class GruppenServlet extends HttpServlet {
 			sichtbar = false;
 		}
 		// Beitrag anlegen
-		String sql = sqlSt.getBeitragAnlegenSql1();
+		String sql = sqlSt.getSqlStatement("BeitragAnlegen1");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setString(1, beitrag);
 		pStmt.setInt(2, verfasserID);
@@ -201,14 +201,14 @@ public class GruppenServlet extends HttpServlet {
 		pStmt.executeUpdate();
 		
 		// BeitragsID abfragen
-		sql = sqlSt.getBeitragAnlegenSql2();
+		sql = sqlSt.getSqlStatement("BeitragAnlegen2");
 		pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
 		int beitragsID;
 		if (rs.next()) {
 			beitragsID = rs.getInt(1);
 			// Veranstaltungsbeitrag eintragen
-			sql = sqlSt.getBeitragAnlegenSqlGruppe();
+			sql = sqlSt.getSqlStatement("BeitragAnlegenGruppe");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, beitragsID);
 			int gruppenID = Integer.parseInt(request.getParameter("gruppenID"));
@@ -221,10 +221,9 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void verlassen(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		GruppenSql sqlSt = new GruppenSql();
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		int id = Integer.parseInt(request.getParameter("gruppenID"));
-		String sql = sqlSt.getVerlassen();
+		String sql = sqlSt.getSqlStatement("MitgliederEntfernen");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, id);
 		pStmt.setInt(2, userID);
@@ -239,8 +238,7 @@ public class GruppenServlet extends HttpServlet {
 			sortByV = false;
 		}
 		List<Student> mitglieder = new ArrayList<Student>();
-		GruppenSql sqlSt = new GruppenSql();
-		String sql = sqlSt.getMitglieder();
+		String sql = sqlSt.getSqlStatement("Mitglieder");
 		if (sortByV) {
 			sql += "Vorname, Nachname";
 			request.setAttribute("vornameLink", "text-decoration: underline");
@@ -263,22 +261,21 @@ public class GruppenServlet extends HttpServlet {
 	
 	private void gruenden(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
-		GruppenSql sqlSt = new GruppenSql();
-		String sql = sqlSt.getGruppeGruenden();
+		String sql = sqlSt.getSqlStatement("GruppeGruenden");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setString(1, request.getParameter("gruppenname"));
 		pStmt.setString(2, "");
 		pStmt.setDate(3, new java.sql.Date(System.currentTimeMillis()));
 		pStmt.setInt(4, userID);
 		pStmt.executeUpdate();
-		sql = sqlSt.getNeueGruppenID();
+		sql = sqlSt.getSqlStatement("NeueGruppenID");
 		pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
 		int id = 1;
 		if (rs.next()) {
 			id = rs.getInt(1);
 		}
-		sql = sqlSt.getStudentHinzufuegen();
+		sql = sqlSt.getSqlStatement("MitgliederZufuegen");
 		pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, id);
 		pStmt.setInt(2, userID);
@@ -287,8 +284,7 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void loeschen(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		GruppenSql sqlSt = new GruppenSql();
-		String sql = sqlSt.getGruppeLoeschen();
+		String sql = sqlSt.getSqlStatement("GruppeLoeschen");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, Integer.parseInt(request.getParameter("gruppenID")));
 		pStmt.executeUpdate();
@@ -296,8 +292,7 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void beschreibungAendern(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		GruppenSql sqlSt = new GruppenSql();
-		String sql = sqlSt.getBeschreibungAendern();
+		String sql = sqlSt.getSqlStatement("BeschreibungAendern");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setString(1, request.getParameter("beschreibung"));
 		pStmt.setInt(2, Integer.parseInt(request.getParameter("gruppenID")));
@@ -306,10 +301,9 @@ public class GruppenServlet extends HttpServlet {
 	}
 	
 	private void mitgliederBearbeiten(HttpServletRequest request, HttpServletResponse response, boolean zufuegen) throws SQLException, IOException {
-		GruppenSql sqlSt = new GruppenSql();
-		String sql = sqlSt.getMitgliederZufuegen();
+		String sql = sqlSt.getSqlStatement("MitgliederZufuegen");
 		if (!zufuegen) {
-			sql = sqlSt.getVerlassen();
+			sql = sqlSt.getSqlStatement("MitgliederEntfernen");
 		}
 		int gruppenID = Integer.parseInt(request.getParameter("gruppenID"));
 		int userID = Integer.parseInt(request.getParameter("mitgliedID"));
@@ -323,8 +317,7 @@ public class GruppenServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private List<Student> getFreunde(HttpServletRequest request) throws SQLException {
 		List<Student> freunde = new ArrayList<Student>();
-		GruppenSql sqlSt = new GruppenSql();
-		String sql = sqlSt.getFreunde();
+		String sql = sqlSt.getSqlStatement("MoeglicheMitglieder");
 		int gruppenID = Integer.parseInt(request.getParameter("gruppenID"));
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, gruppenID);

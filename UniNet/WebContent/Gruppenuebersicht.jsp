@@ -13,6 +13,7 @@
 <body>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
+	<!-- In der linken Spalte sollen alle eigenen Gruppen angezeigt werden -->
 	<page:linkeSpalte>
 		<label class="verfasser" style="width:100%; text-align: center;">Gruppen</label>
 		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
@@ -37,7 +38,6 @@
 		</div>
 	</page:mittlereSpalte>
 	<page:rechteSpalte chatfreunde="${chatfreunde}"></page:rechteSpalte>
-
 </div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package de.dbae.uninet.filter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,8 +15,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Dieser Filter &uuml;bersetzt fehlerhaft kodierte Umlaute in Html-Code, dabei sie korrekt angezeigt werden k&ouml;nnen.
+ * @author Christian Ackermann
+ */
 public class UmlauteFilter implements Filter {
 
+	/**
+	 * FilterConfig
+	 */
 	protected FilterConfig config;
 	
 	@Override
@@ -26,12 +34,16 @@ public class UmlauteFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
+		// Cast von ServletRequest nach HttpServletRequest, da sonst die Parameter nicht auszulesen sind
 		HttpServletRequest request = (HttpServletRequest)req;
-		String[] attributes = {"kommentar", "nachricht", "beitrag"};
-		for (String attribute : attributes) {
-			if (request.getParameter(attribute) != null) {
-				request.setAttribute(attribute, getString(request.getParameter(attribute).toString()));
-			}
+		// Auflistung aller existenter Parameternamen
+		Enumeration<String> parameters = request.getParameterNames();
+		// Iteration ueber alle Namen
+		while (parameters.hasMoreElements()) {
+			// Der aktuelle Parameter
+			String parameter = parameters.nextElement();
+			// Ersetze alle Umlaute des aktuellen Parameters durch ihre Html-Codierungen
+			request.setAttribute(parameter, getString(request.getParameter(parameter).toString()));
 		}
 		chain.doFilter(request, res);
 	}
@@ -41,8 +53,15 @@ public class UmlauteFilter implements Filter {
 		config = arg0;
 	}
 	
+	/**
+	 * Ersetzt alle Umlaute im Eingabe-String durch ihre Html-Codierungen.
+	 * @param eingabe Der Eingabe-String
+	 * @return Der Eingabe-String mit den ersetzten Umlauten
+	 */
 	private String getString(String eingabe) {
+		// Eine Map fuer alle Umlaute
 		Map<String, String> umlaute = new HashMap<String, String>();
+		// Fuellung der Map mit dem Umlaut und der entsprechenden Html-Codierung
 		umlaute.put("ä", "&auml");
 		umlaute.put("Ä", "&Auml");
 		umlaute.put("ö", "&ouml");
@@ -51,7 +70,9 @@ public class UmlauteFilter implements Filter {
 		umlaute.put("Ü", "&Uuml");
 		umlaute.put("ß", "&szlig");
 		try {
+			// Fuer jeden Eintrag der Map
 			for (Entry<String, String> e : umlaute.entrySet()) {
+				// Ersetze die ISO-8859-1 Codierung des Umlautes im Eingabe-String durch die Html-Codierung
 				eingabe = eingabe.replace(new String(e.getKey().getBytes("UTF-8"), "ISO-8859-1"), e.getValue());
 			}
 		} catch (UnsupportedEncodingException e) {

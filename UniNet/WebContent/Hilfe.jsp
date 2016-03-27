@@ -13,34 +13,7 @@
 <body>
 <page:seitenAufbau chatfreunde="${chatfreunde}">
 	<label class="verfasser">Alle verfügbaren Emoticons</label><br>
-	<div class="row" style="background-color: white;">
-		<div class="col-md-6">
-			<table style="background-color: white;">
-				<tr>
-					<th style="padding: 12px;">Emoticon</th><th style="padding: 12px;">Kürzel</th>
-				</tr>
-				<c:forEach var="emo" items="${emoticons1}">
-					<tr>
-						<td style="font-size: 18px; padding-left: 12px;">${emo.bild}</td>
-						<td style="padding-left: 12px">${emo.code}</td>
-					</tr>
-				</c:forEach>
-			</table>
-		</div>
-		<div class="col-md-6">
-			<table style="background-color: white;">
-				<tr>
-					<th style="padding: 12px;">Emoticon</th><th style="padding: 12px;">Kürzel</th>
-				</tr>
-				<c:forEach var="emo" items="${emoticons2}">
-					<tr>
-						<td style="font-size: 18px; padding-left: 12px;">${emo.bild}</td>
-						<td style="padding-left: 12px">${emo.code}</td>
-					</tr>
-				</c:forEach>
-			</table>
-		</div>
-	</div>
+	<page:emoticons firstRow="true" listLinks="${emoticons1}" listRechts="${emoticons2}"></page:emoticons>
 	<page:emoticons listLinks="${emoticons3}" listRechts="${emoticons4}"></page:emoticons>
 	<page:emoticons listLinks="${emoticons5}" listRechts="${emoticons6}"></page:emoticons>
 	<page:emoticons listLinks="${emoticons7}" listRechts="${emoticons8}"></page:emoticons>

@@ -26,13 +26,13 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HttpSession session;
 	private Connection con = null;
+	private ProfilSql sqlSt = new ProfilSql();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ProfilBearbeitenServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -46,9 +46,8 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
-		ProfilSql sqlSt = new ProfilSql();
 		try {
-			String sql = sqlSt.getInfosBSql();
+			String sql = sqlSt.getSqlStatement("InfosBearbeiten");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
@@ -82,15 +81,14 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
-		ProfilSql sqlSt = new ProfilSql();
 		try {
-			String sql = sqlSt.getAendereNamenSql();
+			String sql = sqlSt.getSqlStatement("AendereNamen");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setString(1, request.getParameter("vorname").toString());
 			pStmt.setString(2, request.getParameter("nachname").toString());
 			pStmt.setInt(3, userID);
 			pStmt.executeUpdate();
-			sql = sqlSt.getAendereInfosSql();
+			sql = sqlSt.getSqlStatement("AendereInfos");
 			pStmt = con.prepareStatement(sql);
 			SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
 			Date date = null;

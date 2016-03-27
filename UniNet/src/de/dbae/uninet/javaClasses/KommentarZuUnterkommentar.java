@@ -1,78 +1,70 @@
 package de.dbae.uninet.javaClasses;
 
-public class KommentarZuUnterkommentar {
+/**
+ * Diese Klasse stellt alle wichtigen Informationen eines Kommentars zu einem Unterkommentar zur Verf&uuml;gung.<br>
+ * Sie erbt wie die anderen Kommentare von AllgemeinerKommentar.
+ * @see AllgemeinerKommentar
+ * @author Christian Ackermann
+ */
+public class KommentarZuUnterkommentar extends AllgemeinerKommentar {
 
-	private int userID;
-	private int kommID;
-	private String name;
-	private String kommentar;
+	/**
+	 * Der Name des Verfassers des Unterkommentars, auf den Bezug genommen wird.
+	 */
 	private String antwortAufKommName;
-	private int antwortAufKommID;
-	private String timeStamp;
 	
+	/**
+	 * Die ID des Unterkommentars, auf den Bezug genommen wird.
+	 */
+	private int antwortAufKommID;
+	
+	/** 
+	 * Erstellt einen neuen Kommentar zu einem Unterkommentar.<br>
+	 * Einziger Konstruktor dieser Klasse.
+	 * @param userID Die ID des Verfassers
+	 * @param kommID Die KommentarID
+	 * @param name Der Name des Verfassers
+	 * @param kommentar Der Kommentar an sich
+	 * @param antwortAufKommName Der Name des Verfassers des Unterkommentars, auf den Bezug genommen wird
+	 * @param antwortAufKommID Die ID des Unterkommentars, auf den Bezug genommen wird
+	 * @param timeStamp Der Zeitstempel der Verfassung des Kommentars
+	 */
 	public KommentarZuUnterkommentar(int userID, int kommID, String name, String kommentar, String antwortAufKommName, int antwortAufKommID, String timeStamp) {
-		this.setUserID(userID);
-		this.setKommID(kommID);
-		this.setName(name);
-		this.setKommentar(kommentar);
+		super(userID, antwortAufKommID, antwortAufKommName, kommentar, timeStamp);
 		this.setAntwortAufKommName(antwortAufKommName);
 		this.setAntwortAufKommID(antwortAufKommID);
-		this.setTimeStamp(timeStamp);
 	}
 
-	public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	public int getKommID() {
-		return kommID;
-	}
-
-	public void setKommID(int kommID) {
-		this.kommID = kommID;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getKommentar() {
-		return kommentar;
-	}
-
-	public void setKommentar(String kommentar) {
-		this.kommentar = kommentar;
-	}
-
+	/**
+	 * Getter f&uuml;r den Namen des Verfassers des Unterkommentars.
+	 * @return Der Name des Verfassers des Unterkommentars
+	 */
 	public String getAntwortAufKommName() {
 		return antwortAufKommName;
 	}
 
+	/** 
+	 * Setter f&uuml;r den Namen des Verfassers des Unterkommentars.
+	 * @param antwortAufKommName Der Name des Verfassers des Unterkommentars
+	 */
 	public void setAntwortAufKommName(String antwortAufKommName) {
 		this.antwortAufKommName = antwortAufKommName;
 	}
 
+	/**
+	 * Getter f&uuml;r die KommentarID des Unterkommentars.
+	 * @return Die KommentarID des Unterkommentars
+	 */
 	public int getAntwortAufKommID() {
 		return antwortAufKommID;
 	}
 
+	/**
+	 * Setter f&uuml;r die KommentarID des Unterkommentars.
+	 * @param antwortAufKommID Die KommentarID des Unterkommentars
+	 */
 	public void setAntwortAufKommID(int antwortAufKommID) {
 		this.antwortAufKommID = antwortAufKommID;
 	}
 
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
-	}
 }

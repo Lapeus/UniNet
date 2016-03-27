@@ -1,5 +1,13 @@
 @CHARSET "UTF-8";
 
+.anzahlKommentare {
+	font-size: 14px;
+	color: gray;
+	font-weight: lighter;
+	display: block;
+	float: right;
+}
+
 .containerColor {
 	background-color: #3b5998;
 	color: white;
@@ -24,6 +32,38 @@
 	font-size: 25px; 
 }
 
+.navbar-default .navbar-nav > li > a {
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: white;
+}
+
+.menueSpalte a {
+	color: black;
+	outline: 0;
+}
+
+.verfasser {
+	font-size: 20px;
+	color: #3b5998;
+	font-weight: bold; 
+}
+
+.kommentarVerfasser {
+	color: #3b5998;
+	font-weight: bold;
+}
+
+.schwarz, .schwarz:hover {
+	color: black;
+}
+
+.blau {
+	color: #3b5998;
+}
+
 a.kopfzeile {
 	background-color: #3b5998;
 	color: white;
@@ -40,30 +80,15 @@ a.mitglieder {
 	color: #3b5998; 
 }
 
-label.platzhalter {
-	width: 80px;
+a.zeitstempel {
+	font-size: 12px;
+	font-weight: bold;
+	vertical-align: bottom;
+	color: gray;
 }
 
-.navbar-default .navbar-nav > li > a {
-  color: white;
-}
-
-.navbar-default .navbar-nav > li > a:hover {
-  color: white;
-}
-
-.menueSpalte a {
-	color: black;
-	outline: 0;
-}
-
-ul.chatSpalte a {
-	color: black;
-	outline: 0;
-}
-
-h4.mittig {
-	text-align: center;
+body {
+	background-color: #b7c5e2;
 }
 
 div.kopfzeile {
@@ -102,14 +127,28 @@ div.border-left {
 	border-left: 1px solid gray;
 }
 
-body {
-	background-color: #b7c5e2;
+h4.mittig {
+	text-align: center;
 }
 
-.verfasser {
-	font-size: 20px;
-	color: #3b5998;
-	font-weight: bold; 
+img.profilbild {
+	margin-left: 25%;
+	margin-bottom: 25%;
+	width: 50%;
+	height: 50%;
+}
+
+img.kommentarbild {
+	width: 32px;
+	height: 32px;
+}
+
+img.profil {
+	margin-top: 25%;
+}
+
+label.platzhalter {
+	width: 80px;
 }
 
 label.zeitstempel {
@@ -117,16 +156,6 @@ label.zeitstempel {
 	color: gray;
 }
 
-a.zeitstempel {
-	font-size: 12px;
-	font-weight: bold;
-	vertical-align: bottom;
-	color: gray;
-}
-
-.blau {
-	color: #3b5998;
-}
 
 label.beitrag {
 	font-size: 16px;
@@ -143,24 +172,10 @@ label.anzahlLikes {
 	display: block;
 }
 
-
-.anzahlKommentare {
-	font-size: 14px;
-	color: gray;
-	font-weight: lighter;
-	display: block;
-	float: right;
-}
-
 label.profilName {
 	font-size: 30px;
 	color: #3b5998;
 	font-weight: bold; 
-}
-
-ul.border {
-	border-top: 1px solid #ebebeb;
-	border-bottom: 1px solid #ebebeb;
 }
 
 li a {
@@ -181,32 +196,17 @@ li.chatfreunde {
 	border-radius: 3px;
 }
 
+ul.border {
+	border-top: 1px solid #ebebeb;
+	border-bottom: 1px solid #ebebeb;
+}
+
+ul.chatSpalte a {
+	color: black;
+	outline: 0;
+}
+
 textarea {
 	resize: none;
-}
-
-img.profilbild {
-	margin-left: 25%;
-	margin-bottom: 25%;
-	width: 50%;
-	height: 50%;
-}
-
-img.kommentarbild {
-	width: 32px;
-	height: 32px;
-}
-
-img.profil {
-	margin-top: 25%;
-}
-
-.kommentarVerfasser {
-	color: #3b5998;
-	font-weight: bold;
-}
-
-.schwarz, .schwarz:hover {
-	color: black;
 }
 

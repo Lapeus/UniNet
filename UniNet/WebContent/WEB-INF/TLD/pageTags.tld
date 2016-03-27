@@ -96,20 +96,14 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der das AntwortTextfeld erstellt -->
-		<name>kommentarAntwort</name>
-		<tag-class>de.dbae.uninet.taghandler.KommentarAntwortTag</tag-class>
-		<attribute>
-			<!-- Anzeigen Boolean -->
-			<name>anzeigen</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-	</tag>
-	<tag>
 		<!-- Tag, der die Emoticons anzeigt -->
 		<name>emoticons</name>
 		<tag-class>de.dbae.uninet.taghandler.EmoticonTag</tag-class>
+		<attribute>
+			<name>firstRow</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 		<attribute>
 			<name>listLinks</name>
 			<required>true</required>

@@ -13,7 +13,9 @@
 <body>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
+	<!-- In der linken Spalte sollen alle besuchten Veranstaltungen angezeigt werden -->
 	<page:linkeSpalte>
+		<!-- Die Ueberschrift Veranstaltungen soll auf die Veranstaltungsuebersicht verweisen -->
 		<label class="verfasser" style="width:100%; text-align: center;">
 			<a class="verfasser" href="VeranstaltungenServlet?name=Uebersicht">Veranstaltungen</a>
 		</label>
@@ -28,6 +30,7 @@
 	<page:mittlereSpalte>
 		<label class="verfasser">${veranstaltung.name}</label><br><br>
 		<ul class="nav nav-tabs">
+			<!-- Man kann Beitraege nur sehen, wenn man in der Veranstaltung eingetragen ist -->
 			<c:if test="${eingetragen}">
 				<li role="presentation" class="${beitraegeActive}"><a href="VeranstaltungenServlet?tab=beitraege&veranstaltungsID=${veranstaltungsID}">Beiträge</a></li>
 			</c:if>
@@ -35,8 +38,10 @@
 			<li role="presentation" class="${mitgliederActive}"><a href="VeranstaltungenServlet?tab=mitglieder&veranstaltungsID=${veranstaltungsID}">Mitglieder</a></li>
 		</ul>
 		<br>
+		<!-- Unterscheidung, welcher Tab gerade aktiv ist -->
 		<c:choose>
 			<c:when test="${tab == 'beitraege' && eingetragen}">
+				<!-- Beitrag posten -->
 				<div class="row"><div class="col-md-1"></div>
 					<div class="col-md-10"><div class="row">
 					<form action="VeranstaltungenServlet?veranstaltungsID=${veranstaltungsID}&name=BeitragPosten" method="post">
@@ -55,6 +60,7 @@
 					</form>
 					</div></div>
 				</div><br>
+				<!-- Alle Beitraege anzeigen -->
 				<c:forEach var="beitrag" items="${ beitragList }">
 					<page:beitrag beitrag="${ beitrag }" page="VeranstaltungenServlet&tab=beitraege&veranstaltungsID=${veranstaltungsID}"></page:beitrag>
 				</c:forEach>

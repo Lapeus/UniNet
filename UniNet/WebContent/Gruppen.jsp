@@ -13,10 +13,13 @@
 <body>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
+	<!-- Uebersicht ueber die eigenen Gruppen in der linken Spalte -->
 	<page:linkeSpalte>
+		<!-- Die Ueberschrift Gruppen ist gleichzeitig ein Link auf die Gruppenuebersicht -->
 		<label class="verfasser" style="width:100%; text-align: center;"><a class="verfasser" href="GruppenServlet?name=Uebersicht">Gruppen</a></label>
 		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
 			<c:forEach var="gruppe" items="${gruppenList}">
+				<!-- Wenn der aktuelle Tab Bearbeiten ist, muss dieser auf Beitraege gesetzt werden, sonst wird er beibehalten -->
 				<c:set var="nextTab" value="${tab}"></c:set>
 				<c:if test="${nextTab == 'bearbeiten'}">
 					<c:set var="nextTab" value="beitraege"></c:set>
@@ -38,6 +41,7 @@
 			</c:if>
 		</ul>
 		<br>
+		<!-- Unterscheidung, welcher Tab geoeffnet ist -->
 		<c:choose>
 			<c:when test="${tab == 'beitraege'}">
 				<div class="row"><div class="col-md-1"></div>
@@ -58,6 +62,7 @@
 					</form>
 					</div></div>
 				</div><br>
+				<!-- Alle Beitraege dieser Gruppe anzeigen -->
 				<c:forEach var="beitrag" items="${ beitragList }">
 					<page:beitrag beitrag="${ beitrag }" page="GruppenServlet&tab=beitraege&gruppenID=${gruppenID}"></page:beitrag>
 				</c:forEach>
@@ -85,6 +90,7 @@
 						</label>
 					</div>
 				</div><br>
+				<!-- Alle Mitglieder der Gruppe -->
 				<div class="row" style="background-color: white;"><br>
 					<ul class="nav nav-pills">
 						<c:forEach var="mitglied" items="${mitglieder}">
@@ -155,6 +161,5 @@
 	</page:mittlereSpalte>
 	<page:rechteSpalte chatfreunde="${chatfreunde}"></page:rechteSpalte>
 </div>
-
 </body>
 </html>

@@ -30,13 +30,13 @@ public class VeranstaltungenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HttpSession session;
 	private Connection con = null;
+	private VeranstaltungenSql sqlSt = new VeranstaltungenSql();
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public VeranstaltungenServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -54,8 +54,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
-			VeranstaltungenSql sqlSt = new VeranstaltungenSql();
-			String sql = sqlSt.getVeranstaltungen();
+			String sql = sqlSt.getSqlStatement("EigeneVeranstaltungen");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
@@ -127,7 +126,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 		boolean suche = request.getParameter("suche") != null;
 		session = request.getSession();
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
-		String sql = new VeranstaltungenSql().getAlleVeranstaltungen();
+		String sql = sqlSt.getSqlStatement("AlleVeranstaltungen");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, userID);
 		ResultSet rs = pStmt.executeQuery();
@@ -169,7 +168,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 		}
 		request.setAttribute("eingetragen", eingetragen);
 		// VeranstaltungsInfos laden
-		String sql = new VeranstaltungenSql().getInfos();
+		String sql = sqlSt.getSqlStatement("Infos");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, id);
 		ResultSet rs = pStmt.executeQuery();
@@ -215,7 +214,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 			sichtbar = false;
 		}
 		// Beitrag anlegen
-		String sql = sqlSt.getBeitragAnlegenSql1();
+		String sql = sqlSt.getSqlStatement("BeitragAnlegen1");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setString(1, beitrag);
 		pStmt.setInt(2, verfasserID);
@@ -225,14 +224,14 @@ public class VeranstaltungenServlet extends HttpServlet {
 		pStmt.executeUpdate();
 		
 		// BeitragsID abfragen
-		sql = sqlSt.getBeitragAnlegenSql2();
+		sql = sqlSt.getSqlStatement("BeitragAnlegen2");
 		pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
 		int beitragsID;
 		if (rs.next()) {
 			beitragsID = rs.getInt(1);
 			// Veranstaltungsbeitrag eintragen
-			sql = sqlSt.getBeitragAnlegenSqlVeranstaltung();
+			sql = sqlSt.getSqlStatement("BeitragAnlegenVeranstaltung");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, beitragsID);
 			int veranstaltungsID = Integer.parseInt(request.getParameter("veranstaltungsID"));
@@ -245,15 +244,14 @@ public class VeranstaltungenServlet extends HttpServlet {
 	}
 	
 	private void einAusSchreiben(HttpServletRequest request, HttpServletResponse response, boolean einschreiben) throws SQLException, IOException {
-		VeranstaltungenSql sqlSt = new VeranstaltungenSql();
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
 		String sql;
 		String page = "VeranstaltungenServlet?name=Uebersicht";
 		int id = Integer.parseInt(request.getParameter("veranstaltungsID"));
 		if (einschreiben)
-			sql = sqlSt.getEinschreiben();
+			sql = sqlSt.getSqlStatement("Einschreiben");
 		else
-			sql = sqlSt.getAusschreiben();
+			sql = sqlSt.getSqlStatement("Ausschreiben");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, id);
 		pStmt.setInt(2, userID);
@@ -269,8 +267,7 @@ public class VeranstaltungenServlet extends HttpServlet {
 			sortByV = false;
 		}
 		List<Student> mitglieder = new ArrayList<Student>();
-		VeranstaltungenSql sqlSt = new VeranstaltungenSql();
-		String sql = sqlSt.getMitglieder();
+		String sql = sqlSt.getSqlStatement("Mitglieder");
 		if (sortByV) {
 			sql += "Vorname, Nachname";
 			request.setAttribute("vornameLink", "text-decoration: underline");

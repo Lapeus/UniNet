@@ -13,6 +13,7 @@
 <body>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
+	<!-- In der linken Spalte sollen die eigenen Veranstaltungen angezeigt werden -->
 	<page:linkeSpalte>
 		<label class="verfasser" style="width:100%; text-align: center;">Veranstaltungen</label>
 		<ul class="nav nav-pills nav-stacked" style="background-color: white;">
@@ -21,6 +22,7 @@
 			</c:forEach>
 		</ul>
 	</page:linkeSpalte>
+	<!-- Uebersicht ueber alle besuchbaren Veranstaltungen mit Ausnahme der bereits besuchten -->
 	<page:mittlereSpalte>
 		<label class="verfasser">Alle Veranstaltungen</label><br><br>
 		<div class="row">

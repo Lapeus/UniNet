@@ -3,68 +3,70 @@ package de.dbae.uninet.javaClasses;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Kommentar {
+/**
+ * Diese Klasse stellt alle wichtigen Informationen eines Kommentars zur Verf&uuml;gung.<br>
+ * Sie erbt wie die anderen Kommentare von AllgemeinerKommentar.
+ * @see AllgemeinerKommentar
+ * @author Christian Ackermann
+ */
+public class Kommentar extends AllgemeinerKommentar {
 
-	private int userID;
-	private int kommID;
-	private String name;
-	private String kommentar;
+	/**
+	 * Die Liste der Unterkommentare.
+	 * @see Unterkommentar
+	 */
 	private List<Unterkommentar> kommentarList = new ArrayList<Unterkommentar>();
-	private int zielID;
-	private int userIDsession;
-	private String timeStamp;
 	
+	/**
+	 * Die zugeh&ouml;rige BeitragsID.
+	 */
+	private int zielID;
+	
+	/**
+	 * Die ID des aktuellen Users zum Test, ob der Beitrag von ihm ist.
+	 */
+	private int userIDsession;
+	
+	/** 
+	 * Erstellt einen neuen Kommentar mit allen wichtigen Eigenschaften.<br>
+	 * Einziger Konstruktor dieser Klasse.
+	 * @param userID Die ID des Verfassers
+	 * @param kommID Die KommentarID
+	 * @param name Der Name des Verfassers
+	 * @param kommentar Der Kommentar an sich
+	 * @param kommentarList Die Liste aller Unterkommentare zu diesem Kommentar
+	 * @param zielID Die zugeh&ouml;rige BeitragsID
+	 * @param userIDsession Die ID des aktuellen Users
+	 * @param timeStamp Der Zeitstempel der Verfassung des Kommentars
+	 */
 	public Kommentar(int userID, int kommID, String name, String kommentar, List<Unterkommentar> kommentarList, int zielID, int userIDsession, String timeStamp) {
-		this.setUserID(userID);
-		this.setKommID(kommID);
-		this.setName(name);
-		this.setKommentar(kommentar);
+		super(userID, kommID, name, kommentar, timeStamp);
 		this.setKommentarList(kommentarList);
 		this.setZielID(zielID);
 		this.setUserIDsession(userIDsession);
-		this.setTimeStamp(timeStamp);
 	}
 
-	public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	public int getKommID() {
-		return kommID;
-	}
-
-	public void setKommID(int kommID) {
-		this.kommID = kommID;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getKommentar() {
-		return kommentar;
-	}
-
-	public void setKommentar(String kommentar) {
-		this.kommentar = kommentar;
-	}
-
+	/**
+	 * Getter f&uuml;r die Liste der Unterkommentare.
+	 * @return Die Liste der Unterkommentare
+	 * @see Unterkommentar
+	 */
 	public List<Unterkommentar> getKommentarList() {
 		return kommentarList;
 	}
 
+	/**
+	 * Setter f&uuml; die Liste der Unterkommentare.
+	 * @param kommentarList Die Liste der Unterkommentare
+	 */
 	public void setKommentarList(List<Unterkommentar> kommentarList) {
 		this.kommentarList = kommentarList;
 	}
 
+	/**
+	 * Getter f&uuml;r die zugeh&ouml;rige BeitragsID.
+	 * @return Die BeitragsID
+	 */
 	public int getZielID() {
 		return zielID;
 	}
@@ -73,19 +75,20 @@ public class Kommentar {
 		this.zielID = zielID;
 	}
 
+	/**
+	 * Getter f&uuml;r die ID des aktuellen Users.
+	 * @return Die ID des aktuellen Users
+	 */
 	public int getUserIDsession() {
 		return userIDsession;
 	}
 
+	/**
+	 * Setter f&uuml; die ID des aktuellen Users.
+	 * @param userIDsession Die ID des aktuellen Users
+	 */
 	public void setUserIDsession(int userIDsession) {
 		this.userIDsession = userIDsession;
 	}
 
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
-	}
 }

@@ -5,21 +5,35 @@ import java.io.Writer;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
+/**
+ * Dieser Tag erstellt die Kopfzeile.<br>
+ * Er wird direkt oder indirekt auf jeder jsp verwendet.
+ * @author Christian Ackermann
+ */
 public class KopfzeileTag extends TagSupport {
 
 	private static final long serialVersionUID = -5650080610199722432L;
 	
+	/**
+	 * Aktionen zu Beginn des Tags.<br>
+	 * H&auml;ngt den HTML-Code an die jsp an und &uuml;berspringt den Body.
+	 */
 	public int doStartTag() {
 		Writer out = pageContext.getOut();
 		try {
 			out.append(getHtmlCode());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Fehler beim Anhängen!");
+			// TODO Fehler
 			e.printStackTrace();
 		}
 		return SKIP_BODY;
 	}
 	
+	/**
+	 * Generiert den auf der jsp angezeigten Code f&uuml;r die Kopfzeile.<br>
+	 * @return Den entsprechenden Html-Code
+	 */
 	public String getHtmlCode() {
 		String kopfzeile = "";
 		kopfzeile += "<nav class='navbar navbar-default navbar-fixed-top'>";

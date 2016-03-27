@@ -15,16 +15,16 @@ import de.dbae.uninet.javaClasses.Emoticon;
 /**
  * Servlet implementation class HilfeServlet
  */
-@WebServlet("/HilfeServlet")
+@WebServlet("/EmoticonServlet")
 public class EmoticonServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
+	   
+	private static final long serialVersionUID = -966983999816024902L;
+
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public EmoticonServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -57,7 +57,6 @@ public class EmoticonServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	

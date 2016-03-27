@@ -25,7 +25,6 @@ public class LadeChatFreundeServlet extends HttpServlet{
 
 	public LadeChatFreundeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,7 +43,7 @@ public class LadeChatFreundeServlet extends HttpServlet{
 		StartseiteSql sqlSt = new StartseiteSql();
 		List<Student> chatfreunde = new ArrayList<Student>();
 		try {
-			String sql = sqlSt.getFreundeOnlineSql();
+			String sql = sqlSt.getSqlStatement("Chatfreunde");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
 			ResultSet rs = pStmt.executeQuery();

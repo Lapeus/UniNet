@@ -2,78 +2,68 @@ package de.dbae.uninet.javaClasses;
 
 import java.util.List;
 
-public class Unterkommentar {
+/**
+ * Diese Klasse stellt alle Informationen eines Unterkommentars zur Verf&uuml;gung.<br>
+ * Sie erbt wie die anderen Kommentare von AllgemeinerKommentar.
+ * @see AllgemeinerKommentar
+ * @author Christian Ackermann
+ */
+public class Unterkommentar extends AllgemeinerKommentar {
 
-	private int userID;
-	private int kommID;
-	private String name;
-	private String kommentar;
+	/**
+	 * Die ID des zugeh&ouml;rigen Kommentars.
+	 */
 	private int antwortAufKommID;
-	private List<KommentarZuUnterkommentar> kommentarList;
-	private String timeStamp;
 	
+	/**
+	 * Die Liste der Kommentare zu diesem Unterkommentar.
+	 */
+	private List<KommentarZuUnterkommentar> kommentarList;
+	
+	/**
+	 * Erstellt einen neuen Unterkommentar.<br>
+	 * Einziger Konstruktor dieser Klasse.
+	 * @param userID Die ID des Verfassers
+	 * @param kommID Die KommentarID
+	 * @param name Der Name des Verfassers
+	 * @param kommentar Der Kommentar an sich
+	 * @param antwortAufKommID Die KommentarID des zugeh&ouml;rigen Kommentars
+	 * @param timeStamp Der Zeitstempel der Verfassung des Kommentars
+	 */
 	public Unterkommentar(int userID, int kommID, String name, String kommentar, int antwortAufKommID, String timeStamp) {
-		this.setUserID(userID);
-		this.setKommID(kommID);
-		this.setName(name);
-		this.setKommentar(kommentar);
+		super(userID, antwortAufKommID, name, kommentar, timeStamp);
 		this.setAntwortAufKommID(antwortAufKommID);
-		this.setTimeStamp(timeStamp);
 	}
 
-	public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getKommentar() {
-		return kommentar;
-	}
-
-	public void setKommentar(String kommentar) {
-		this.kommentar = kommentar;
-	}
-
+	/** 
+	 * Getter f&uuml;r die Liste der Kommentare zu diesem Unterkommentar.
+	 * @return Die Liste der Kommentare zu diesem Unterkommentar
+	 */
 	public List<KommentarZuUnterkommentar> getKommentarList() {
 		return kommentarList;
 	}
 
+	/**
+	 * Setter f&uuml;r die Liste der Kommentare zu diesem Unterkommentar.
+	 * @param kommentarList Die Liste der Kommentare zu diesem Unterkommentar
+	 */
 	public void setKommentarList(List<KommentarZuUnterkommentar> kommentarList) {
 		this.kommentarList = kommentarList;
 	}
 
-	public int getKommID() {
-		return kommID;
-	}
-
-	public void setKommID(int kommID) {
-		this.kommID = kommID;
-	}
-
+	/**
+	 * Getter f&uuml;r die KommentarID des zugeh&ouml;rigen Kommentars.
+	 * @return Die KommentarID des zugeh&ouml;rigen Kommentars
+	 */
 	public int getAntwortAufKommID() {
 		return antwortAufKommID;
 	}
 
+	/**
+	 * Setter f&uuml;r die KommentarID des zugeh&ouml;rigen Kommentars.
+	 * @param antwortAufKommID Die KommentarID des zugeh&ouml;rigen Kommentars
+	 */
 	public void setAntwortAufKommID(int antwortAufKommID) {
 		this.antwortAufKommID = antwortAufKommID;
-	}
-
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
 	}
 }

@@ -36,13 +36,13 @@ import de.dbae.uninet.sqlClasses.VeranstaltungenSql;
 public class BeitragServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection con = null;
+	private BeitragSql sqlSt = new BeitragSql();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public BeitragServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -124,11 +124,10 @@ public class BeitragServlet extends HttpServlet {
 	
 	private void kompletterLoad(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ServletException, IOException {
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
-		BeitragSql sqlSt = new BeitragSql();
 		String beitragId = request.getParameter("beitragsID");
 		int beitragsID = Integer.parseInt(beitragId);
 		// Beitraege
-		String sql = sqlSt.getBeitrag();
+		String sql = sqlSt.getSqlStatement("Beitrag");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, beitragsID);
 		ResultSet rs = pStmt.executeQuery();
@@ -146,17 +145,17 @@ public class BeitragServlet extends HttpServlet {
 			} else {
 				timeStamp += " <span class='glyphicon glyphicon-user'></span>";
 			}
-			sql = sqlSt.getLikeAufBeitragSql();
+			sql = sqlSt.getSqlStatement("Like");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, beitragsID);
 			pStmt.setInt(2, userID);
 			ResultSet rs2 = pStmt.executeQuery();
 			if (rs2.next()) {
 				boolean like = rs2.getInt(1) == 0 ? false : true;
-				String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
+				boolean loeschenErlaubt = userID == id;
 				beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
 				beitrag.setKommentarList(getKommentare(con, beitragsID, userID));
-				sql = sqlSt.getOrtNameSql();
+				sql = sqlSt.getSqlStatement("OrtName");
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				ResultSet rs3 = pStmt.executeQuery();
@@ -179,8 +178,7 @@ public class BeitragServlet extends HttpServlet {
 	
 	private List<Kommentar> getKommentare(Connection con, int beitragsID, int userIDsession) throws SQLException {
 		List<Kommentar> kommentarList = new ArrayList<Kommentar>();
-		BeitragSql sqlSt = new BeitragSql();
-		String sql = sqlSt.getKommentare();
+		String sql = sqlSt.getSqlStatement("Kommentare");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, beitragsID);
 		ResultSet rs = pStmt.executeQuery();
@@ -193,7 +191,7 @@ public class BeitragServlet extends HttpServlet {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 			String timeStamp = sdf.format(new Date(rs.getDate(6).getTime())) + " " + rs.getTime(7).toString();
 			// SQL Abfrage der Unterkommentare
-			sql = sqlSt.getUnterkommentare();
+			sql = sqlSt.getSqlStatement("Unterkommentare");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, kommID);
 			ResultSet rs2 = pStmt.executeQuery();
@@ -207,7 +205,7 @@ public class BeitragServlet extends HttpServlet {
 				String timeStamp2 = sdf.format(new Date(rs2.getDate(6).getTime())) + " " + rs2.getTime(7).toString();
 				Unterkommentar ukomm = new Unterkommentar(userID2, kommID2, name2, kommentar2, kommID, timeStamp2);
 				// SQL Abfrage der KommentareZuUnterkommentare
-				sql = sqlSt.getKommentareZuUnterkommentare();
+				sql = sqlSt.getSqlStatement("KommentareZuUnterkommentaren");
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, kommID2);
 				ResultSet rs3 = pStmt.executeQuery();
@@ -244,16 +242,15 @@ public class BeitragServlet extends HttpServlet {
 			page += "?tab=" + request.getParameter("tab");
 			page += "&veranstaltungsID=" + request.getParameter("veranstaltungsID");
 		}
-		BeitragSql sqlSt = new BeitragSql();
 		try {
-			String sql = sqlSt.getLike();
+			String sql = sqlSt.getSqlStatement("BeitragLiken");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, beitragsID);
 			pStmt.setInt(2, userID);
 			pStmt.executeUpdate();
 		} catch (Exception e) {
 			try {
-				String sql = sqlSt.getEntferneLike();
+				String sql = sqlSt.getSqlStatement("BeitragEntliken");
 				PreparedStatement pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				pStmt.setInt(2, userID);
@@ -280,8 +277,7 @@ public class BeitragServlet extends HttpServlet {
 			page += "?tab=" + request.getParameter("tab");
 			page += "&veranstaltungsID=" + request.getParameter("veranstaltungsID");
 		}
-		BeitragSql sqlSt = new BeitragSql();
-		String sql = sqlSt.getKommentar();
+		String sql = sqlSt.getSqlStatement("Kommentieren");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, beitragsID);
 		pStmt.setString(2, request.getAttribute("kommentar").toString());
@@ -299,8 +295,7 @@ public class BeitragServlet extends HttpServlet {
 		if (page == null) {
 			page = "StartseiteServlet";
 		}
-		BeitragSql sqlSt = new BeitragSql();
-		String sql = sqlSt.getLoeschenSql();
+		String sql = sqlSt.getSqlStatement("BeitragLoeschen");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, beitragsID);
 		pStmt.executeUpdate();
@@ -314,17 +309,16 @@ public class BeitragServlet extends HttpServlet {
 		if (page == null) {
 			page = "BeitragServlet?beitragsID=" + request.getParameter("beitragsID");
 		}
-		BeitragSql sqlSt = new BeitragSql();
 		String sql = "";
 		switch (komm) {
 		case "kommentar":
-			sql = sqlSt.getLoescheKommentar();
+			sql = sqlSt.getSqlStatement("LoescheKommentar");
 			break;
 		case "komm":
-			sql = sqlSt.getLoescheUnterkommentar();
+			sql = sqlSt.getSqlStatement("LoescheUnterkommentar");
 			break;
 		case "kzukomm":
-			sql = sqlSt.getLoescheKommentarZuUnterkommentar();
+			sql = sqlSt.getSqlStatement("LoescheKommentarZuUnterkommentar");
 			break;
 		default:
 			break;
@@ -349,14 +343,13 @@ public class BeitragServlet extends HttpServlet {
 		String tiefe = request.getParameter("tiefe");
 		int kommID = Integer.parseInt(request.getParameter("kommID"));
 		String page = "BeitragServlet?beitragsID=" + request.getParameter("beitragsID");
-		BeitragSql sqlSt = new BeitragSql();
 		String sql = "";
 		switch (tiefe) {
 		case "kommentar":
-			sql = sqlSt.getInsertUnterkommentar();
+			sql = sqlSt.getSqlStatement("Unterkommentieren");
 			break;
 		case "komm":
-			sql = sqlSt.getInsertKommentarZuUnterkommentar();
+			sql = sqlSt.getSqlStatement("UnterkommentarKommentieren");
 			break;
 		default:
 			break;
@@ -385,8 +378,7 @@ public class BeitragServlet extends HttpServlet {
 			page += "?tab=" + request.getParameter("tab");
 			page += "&veranstaltungsID=" + request.getParameter("veranstaltungsID");
 		}
-		BeitragSql sqlSt = new BeitragSql();
-		String sql = sqlSt.getBeitragMelden();
+		String sql = sqlSt.getSqlStatement("BeitragMelden");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, beitragsID);
 		pStmt.setInt(2, userID);
@@ -401,21 +393,21 @@ public class BeitragServlet extends HttpServlet {
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		switch (seite) {
 		case "Startseite":
-			sql = new StartseiteSql().getBeitraegeSql();
+			sql = new StartseiteSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			break;
 		case "Profilseite":
-			sql = new ProfilSql().getBeitraegeSql();
+			sql = new ProfilSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			break;
 		case "Veranstaltungen":
-			sql = new VeranstaltungenSql().getBeitraege();
+			sql = new VeranstaltungenSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
 		case "Gruppen":
-			sql = new GruppenSql().getBeitraege();
+			sql = new GruppenSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
 		default:
@@ -437,16 +429,16 @@ public class BeitragServlet extends HttpServlet {
 			} else {
 				timeStamp += " <span class='glyphicon glyphicon-user'></span>";
 			}
-			sql = new BeitragSql().getLikeAufBeitragSql();
+			sql = sqlSt.getSqlStatement("Like");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, beitragsID);
 			pStmt.setInt(2, Integer.parseInt(session.getAttribute("UserID").toString()));
 			ResultSet rs2 = pStmt.executeQuery();
 			if (rs2.next()) {
 				boolean like = rs2.getInt(1) == 0 ? false : true;
-				String loeschenErlaubt = userID == id ? "<span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span>" : "";
+				boolean loeschenErlaubt = userID == id;
 				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
-				sql = new BeitragSql().getOrtNameSql();
+				sql = sqlSt.getSqlStatement("OrtName");
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				ResultSet rs3 = pStmt.executeQuery();
@@ -466,8 +458,7 @@ public class BeitragServlet extends HttpServlet {
 		if (sortBy == null) {
 			sortBy = "Zeit";
 		}
-		BeitragSql sqlSt = new BeitragSql();
-		String sql = sqlSt.getLikePersonen();
+		String sql = sqlSt.getSqlStatement("LikesPersonen");
 		switch (sortBy) {
 		case "Vorname":
 			sql += "ORDER BY Vorname, Nachname";
