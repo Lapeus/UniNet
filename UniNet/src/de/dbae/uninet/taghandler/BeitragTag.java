@@ -70,7 +70,9 @@ public class BeitragTag extends TagSupport {
 			erg += "<a class='verfasser' href='ProfilServlet?userID=" + beitrag.getUserID() + "'>" + beitrag.getName() + "</a><br>";
 		}
 		erg += "<label class='zeitstempel'>" + beitrag.getTimeStamp() + "</label></div>";
-		erg += "<div class='col-md-1'><a href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen' title='Beitrag löschen'>" + beitrag.getLoeschenErlaubt() + "</a></div>";
+		if (beitrag.getLoeschenErlaubt()) {
+			erg += "<div class='col-md-1'><a href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag löschen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a></div>";
+		}
 		erg += "</div><label class='beitrag'><br>" + beitrag.getNachricht() + "</label><br><br>";
 		erg += "<div><ul class='nav nav-pills border'>";
 		erg += "<li role='presentation' class='like " + geliket + "'><a href='BeitragServlet?page=" + page + "&beitragsID=" + beitrag.getBeitragsID() 

@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import de.dbae.uninet.javaClasses.Emoticon;
 
 /**
- * Servlet implementation class HilfeServlet
+ * Dieses Servlet stellt eine Liste der Emoticons zur Verf&uuml;gung und verarbeitet s&auml;tliche daraufbezogene Anfragen.
+ * @see Emoticon
+ * @author Christian Ackermann
  */
 @WebServlet("/EmoticonServlet")
 public class EmoticonServlet extends HttpServlet {
@@ -31,6 +33,7 @@ public class EmoticonServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Setzt die Emoticon-Listen entsprechend der Spalten, in denen sie spaeter angezeigt werden soll
 		request.setAttribute("emoticons1", getEmoticons("Smileys"));
 		request.setAttribute("emoticons2", getEmoticons("Liebe"));
 		request.setAttribute("emoticons3", getEmoticons("Gestiken"));
@@ -50,6 +53,8 @@ public class EmoticonServlet extends HttpServlet {
 		
 		// Lade Chatfreunde
 		new LadeChatFreundeServlet().setChatfreunde(request);
+		
+		// Weiterleitung an die Hilfeseite
 		request.getRequestDispatcher("Hilfe.jsp").forward(request, response);
 	}
 
@@ -60,6 +65,10 @@ public class EmoticonServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	/**
+	 * Gibt eine Liste aller Emoticons zur&uuml;ck.
+	 * @return Eine Liste aller Emoticons
+	 */
 	public List<Emoticon> getEmoticons() {
 		List<Emoticon> emoticons = new ArrayList<Emoticon>();
 		emoticons.addAll(getEmoticons("Smileys"));
@@ -81,9 +90,17 @@ public class EmoticonServlet extends HttpServlet {
 		return emoticons;
 	}
 	
+	/**
+	 * Gibt eine Liste aller Emoticons der angegebenen Kategorie zur&uuml;ck.
+	 * @param kategorie Die Kategorie
+	 * @return Die Liste der Emoticons der angegebenen Kategorie
+	 */
 	public List<Emoticon> getEmoticons(String kategorie) {
+		// Liste der Emoticons
 		List<Emoticon> emoticons = new ArrayList<Emoticon>();
+		// Defintion der Farbe 'Hautfarbe'
 		String hautfarbe = "#F0E590";
+		// In Abhaengigkeit der Kategorie
 		switch (kategorie) {
 		case "Smileys":
 			emoticons.add(new Emoticon(":)", "&#x1F60A"));

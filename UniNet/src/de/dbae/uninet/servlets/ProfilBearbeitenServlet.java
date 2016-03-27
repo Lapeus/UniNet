@@ -18,14 +18,27 @@ import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 
 /**
- * Servlet implementation class ProfilBearbeitenServlet
+ * Dieses Servlet sorgt f&uuml;r die Bearbeitung eines Nutzer-Profils.
+ * @author Christian Ackermann
  */
 @WebServlet("/ProfilBearbeitenServlet")
 public class ProfilBearbeitenServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Die aktuelle Session.
+	 */
 	private HttpSession session;
+	
+	/**
+	 * Die DB-Verbindung.
+	 */
 	private Connection con = null;
+	
+	/**
+	 * Stellt die ben&ouml;tigten Sql-Statements zur Verf&uuml;gung.
+	 */
 	private ProfilSql sqlSt = new ProfilSql();
        
     /**
@@ -39,36 +52,50 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Chatfreunde
+		// Lade Chatfreunde
 		new LadeChatFreundeServlet().setChatfreunde(request);
-				
+		
+		// Setze die aktuelle Session
 		session = request.getSession();
+		// Die ID des Nutzers, dessen Profil bearbeitet werden soll
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+		// DB-Verbindung oeffnen
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Lade Sql-Statement um die zu bearbeitenden Infos zu laden
 			String sql = sqlSt.getSqlStatement("InfosBearbeiten");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
 			if (rs.next()) {
+				// Aktueller Vorname
 				request.setAttribute("vorname", rs.getString(1));
+				// Aktueller Nachname
 				request.setAttribute("nachname", rs.getString(2));
+				// Formatierung des aktuellen Geburtstages
 				SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
 				String date = "";
 				try {
 					date = sdf.format(new Date(rs.getDate(3).getTime()));
 				} catch (Exception e){}
 				request.setAttribute("geburtstag", date);
+				// Aktueller Wohnort
 				request.setAttribute("wohnort", rs.getString(4));
+				// Aktuelle Hobbys
 				request.setAttribute("hobbys", rs.getString(5));
+				// Aktuelle Interessen
 				request.setAttribute("interessen", rs.getString(6));
+				// Aktuelle Aussage ueber den Nutzer selbst
 				request.setAttribute("ueberMich", rs.getString(7));
+				// Weiterleitung
 				request.getRequestDispatcher("ProfilBearbeiten.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
-			System.out.println("SQL Fehler in ProfilBearbeitenServlet");
+			System.err.println("SQL Fehler in ProfilBearbeitenServlet");
+			// TODO Fehler
 		} finally {
+			// Verbindung schliessen
 			dbcon.close();
 		}
 	}
@@ -77,19 +104,25 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Setze aktuelle Session
 		session = request.getSession();
+		// Die ID des Nutzers, dessen Profil bearbeitet werden soll
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+		// Neue DB-Verbindung oeffnen
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Lade Sql-Statement um den Namen zu aendern
 			String sql = sqlSt.getSqlStatement("AendereNamen");
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setString(1, request.getParameter("vorname").toString());
 			pStmt.setString(2, request.getParameter("nachname").toString());
 			pStmt.setInt(3, userID);
 			pStmt.executeUpdate();
+			// Lade Sql-Statement um die restlichen Infos zu aendern
 			sql = sqlSt.getSqlStatement("AendereInfos");
 			pStmt = con.prepareStatement(sql);
+			// Formatierung des Geburtstags
 			SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
 			Date date = null;
 			try {
@@ -107,11 +140,13 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			pStmt.setString(5, ueberMich);
 			pStmt.setInt(6, userID);
 			pStmt.executeUpdate();
+			// Weiterleitung
 			response.sendRedirect("ProfilServlet?userID=" + userID);
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("SQL Fehler in ProfilBearbeitenServlet");
+			System.err.println("SQL Fehler in ProfilBearbeitenServlet");
+			// TODO Fehler
 		} finally {
+			// Verbindung schliessen
 			dbcon.close();
 		}
 	}

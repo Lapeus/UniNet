@@ -15,10 +15,12 @@ import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
- * Servlet implementation class LogoutServlet
+ * Dieses Servlet loggt einen User beim Klick auf den Logout-Button aus.
+ * @author Christian Ackermann
  */
 @WebServlet("/LogoutServlet")
 public class LogoutServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -33,20 +35,27 @@ public class LogoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Die aktuelle Session
 		HttpSession session = request.getSession();
+		// Oeffne eine neue DB-Verbindung
 		DBConnection dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
+		// Diese Klasse stellt das Sql-Statement zur Verfuegung
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		try {
+			// Lade Sql-Statement um den User auf offline zu setzen
 			String sql = sqlSt.getOfflineUpdate();
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
 			pStmt.executeUpdate();
 		} catch (Exception e) {
-			System.out.println("Fehler beim Ausloggen");
+			System.err.println("Fehler beim Ausloggen");
+			// TODO Fehler
 		} finally {
+			// Verbindung schliessen
 			dbcon.close();
 		}
+		// Weiterleitung auf die Anmeldeseite
 		response.sendRedirect("Anmeldung.jsp");
 	}
 
