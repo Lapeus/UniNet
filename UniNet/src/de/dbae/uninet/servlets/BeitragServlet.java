@@ -665,10 +665,12 @@ public class BeitragServlet extends HttpServlet {
 			sql = new VeranstaltungenSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
+			break;
 		case "Gruppen":
 			sql = new GruppenSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
+			break;
 		default:
 			pStmt = con.prepareStatement("");
 			break;

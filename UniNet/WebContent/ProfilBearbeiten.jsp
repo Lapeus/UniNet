@@ -11,6 +11,19 @@
 </head>
 <body>
 <page:seitenAufbau chatfreunde="${chatfreunde}">
+	<form action="LadeProfilbildServlet" method="post" enctype="multipart/form-data">
+		<div class="row">
+			<div class="col-md-3">
+				<img class="img-responsive profilbild" alt="Profilbild" src="LadeProfilbildServlet">
+			</div>
+			<div class="col-md-3">
+				<label class="btn btn-block btn-success">
+					<input type="file" name="image" style="display:none;" onchange="this.form.submit()">
+					Bild ändern
+				</label>
+			</div>
+		</div>
+	</form>
 	<form action="ProfilBearbeitenServlet" method="post">
 		<div class="row">
 			<h4>Name*</h4>

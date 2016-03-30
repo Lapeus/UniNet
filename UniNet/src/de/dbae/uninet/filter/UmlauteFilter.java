@@ -15,6 +15,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 /**
  * Dieser Filter &uuml;bersetzt fehlerhaft kodierte Umlaute in Html-Code, dabei sie korrekt angezeigt werden k&ouml;nnen.
  * @author Christian Ackermann
@@ -36,14 +38,16 @@ public class UmlauteFilter implements Filter {
 			throws IOException, ServletException {
 		// Cast von ServletRequest nach HttpServletRequest, da sonst die Parameter nicht auszulesen sind
 		HttpServletRequest request = (HttpServletRequest)req;
-		// Auflistung aller existenter Parameternamen
-		Enumeration<String> parameters = request.getParameterNames();
-		// Iteration ueber alle Namen
-		while (parameters.hasMoreElements()) {
-			// Der aktuelle Parameter
-			String parameter = parameters.nextElement();
-			// Ersetze alle Umlaute des aktuellen Parameters durch ihre Html-Codierungen
-			request.setAttribute(parameter, getString(request.getParameter(parameter).toString()));
+		if (!ServletFileUpload.isMultipartContent(request)) {
+			// Auflistung aller existenter Parameternamen
+			Enumeration<String> parameters = request.getParameterNames();
+			// Iteration ueber alle Namen
+			while (parameters.hasMoreElements()) {
+				// Der aktuelle Parameter
+				String parameter = parameters.nextElement();
+				// Ersetze alle Umlaute des aktuellen Parameters durch ihre Html-Codierungen
+				request.setAttribute(parameter, getString(request.getParameter(parameter)));
+			}
 		}
 		chain.doFilter(request, res);
 	}

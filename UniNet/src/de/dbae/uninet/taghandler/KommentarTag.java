@@ -48,7 +48,7 @@ public class KommentarTag extends TagSupport {
 		// Kommentar
 		String erg = "";
 		erg += "<p><div class='row'><div class='col-md-1'>";
-		erg += "<a href='#'><img class='media-object kommentarbild' src='Testbild.jpg' alt='Testbild'></a></div>";
+		erg += "<a href='#'><img class='media-object kommentarbild' src='LadeProfilbildServlet?userID=" + kommentar.getUserID() + "' alt='Profilbild'></a></div>";
 		erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'><a class='kommentarVerfasser' href='ProfilServlet?userID=" + kommentar.getUserID() + "'>" + kommentar.getName() + "</a></h5>";
 		erg += kommentar.getKommentar();
 		erg += "<div class='row'><div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=AntwortAufKommentar&kommID=" + kommentar.getKommID() + "'>Antworten</a></div>";
@@ -61,7 +61,7 @@ public class KommentarTag extends TagSupport {
 		// Anzeige saemtlicher Unterkommentare
 		for (Unterkommentar komm : kommentar.getKommentarList()) {
 			erg += "<div class='row border-left'><div class='col-md-1'>";
-			erg += "<a href='#'><img class='media-object kommentarbild' src='Testbild.jpg' alt='Testbild'></a></div>";
+			erg += "<a href='#'><img class='media-object kommentarbild' src='LadeProfilbildServlet?userID=" + komm.getUserID() + "' alt='Profilbild'></a></div>";
 			erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'><a class='kommentarVerfasser' href='ProfilServlet?userID=" + komm.getUserID() + "'>" + komm.getName() + "</a></h5>";
 			erg += komm.getKommentar();
 			erg += "<div class='row'><div class='col-md-2'><a class='blau'href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=AntwortAufKomm&kommID=" + komm.getKommID() + "&userName=" + komm.getName() + "&userID=" + komm.getUserID() + "'>Antworten</a></div>";
@@ -74,7 +74,7 @@ public class KommentarTag extends TagSupport {
 			// Anzeige saemtlicher Kommentare zu dem entsprechenden Unterkommentar
 			for (KommentarZuUnterkommentar kzukomm : komm.getKommentarList()) {
 				erg += "<div class='row border-left'><div class='col-md-1'>";
-				erg += "<a href='#'><img class='media-object kommentarbild' src='Testbild.jpg' alt='Testbild'></a></div>";
+				erg += "<a href='#'><img class='media-object kommentarbild' src='LadeProfilbildServlet?userID=" + kzukomm.getUserID() + "' alt='Profilbild'></a></div>";
 				erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'><a class='kommentarVerfasser' href='ProfilServlet?userID=" + kzukomm.getUserID() + "'>" + kzukomm.getName() + "</a></h5>";
 				erg += "<a href='ProfilServlet?userID=" + kzukomm.getAntwortAufKommID() + "'><u>" + kzukomm.getAntwortAufKommName() + "</u></a> " + kzukomm.getKommentar();
 				erg += "<div class='row'>";

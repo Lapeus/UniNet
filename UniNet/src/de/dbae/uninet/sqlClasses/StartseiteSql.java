@@ -19,7 +19,7 @@ public class StartseiteSql {
 		switch (action) {
 		// Gibt alle relevanten Beitraege zurueck
 		case "Beitraege":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit FROM (beitragsView INNER JOIN freundeView ON VerfasserID = Nutzer) WHERE freund = ?;";
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit FROM (beitragsView INNER JOIN freundeView ON VerfasserID = Nutzer) WHERE freund = ?";
 			break;
 		// Gibt an, ob der Beitrag vom Nutzer mit 'interessiert mich nicht besonders' markiert wurde
 		case "Like":

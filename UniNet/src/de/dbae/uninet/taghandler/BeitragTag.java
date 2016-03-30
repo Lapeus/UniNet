@@ -57,7 +57,7 @@ public class BeitragTag extends TagSupport {
 			geliket = "geliket";
 		} 
 		String erg = "<div class='row'><div class='col-md-1'></div><div class='col-md-10 beitrag'><div class='row kopf'><br>";
-		erg += "<div class='col-md-1'><a href='#'><img class='media-object kommentarbild profil' alt='Testbild' src='Testbild.jpg'></a></div>";
+		erg += "<div class='col-md-1'><a href='#'><img class='media-object kommentarbild profil' alt='Profilbild' src='LadeProfilbildServlet?userID=" + beitrag.getUserID() + "'></a></div>";
 		erg += "<div class='col-md-10'>";
 		// Ueberpruefung, ob der Beitrag in der Chronik oder wo anders (Gruppe, Veranstaltung) gepostet wurde
 		if (beitrag.isNichtChronik()) {
@@ -86,7 +86,7 @@ public class BeitragTag extends TagSupport {
 		// Aehnliches mit Kommentaren
 		String kommentare = beitrag.getKommentare() == 1 ? "1 Kommentar" : beitrag.getKommentare() + " Kommentare";
 		erg += "<label class='anzahlKommentare'><a class='anzahlKommentare' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "'>" + kommentare + "</a></label></div>";
-		erg += "<div class='row'><div class='col-md-1'><a href='#'><img class='media-object kommentarbild' alt='Testbild' src='Testbild.jpg'></a></div>";
+		erg += "<div class='row'><div class='col-md-1'><a href='#'><img class='media-object kommentarbild' alt='Profilbild' src='LadeProfilbildServlet?'></a></div>";
 		erg += "<div class='col-md-11'><form action='BeitragServlet?page=" + page + "&beitragsID=" + beitrag.getBeitragsID() + "&name=Kommentar' method='post'>";
 		erg += "<input type='text' class='form-control' name='kommentar' placeholder='Schreibe einen Kommentar...'></form></div></div><p></div></div><br>";
 		return erg;

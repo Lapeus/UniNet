@@ -16,7 +16,7 @@
 <div class="mainPart">
 	<!-- In der linken Spalte sollen das Bild und die persoenlichen Informationen angezeigt werden -->
 	<page:linkeSpalte>
-		<img class="img-responsive profilbild" alt="Testbild" src="Testbild.jpg">
+		<img class="img-responsive profilbild" alt="Profilbild" src="LadeProfilbildServlet?userID=${userID}">
 		<label class="verfasser" style="text-align: center; width: 100%">Persönliche Infos</label>
 		<ul class="list-group">
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>

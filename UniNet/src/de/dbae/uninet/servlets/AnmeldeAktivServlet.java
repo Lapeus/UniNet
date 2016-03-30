@@ -1,5 +1,8 @@
 package de.dbae.uninet.servlets;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -121,6 +125,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						// Setze die UserID fuer das SessionTracking
 						HttpSession userSession = request.getSession();
 						userSession.setAttribute("UserID", userid);
+						// Setzt fuer den Fall, dass kein Profilbild eingestellt wurde, das Default-Profilbild
+						defaultProfilbildSetzen(userid, con);
 						// Teste ob es sich um einen Studenten oder LocalAdmin handelt (#christian)
 						sql = sqlSt.getStudentenIDs();
 						pStmt = con.prepareStatement(sql);
@@ -223,6 +229,10 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						psTmtStudent.setInt(2, Integer.parseInt(uniid));
 						psTmtStudent.setInt(3, Integer.parseInt(studiengangid));
 						psTmtStudent.execute();
+						
+						// Setzt fuer den Fall, dass kein Profilbild eingestellt wurde, das Default-Profilbild
+						defaultProfilbildSetzen(userid, con);
+						
 						HttpSession userSession = request.getSession();
 						userSession.setAttribute("UserID", userid);
 						response.sendRedirect("StartseiteServlet");
@@ -312,6 +322,35 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 		} finally {
 			killConnection(con);
+		}
+	}
+	
+	private void defaultProfilbildSetzen(String userid, Connection con) {
+		// Profilbild-Default setzen *Christian*
+		// Select-Statement fuer alle Nutzer
+		String sql = "SELECT profilbild, userID FROM nutzer";
+		try {
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			ResultSet rs = pStmt.executeQuery();
+			// Fuer alle Nutzer
+			while (rs.next()) {
+				// Wenn kein Profilbild gesetzt wurde
+				if (rs.getBytes(1) == null) {
+					// Lade das Default-Bild
+					BufferedImage img = ImageIO.read(new File(getServletContext().getRealPath("/Testbild.jpg")));
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					ImageIO.write(img, "jpg", baos);
+					// Und schreibe es in die DB
+					sql = "UPDATE nutzer SET profilbild = ? WHERE userID = ?";
+					pStmt = con.prepareStatement(sql);
+					pStmt.setBytes(1, baos.toByteArray());
+					pStmt.setInt(2, rs.getInt(2));
+					pStmt.executeUpdate();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO Fehler
 		}
 	}
 

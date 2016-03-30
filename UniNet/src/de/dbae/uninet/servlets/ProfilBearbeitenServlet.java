@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import de.dbae.uninet.sqlClasses.ProfilSql;
  * @author Christian Ackermann
  */
 @WebServlet("/ProfilBearbeitenServlet")
+@MultipartConfig
 public class ProfilBearbeitenServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;

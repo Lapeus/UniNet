@@ -61,7 +61,7 @@ public class EmoticonTag extends TagSupport {
 		erg += "<tr><th style='padding: 12px; color: " + farbe + ";'>Emoticon</th><th style='padding: 12px; color: " + farbe + ";'>Kürzel</th></tr>";
 		// Fuellung der linken Spalte der Tabelle mit allen in der Liste enthaltenen Emoticons
 		for (Emoticon emo : listLinks) {
-			erg += "<tr><td style='font-size: 18px; padding-left: 12px;'>" + emo.getBild() + "</td>";
+			erg += "<tr><td style='font-size: 24px; padding-left: 12px;'>" + emo.getBild() + "</td>";
 			erg += "<td style='padding-left: 12px'>" + emo.getCode() + "</td></tr>";
 		}
 		erg += "</table></div>";		
@@ -70,7 +70,7 @@ public class EmoticonTag extends TagSupport {
 		erg += "<tr><th style='padding: 12px; color: " + farbe + ";'>Emoticon</th><th style='padding: 12px; color: " + farbe + ";'>Kürzel</th></tr>";
 		// Fuellung der rechten Spalte der Tabelle mit allen in der Liste enthaltenen Emoticons
 		for (Emoticon emo : listRechts) {
-			erg += "<tr><td style='font-size: 18px; padding-left: 12px;'>" + emo.getBild() + "</td>";
+			erg += "<tr><td style='font-size: 24px; padding-left: 12px;'>" + emo.getBild() + "</td>";
 			erg += "<td style='padding-left: 12px'>" + emo.getCode() + "</td></tr>";
 		}
 		erg += "</table></div>";				

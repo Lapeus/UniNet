@@ -11,6 +11,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import de.dbae.uninet.javaClasses.Emoticon;
 import de.dbae.uninet.servlets.EmoticonServlet;
 
@@ -38,14 +40,16 @@ public class EmoticonFilter implements Filter {
 			throws IOException, ServletException {
 		// Cast von ServletRequest in HttpServletRequest, da sonst die Parameter nicht auszulesen sind
 		HttpServletRequest request = (HttpServletRequest)req;
-		// Alle Parameternamen, in denen die Emoticon-Kuerzel ersetzt werden sollen
-		String[] parameters = {"kommentar", "nachricht", "beitrag"};
-		// Fuer jeden Paramter
-		for (String parameter : parameters) {
-			// Wenn der Parameter gesetzt wurde
-			if (request.getParameter(parameter) != null) {
-				// Setze den ersetzten Parameter als Atribut
-				request.setAttribute(parameter, getString(request.getParameter(parameter).toString()));
+		if (!ServletFileUpload.isMultipartContent(request)) {
+			// Alle Parameternamen, in denen die Emoticon-Kuerzel ersetzt werden sollen
+			String[] parameters = {"kommentar", "nachricht", "beitrag"};
+			// Fuer jeden Paramter
+			for (String parameter : parameters) {
+				// Wenn der Parameter gesetzt wurde
+				if (request.getAttribute(parameter) != null && !request.getAttribute(parameter).equals("")) {
+					// Setze den ersetzten Parameter als Atribut
+					request.setAttribute(parameter, getString(request.getAttribute(parameter).toString()));
+				}
 			}
 		}
 		chain.doFilter(request, response);

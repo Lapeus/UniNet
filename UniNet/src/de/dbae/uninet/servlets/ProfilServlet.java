@@ -93,7 +93,9 @@ public class ProfilServlet extends HttpServlet {
 				// Formatiere den Studienbeginn
 				SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
 				// Setze den Studienbeginn
-				request.setAttribute("studienbeginn", sdf.format(new Date(rs.getDate(4).getTime())));
+				if (rs.getDate(4) != null) {
+					request.setAttribute("studienbeginn", sdf.format(new Date(rs.getDate(4).getTime())));
+				}
 				// Wenn ein Geburtstag eingetragen wurde
 				if (rs.getString(5) != null) {
 					// Setze den Geburstag als Teil einer Aufzaehlung (vgl. getInfoString)
@@ -131,6 +133,7 @@ public class ProfilServlet extends HttpServlet {
 			request.getRequestDispatcher("Profil.jsp").forward(request, response);
 		} catch (Exception e) {
 			System.err.println("SQL Fehler im ProfilServlet");
+			e.printStackTrace();
 			// TODO Fehler
 		} finally {
 			// Verbindung schliessen

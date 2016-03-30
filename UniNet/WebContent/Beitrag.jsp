@@ -16,14 +16,14 @@
 	<div class="row">
 		<div class="col-md-1"><!-- Leere Linke Spalte --></div>
 		<div class="col-md-10 beitrag"> <!-- Mittelblock -->
-			<c:choose> <!-- Unterscheidung, ob der Beitrag oder die Likes angezeigt werden sollen -->
+			<c:choose>
 				<c:when test="${beitragAnzeigen}">
 					<div class="row kopf"><br>
 						<div class="col-md-1">
-							<a href='#'><img class="media-object kommentarbild profil" alt="Testbild" src="Testbild.jpg"></a>
+							<a href='#'><img class="media-object kommentarbild profil" alt="Profilbild" src="LadeProfilbildServlet?userID=${beitrag.userID}"></a>
 						</div>
 						<div class="col-md-10">
-							<c:choose> <!-- Unterscheidung, ob der Beitrag in der Chronik oder woanders gepostet wurde -->
+							<c:choose>
 								<c:when test="${beitrag.nichtChronik}">
 									<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a> <span class="glyphicon glyphicon-arrow-right" style="color: #3b5998;"></span>
 									<a class="verfasser" href="#">${beitrag.ortName}</a><br>
@@ -58,7 +58,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-1">
-							<a href='#'><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>
+							<a href='#'><img class="media-object kommentarbild" alt="Profilbild" src="LadeProfilbildServlet?userID=${userID}"></a>
 						</div>
 						<div class="col-md-11">
 							<form action="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=Kommentar" method="post">
@@ -74,7 +74,7 @@
 					<c:if test="${anzeigen}">
 						<p><div class="row">
 							<div class="col-md-1">
-								<a><img class="media-object kommentarbild" alt="Testbild" src="Testbild.jpg"></a>
+								<a><img class="media-object kommentarbild" alt="Profilbild" src="LadeProfilbildServlet?"></a>
 							</div>
 							<div class="col-md-11">
 								<form action="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=KommentarAntwort&tiefe=${tiefe}&kommID=${kommID}" method="post">
@@ -84,7 +84,6 @@
 						</div> <!-- row --><p>
 					</c:if>
 				</c:when>
-				<!-- Wenn nicht der Beitrag, sondern die Personen angezeigt werden sollen, die es nicht besonders interessiert -->
 				<c:when test="${!beitragAnzeigen}">
 					<br><a class="blau" href="BeitragServlet?beitragsID=${beitragsID}">zurück zum Beitrag</a>
 					<p><div class="row">
