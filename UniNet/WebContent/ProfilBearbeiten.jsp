@@ -35,6 +35,12 @@
 			</div>
 		</div>
 		<div class="row">
+			<h4>Aktuelles Semester</h4>
+			<div class="col-md-6">
+				<input type="number" min="1" max="30" class="form-control" value="${semester}" name="semester">
+			</div>
+		</div>
+		<div class="row">
 			<h4>Geburtstag</h4>
 			<div class="col-md-6">
 				<input type="text" name="geburtstag" class="form-control" value="${geburtstag}">

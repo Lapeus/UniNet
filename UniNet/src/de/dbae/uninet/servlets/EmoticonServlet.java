@@ -103,6 +103,7 @@ public class EmoticonServlet extends HttpServlet {
 		// In Abhaengigkeit der Kategorie
 		switch (kategorie) {
 		case "Smileys":
+			emoticons.add(new Emoticon("O:)", "&#x1F607"));
 			emoticons.add(new Emoticon(":)", "&#x1F60A"));
 			emoticons.add(new Emoticon(":D", "&#x1F603"));
 			emoticons.add(new Emoticon(";)", "&#x1F609"));
@@ -114,7 +115,6 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon(":/", "&#x1F629"));
 			emoticons.add(new Emoticon("(angry)", "&#x1F620"));
 			emoticons.add(new Emoticon("(tired)", "&#x1F62A"));
-			emoticons.add(new Emoticon("O:)", "&#x1F607"));
 			emoticons.add(new Emoticon("(no evil monkey)", "&#x1F648"));
 			emoticons.add(new Emoticon("(sleeping)", "&#x1F4A4"));
 			break;
@@ -143,7 +143,7 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(y)", "<span style='color: " + hautfarbe + "'>&#x1F44D</span>"));
 			emoticons.add(new Emoticon("(n)", "<span style='color: " + hautfarbe + "'>&#x1F44E</span>"));
 			emoticons.add(new Emoticon("(paw prints)", "&#x1F43E"));
-			emoticons.add(new Emoticon("(eyes)", "<span style='color: " + hautfarbe + "'>&#x1F440</span>"));
+			emoticons.add(new Emoticon("(eyes)", "&#x1F440"));
 			emoticons.add(new Emoticon("(ear)", "&#x1F442"));
 			emoticons.add(new Emoticon("(nose)", "&#x1F443"));
 			emoticons.add(new Emoticon("(speechbubble)", "&#x1F4AC"));
@@ -215,7 +215,7 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(notes)", "&#x1F3B6"));
 			emoticons.add(new Emoticon("(saxophone)", "&#x1F3B7"));
 			emoticons.add(new Emoticon("(guitar)", "&#x1F3B8"));
-			emoticons.add(new Emoticon("(keyboard)", "&#x1F389"));
+			emoticons.add(new Emoticon("(keyboard)", "&#x1F3B9"));
 			emoticons.add(new Emoticon("(trumpet)", "&#x1F3BA"));
 			emoticons.add(new Emoticon("(violin)", "&#x1F3BB"));
 			emoticons.add(new Emoticon("(microphone)", "&#x1F3A4"));

@@ -2,6 +2,8 @@ package de.dbae.uninet.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.Semesterrechner;
 
 /**
  * Dieses Servlet verarbeit alle Anfragen die die Startseite betreffen.

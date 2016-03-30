@@ -35,7 +35,7 @@ public class ProfilSql {
 			break;
 		// Gibt die momentanen Werte der zu bearbeitenden Informationen zurueck
 		case "InfosBearbeiten":
-			sql = "SELECT Vorname, Nachname, Geburtstag, Wohnort, Hobbys, Interessen, UeberMich FROM Nutzer INNER JOIN Studenten ON UserID = StudentID WHERE StudentID = ?";
+			sql = "SELECT Vorname, Nachname, Studienbeginn, Geburtstag, Wohnort, Hobbys, Interessen, UeberMich FROM Nutzer INNER JOIN Studenten ON UserID = StudentID WHERE StudentID = ?";
 			break;
 		// Aendert den Namen
 		case "AendereNamen":
@@ -43,7 +43,7 @@ public class ProfilSql {
 			break;
 		// Aendert die uebrigen Informationen
 		case "AendereInfos":
-			sql = "UPDATE Studenten SET geburtstag = ?, wohnort = ?, hobbys = ?, interessen = ?, ueberMich = ? WHERE studentID = ?";
+			sql = "UPDATE Studenten SET studienbeginn = ?, geburtstag = ?, wohnort = ?, hobbys = ?, interessen = ?, ueberMich = ? WHERE studentID = ?";
 			break;
 		default:
 			System.err.println("FEHLER IN PROFILSQL " + action);

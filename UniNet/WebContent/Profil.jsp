@@ -20,7 +20,7 @@
 		<label class="verfasser" style="text-align: center; width: 100%">Persönliche Infos</label>
 		<ul class="list-group">
 			<li class="list-group-item">Studiengang:<br>${ studiengang }</li>
-			<li class="list-group-item">Studienbeginn:<br>${ studienbeginn }</li>
+			<li class="list-group-item">${ semester }. Semester</li>
 			<li class="list-group-item">E-Mail:<br>${ email }</li>
 			<!-- Hier wird der komplette li-Tag als Attribut gelesen, da er weggelassen wird, wenn das Attribut leer ist -->
 			${ geburtstag }

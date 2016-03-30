@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.Semesterrechner;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 
@@ -70,6 +71,8 @@ public class ProfilServlet extends HttpServlet {
 		if (user == null) {
 			// Ist es das Profil des aktuellen Nutzers
 			user = session.getAttribute("UserID").toString();
+		}
+		if (user.equals(session.getAttribute("UserID").toString())) {
 			eigenesProfil = true;
 		}
 		int userID = Integer.parseInt(user);
@@ -92,10 +95,9 @@ public class ProfilServlet extends HttpServlet {
 				request.setAttribute("studiengang", rs.getString(3));
 				// Formatiere den Studienbeginn
 				SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
-				// Setze den Studienbeginn
-				if (rs.getDate(4) != null) {
-					request.setAttribute("studienbeginn", sdf.format(new Date(rs.getDate(4).getTime())));
-				}
+				// Setze das aktuelle Semester
+				int semester = new Semesterrechner().getSemester(rs.getDate(4).getTime());
+				request.setAttribute("semester", semester);
 				// Wenn ein Geburtstag eingetragen wurde
 				if (rs.getString(5) != null) {
 					// Setze den Geburstag als Teil einer Aufzaehlung (vgl. getInfoString)

@@ -19,6 +19,8 @@
 	<page:emoticons listLinks="${emoticons7}" listRechts="${emoticons8}"></page:emoticons>
 	<page:emoticons listLinks="${emoticons9}" listRechts="${emoticons10}"></page:emoticons>
 	<page:emoticons listLinks="${emoticons11}" listRechts="${emoticons12}"></page:emoticons>
+	<page:emoticons listLinks="${emoticons13}" listRechts="${emoticons14}"></page:emoticons>
+	<page:emoticons listLinks="${emoticons15}" listRechts="${emoticons16}"></page:emoticons>
 </page:seitenAufbau>
 </body>
 </html>

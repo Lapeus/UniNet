@@ -97,6 +97,12 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="semester" class="col-sm-2 control-label">Semester</label>
+			<div class="col-sm-2">
+				<input type="number" min="1" max="30" value="1" class="form-control" id="semester" placeholder="Semester" name="semester">
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="password" class="col-sm-2 control-label">Passwort</label>
 			<div class="col-sm-4">
 				<input type="password" class="form-control" id="password" placeholder="Passwort eingeben" name="password1" />

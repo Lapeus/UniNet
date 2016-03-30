@@ -723,7 +723,7 @@ public class BeitragServlet extends HttpServlet {
 					beitrag.setOrtName(rs3.getString(1));
 				}
 				// Beitrag der Liste hinzufuegen
-				beitragList.add(beitrag);
+				beitragList.add(0, beitrag);
 			}
 		}
 		return beitragList;

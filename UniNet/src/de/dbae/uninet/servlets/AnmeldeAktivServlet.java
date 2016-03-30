@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.Semesterrechner;
 import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
@@ -160,6 +162,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			String uni = request.getParameter("uni");
 			String studiengang = request.getParameter("studiengang");
+			int semester = Integer.parseInt(request.getParameter("semester"));
 			String password1 = request.getParameter("password1");
 			String password2 = request.getParameter("password2");
 			
@@ -189,7 +192,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						// Nutzer Registrierung in Tabbelle speichern
+						// Nutzer Registrierung in Tabelle speichern
 						PreparedStatement pStmtNutzer = con.prepareStatement(sqlSt.getRegistrierungNutzerSql());
 						pStmtNutzer.setBoolean(1, bAnrede);
 						pStmtNutzer.setString(2, vorname);
@@ -228,6 +231,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						psTmtStudent.setInt(1, Integer.parseInt(userid));
 						psTmtStudent.setInt(2, Integer.parseInt(uniid));
 						psTmtStudent.setInt(3, Integer.parseInt(studiengangid));
+						psTmtStudent.setDate(4, new Date(new Semesterrechner().getStudienbeginn(semester)));
 						psTmtStudent.execute();
 						
 						// Setzt fuer den Fall, dass kein Profilbild eingestellt wurde, das Default-Profilbild

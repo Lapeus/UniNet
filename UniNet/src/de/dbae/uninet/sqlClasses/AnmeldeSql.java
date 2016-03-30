@@ -27,7 +27,7 @@ public class AnmeldeSql {
 	}
 	
 	public String getRegistrierungStudentSql () {
-		String sql = "INSERT INTO studenten (studentid, uniid, studiengangid, online) VALUES (?,?,?,"+ true +")";
+		String sql = "INSERT INTO studenten (studentid, uniid, studiengangid, studienbeginn, online) VALUES (?,?,?,?,TRUE)";
 		return sql;
 	}
 	

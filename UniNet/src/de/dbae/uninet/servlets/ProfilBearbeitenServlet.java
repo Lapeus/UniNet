@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.Semesterrechner;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 
 /**
@@ -75,21 +76,23 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 				request.setAttribute("vorname", rs.getString(1));
 				// Aktueller Nachname
 				request.setAttribute("nachname", rs.getString(2));
+				// Aktuelles Semester
+				request.setAttribute("semester", new Semesterrechner().getSemester(rs.getDate(3).getTime()));
 				// Formatierung des aktuellen Geburtstages
 				SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
 				String date = "";
 				try {
-					date = sdf.format(new Date(rs.getDate(3).getTime()));
+					date = sdf.format(new Date(rs.getDate(4).getTime()));
 				} catch (Exception e){}
 				request.setAttribute("geburtstag", date);
 				// Aktueller Wohnort
-				request.setAttribute("wohnort", rs.getString(4));
+				request.setAttribute("wohnort", rs.getString(5));
 				// Aktuelle Hobbys
-				request.setAttribute("hobbys", rs.getString(5));
+				request.setAttribute("hobbys", rs.getString(6));
 				// Aktuelle Interessen
-				request.setAttribute("interessen", rs.getString(6));
+				request.setAttribute("interessen", rs.getString(7));
 				// Aktuelle Aussage ueber den Nutzer selbst
-				request.setAttribute("ueberMich", rs.getString(7));
+				request.setAttribute("ueberMich", rs.getString(8));
 				// Weiterleitung
 				request.getRequestDispatcher("ProfilBearbeiten.jsp").forward(request, response);
 			}
@@ -124,6 +127,7 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			// Lade Sql-Statement um die restlichen Infos zu aendern
 			sql = sqlSt.getSqlStatement("AendereInfos");
 			pStmt = con.prepareStatement(sql);
+			int semester = Integer.parseInt(request.getParameter("semester"));
 			// Formatierung des Geburtstags
 			SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
 			Date date = null;
@@ -135,16 +139,18 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			String hobbys = request.getParameter("hobbys").toString();
 			String interessen = request.getParameter("interessen").toString();
 			String ueberMich = request.getParameter("ueberMich").toString();
-			pStmt.setDate(1, date);
-			pStmt.setString(2, wohnort);
-			pStmt.setString(3, hobbys);
-			pStmt.setString(4, interessen);
-			pStmt.setString(5, ueberMich);
-			pStmt.setInt(6, userID);
+			pStmt.setDate(1, new Date(new Semesterrechner().getStudienbeginn(semester)));
+			pStmt.setDate(2, date);
+			pStmt.setString(3, wohnort);
+			pStmt.setString(4, hobbys);
+			pStmt.setString(5, interessen);
+			pStmt.setString(6, ueberMich);
+			pStmt.setInt(7, userID);
 			pStmt.executeUpdate();
 			// Weiterleitung
 			response.sendRedirect("ProfilServlet?userID=" + userID);
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("SQL Fehler in ProfilBearbeitenServlet");
 			// TODO Fehler
 		} finally {

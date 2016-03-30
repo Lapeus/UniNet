@@ -20,7 +20,7 @@
 			<div class="row">
 				<form action="ProfilServlet?id=${id}&name=BeitragPosten&page=StartseiteServlet" method="post">
 					<div class="form-group">
-						<textarea class="form-control" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
+						<textarea class="form-control" style="border: none;" rows="4" name="beitrag" placeholder="Was machst du gerade?" required></textarea>
 						<div class="form-inline pull-right">
 							<!-- Sichtbarkeitsbutton -->
 							<select class="form-control glyphicon" name="sichtbarkeit">
