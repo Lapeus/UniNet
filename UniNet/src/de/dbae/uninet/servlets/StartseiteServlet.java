@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.Beziehungsrechner;
 import de.dbae.uninet.javaClasses.Semesterrechner;
 
 /**
@@ -38,18 +39,19 @@ public class StartseiteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Chatfreunde
 		new LadeChatFreundeServlet().setChatfreunde(request);
+		// Die ID des Nutzers, dessen Startseite angezeigt werden soll
+		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
 		
 		// Oeffne eine neue DB-Verbindung
 		DBConnection dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
-		// Die ID des Nutzers, dessen Startseite angezeigt werden soll
-		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
 		try {
 			// Setze alle Beitraege die angezeigt werden soll als Attribut
 			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Startseite", userID));
 			// Weiterleitung
 			request.getRequestDispatcher("Startseite.jsp").forward(request, response);
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("Fehler im StartseiteServlet");
 			// TODO Fehler
 		} finally {

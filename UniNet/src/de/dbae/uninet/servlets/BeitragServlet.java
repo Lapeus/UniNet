@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
+import de.dbae.uninet.javaClasses.Emoticon;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Kommentar;
 import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
@@ -61,8 +62,8 @@ public class BeitragServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Lade Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
-		
+	    new LadeChatFreundeServlet().setChatfreunde(request);
+				
 		// Lade die Aktion, die vom Servlet durchgefuehrt werden soll
 		String name = request.getParameter("name");
 		// Standardmaessig soll der Beitrag und nicht die Like-Liste angezeigt werden
@@ -110,6 +111,10 @@ public class BeitragServlet extends HttpServlet {
 					// Loesche den Kommentar zum Unterkommentar
 					kommentarLoeschen(request, response, "kzukomm");
 					break;
+				case "BeitragBearbeiten":
+					// Lade den Beitrag komplett mit Textfeld statt Nachricht
+					kompletterLoad(request, response, session, true);
+					break;
 				case "AntwortAufKommentar":
 					// Zeige das Antwort-Textfeld an (auf Kommentar)
 					antwortVorbereiten(request, response, "kommentar");
@@ -150,7 +155,40 @@ public class BeitragServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		// Lade Chatfreunde
+		new LadeChatFreundeServlet().setChatfreunde(request);
+				
+		// Standardmaessig soll der Beitrag und nicht die Like-Liste angezeigt werden
+		request.setAttribute("beitragAnzeigen", true);
+		// Lade die Aktion, die vom Servlet durchgefuehrt werden soll
+		String name = request.getParameter("name");
+		DBConnection dbcon = new DBConnection();
+		con = dbcon.getCon();
+		try {
+			if (name == null) {
+				kompletterLoad(request, response, request.getSession());
+			} else {
+				switch (name) {
+				case "BeitragBearbeitet":
+					String sql = sqlSt.getSqlStatement("BeitragBearbeiten");
+					PreparedStatement pStmt = con.prepareStatement(sql);
+					pStmt.setString(1, request.getAttribute("neuerBeitrag").toString());
+					pStmt.setInt(2, Integer.parseInt(request.getParameter("beitragsID")));
+					pStmt.executeUpdate();
+					kompletterLoad(request, response, request.getSession());
+					break;
+				default:
+					doGet(request, response);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO Fehler
+		} finally {
+			dbcon.close();
+		}
+		
 	}
 	
 	/**
@@ -158,11 +196,12 @@ public class BeitragServlet extends HttpServlet {
 	 * @param request Das Request-Objekt
 	 * @param response Das Response-Objekt
 	 * @param session Das aktuelle Session-Objekt
+	 * @param optionalParam True, wenn Beitrag bearbeitet werden soll
 	 * @throws SQLException
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void kompletterLoad(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ServletException, IOException {
+	private void kompletterLoad(HttpServletRequest request, HttpServletResponse response, HttpSession session, boolean... optionalParam) throws SQLException, ServletException, IOException {
 		// Die ID des aktuellen Nutzers
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		// Die BeitragsID
@@ -193,6 +232,8 @@ public class BeitragServlet extends HttpServlet {
 				// Privat
 				timeStamp += " <span class='glyphicon glyphicon-user'></span>";
 			}
+			// Bearbeitet
+			boolean bearbeitet = rs.getBoolean(10);
 			// Hat man den Beitrag selbst mit 'interessiert mich nicht besonders' markiert?
 			sql = sqlSt.getSqlStatement("Like");
 			pStmt = con.prepareStatement(sql);
@@ -204,9 +245,9 @@ public class BeitragServlet extends HttpServlet {
 				// Man darf den Beitrag loeschen, wenn es der eigene Beitrag ist
 				boolean loeschenErlaubt = userID == id;
 				// Neues Beitragsobjekt
-				beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
+				beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt, bearbeitet);
 				// Kommentare laden
-				beitrag.setKommentarList(getKommentare(con, beitragsID, userID));
+				beitrag.setKommentarList(getKommentare(beitragsID, userID));
 				sql = sqlSt.getSqlStatement("OrtName");
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
@@ -221,6 +262,13 @@ public class BeitragServlet extends HttpServlet {
 				request.setAttribute("beitragLikesPersonen", beitrag.getLikes() == 1 ? "Eine Person" : beitrag.getLikes() + " Personen");
 				request.setAttribute("beitragKommentare", beitrag.getKommentare() == 1 ? "1 Kommentar" : beitrag.getKommentare() + " Kommentare");
 				request.setAttribute("beitrag", beitrag);
+				// Wenn der Beitrag bearbeitet werden soll
+				if (optionalParam.length > 0) {
+					// Setze das entsprechende Attribut
+					request.setAttribute("beitragBearbeiten", optionalParam[0]);
+					// Aendere die Darstellung der Emoticons
+					beitrag.setNachricht(inverseEmoticonFilter(beitrag.getNachricht()));
+				}
 				// Wenn man den Beitrag selbst markiert hat
 				if (like) {
 					// Wird das angezeigt
@@ -242,7 +290,7 @@ public class BeitragServlet extends HttpServlet {
 	 * @return Die Liste der Kommentare zum Beitrag
 	 * @throws SQLException
 	 */
-	private List<Kommentar> getKommentare(Connection con, int beitragsID, int userIDsession) throws SQLException {
+	private List<Kommentar> getKommentare(int beitragsID, int userIDsession) throws SQLException {
 		// Neue Liste anlegen
 		List<Kommentar> kommentarList = new ArrayList<Kommentar>();
 		// Lade die Kommentare aus der DB
@@ -698,6 +746,8 @@ public class BeitragServlet extends HttpServlet {
 			} else {
 				timeStamp += " <span class='glyphicon glyphicon-user'></span>";
 			}
+			// Bearbeitet
+			boolean bearbeitet = rs.getBoolean(11);
 			// Wurde der Beitrag mit 'interessiert mich nicht besonders' markiert
 			sql = sqlSt.getSqlStatement("Like");
 			pStmt = con.prepareStatement(sql);
@@ -710,7 +760,7 @@ public class BeitragServlet extends HttpServlet {
 				// Wenn es der eigene Beitrag ist, darf man ihn loeschen
 				boolean loeschenErlaubt = userID == id;
 				// Beitrag erstellen
-				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt);
+				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt, bearbeitet);
 				// Wurde der Beitrag in der Chronik oder woanders gepostet
 				sql = sqlSt.getSqlStatement("OrtName");
 				pStmt = con.prepareStatement(sql);
@@ -784,6 +834,16 @@ public class BeitragServlet extends HttpServlet {
 		request.setAttribute("beitragsID", beitragsID);
 		// Weiterleitung an die Beitragsseite
 		request.getRequestDispatcher("Beitrag.jsp").forward(request, response);
+	}
+	
+	private String inverseEmoticonFilter(String beitrag) {
+		// Lade alle Emoticons
+		List<Emoticon> emoticons = new EmoticonServlet().getEmoticons();
+		for (Emoticon emo : emoticons) {
+			// Ersetze alle Kuerzel durch ihre Unicode-Zeichen
+			beitrag = beitrag.replace(emo.getBild(), emo.getCode());
+		}
+		return beitrag;
 	}
 
 }

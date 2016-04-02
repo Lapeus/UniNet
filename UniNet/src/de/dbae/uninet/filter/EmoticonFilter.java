@@ -42,7 +42,7 @@ public class EmoticonFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest)req;
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			// Alle Parameternamen, in denen die Emoticon-Kuerzel ersetzt werden sollen
-			String[] parameters = {"kommentar", "nachricht", "beitrag"};
+			String[] parameters = {"kommentar", "nachricht", "beitrag", "neuerBeitrag"};
 			// Fuer jeden Paramter
 			for (String parameter : parameters) {
 				// Wenn der Parameter gesetzt wurde

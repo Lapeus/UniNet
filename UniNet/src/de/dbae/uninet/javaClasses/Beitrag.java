@@ -74,6 +74,11 @@ public class Beitrag {
 	private String ortName = "";
 	
 	/**
+	 * Gibt an, ob der Beitrag bereits bearbeitet wurde.
+	 */
+	private boolean bearbeitet = false;
+	
+	/**
 	 * Erstellt einen Beitrag mit allen Eigenschaften.<br>
 	 * Einziger Konstruktor dieser Klasse.
 	 * @param userID Die ID des Verfassers
@@ -85,8 +90,9 @@ public class Beitrag {
 	 * @param beitragsID Die ID des Beitrags
 	 * @param like Wahrheitswert, ob der Beitrag den aktuellen Nutzer nicht besonders interessiert
 	 * @param loeschenErlaubt Wahrheitswert, ob der Beitrag vom aktuellen Nutzer gel&ouml;scht werden darf
+	 * @param bearbeitet Wahrheitswert, ob der Beitrag bearbeitet wurde
 	 */
-	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID, boolean like, boolean loeschenErlaubt) {
+	public Beitrag(int userID, String name, String timeStamp, String nachricht, int likes, int kommentare, int beitragsID, boolean like, boolean loeschenErlaubt, boolean bearbeitet) {
 		this.setUserID(userID);
 		this.setName(name);
 		this.setTimeStamp(timeStamp);
@@ -96,6 +102,7 @@ public class Beitrag {
 		this.setBeitragsID(beitragsID);
 		this.setLike(like);
 		this.setLoeschenErlaubt(loeschenErlaubt);
+		this.setBearbeitet(bearbeitet);
 	}
 
 	/**
@@ -288,6 +295,22 @@ public class Beitrag {
 	 */
 	public void setOrtName(String ortName) {
 		this.ortName = ortName;
+	}
+
+	/**
+	 * Getter f&uuml;r den Wahrheitswert, ob der Beitrag bearbeitet wurde.
+	 * @return Wahrheitswert
+	 */
+	public boolean isBearbeitet() {
+		return bearbeitet;
+	}
+
+	/**
+	 * Setter f&uuml;r den Wahrheitswert, ob der Beitrag bearbeitet wurde.
+	 * @param bearbeitet Wahrheitswert, ob der Beitrag bearbeitet wurde
+	 */
+	public void setBearbeitet(boolean bearbeitet) {
+		this.bearbeitet = bearbeitet;
 	}
 	
 }

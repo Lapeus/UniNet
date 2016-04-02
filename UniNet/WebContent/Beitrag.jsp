@@ -22,7 +22,7 @@
 						<div class="col-md-1">
 							<a href='#'><img class="media-object kommentarbild profil" alt="Profilbild" src="LadeProfilbildServlet?userID=${beitrag.userID}"></a>
 						</div>
-						<div class="col-md-10">
+						<div class="col-md-9">
 							<c:choose>
 								<c:when test="${beitrag.nichtChronik}">
 									<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a> <span class="glyphicon glyphicon-arrow-right" style="color: #3b5998;"></span>
@@ -32,19 +32,41 @@
 									<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a><br>
 								</c:when>
 							</c:choose>
-							<label class="zeitstempel">${beitrag.timeStamp}</label>
-						</div> <!-- col-md-10 -->
-						<div class="col-md-1">
-							<!-- Wenn es ein eigener Beitrag ist, darf er geloescht werden -->
+							<label class="zeitstempel">${beitrag.timeStamp}
+								<c:if test="${beitrag.bearbeitet}">
+									&nbsp;&nbsp;&nbsp;Bearbeitet
+								</c:if>
+							</label>
+						</div> <!-- col-md-9 -->
+						<div class="col-md-2">
+							<!-- Wenn es ein eigener Beitrag ist, darf er geloescht und bearbeitet werden -->
 							<c:if test="${beitrag.loeschenErlaubt}"> 
-								<a href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=BeitragLoeschen" title="Beitrag löschen"><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>
+								<div class="row">
+									<div class="col-md-8">
+										<a class="pull-right" href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=BeitragBearbeiten" title="Beitrag bearbeiten"><span class='glyphicon glyphicon-pencil' style='color:#3b5998;'></span></a>
+									</div>
+									<div class="col-md-3">
+										<a class="pull-right" href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=BeitragLoeschen" title="Beitrag löschen"><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>
+									</div>
+									<div class="col-md-1"></div>
+								</div>
 							</c:if>
 						</div>
 					</div> <!-- row kopf -->
-					<label class="beitrag"><br>
-						<!-- Der eigentliche Beitrag -->
-						${beitrag.nachricht}
-					</label><br><br>
+					<c:choose>
+						<c:when test="${beitragBearbeiten}">
+							<form action="BeitragServlet?name=BeitragBearbeitet&beitragsID=${beitrag.beitragsID}" method="post"><br>
+								<textarea autofocus class="form-control" rows="3" style="resize: none;" name="neuerBeitrag">${beitrag.nachricht}</textarea>
+								<button type="submit" class="btn btn-success pull-right">Ändern</button><br><br><br> 
+							</form>
+						</c:when>
+						<c:otherwise>
+							<label class="beitrag"><br>
+								<!-- Der eigentliche Beitrag -->
+								${beitrag.nachricht}
+							</label><br><br>
+						</c:otherwise>
+					</c:choose>
 					<div>
 						<ul class="nav nav-pills border">
 			  				<li role="presentation" class="like ${liClass}"><a href="BeitragServlet?beitragsID=${beitrag.beitragsID}&name=Like">Interessiert mich nicht besonders</a></li>

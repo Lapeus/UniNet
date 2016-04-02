@@ -58,7 +58,7 @@ public class BeitragTag extends TagSupport {
 		} 
 		String erg = "<div class='row'><div class='col-md-1'></div><div class='col-md-10 beitrag'><div class='row kopf'><br>";
 		erg += "<div class='col-md-1'><a href='#'><img class='media-object kommentarbild profil' alt='Profilbild' src='LadeProfilbildServlet?userID=" + beitrag.getUserID() + "'></a></div>";
-		erg += "<div class='col-md-10'>";
+		erg += "<div class='col-md-9'>";
 		// Ueberpruefung, ob der Beitrag in der Chronik oder wo anders (Gruppe, Veranstaltung) gepostet wurde
 		if (beitrag.isNichtChronik()) {
 			// Wenn nicht in der Chronik, fuege einen Pfeil und den entsprechenden Namen des Ortes hinzu (zB. Autor -> Gruppe1)
@@ -69,9 +69,18 @@ public class BeitragTag extends TagSupport {
 			// Sonst nur den Namen anzeigen
 			erg += "<a class='verfasser' href='ProfilServlet?userID=" + beitrag.getUserID() + "'>" + beitrag.getName() + "</a><br>";
 		}
-		erg += "<label class='zeitstempel'>" + beitrag.getTimeStamp() + "</label></div>";
+		erg += "<label class='zeitstempel'>" + beitrag.getTimeStamp();
+		if (beitrag.isBearbeitet())
+			erg += "&nbsp;&nbsp;&nbsp;Bearbeitet";
+			//erg += "<span title='Bearbeitet' class='glyphicon glyphicon-pencil'></span>";
+		erg += "</label></div>";
 		if (beitrag.getLoeschenErlaubt()) {
-			erg += "<div class='col-md-1'><a href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag löschen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a></div>";
+			erg += "<div class='col-md-2'><div class='row'>";
+			erg += "<div class='col-md-8'>";
+			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragBearbeiten' title='Beitrag bearbeiten'><span class='glyphicon glyphicon-pencil' style='color:#3b5998;'></span></a>";
+			erg += "</div><div class='col-md-3'>";
+			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen' title='Beitrag löschen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
+			erg += "</div><div class='col-md-1'></div></div></div>";
 		}
 		erg += "</div><label class='beitrag'><br>" + beitrag.getNachricht() + "</label><br><br>";
 		erg += "<div><ul class='nav nav-pills border'>";

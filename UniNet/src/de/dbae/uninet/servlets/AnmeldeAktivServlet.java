@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.Beziehungsrechner;
 import de.dbae.uninet.javaClasses.Semesterrechner;
 import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
@@ -139,6 +140,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						}
 						// Wenn es ein Student ist, leite an Startseite weiter
 						if (studentenIDs.contains(userid)) {
+							// Freundesbewertung fuer diesen Nutzer aktualisieren
+							new Beziehungsrechner().setBeziehung(Integer.parseInt(userid));
 							response.sendRedirect("StartseiteServlet");
 						// Sonst an die LocalAdmin Verwaltung
 						} else {

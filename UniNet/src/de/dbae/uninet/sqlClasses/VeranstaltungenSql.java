@@ -19,7 +19,7 @@ public class VeranstaltungenSql {
 		switch (action) {
 		// Gibt alle Beitraege aus der Veranstaltung zurueck
 		case "Beitraege":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit "
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet "
 					+ "FROM veranstaltungsbeitraege INNER JOIN beitragsView USING (beitragsID) WHERE veranstaltungsID = ? ORDER BY beitragsID DESC";
 			break;
 		// Gibt alle relevanten Infos der Veranstaltung zurueck

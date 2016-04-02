@@ -315,10 +315,60 @@ public class GruppenServlet extends HttpServlet {
 		pStmt.setInt(1, id);
 		pStmt.setInt(2, userID);
 		pStmt.executeUpdate();
+		// War der User Admin der Gruppe?
+		sql = sqlSt.getSqlStatement("IstAdmin");
+		pStmt = con.prepareStatement(sql);
+		pStmt.setInt(1, id);
+		pStmt.setInt(2, userID);
+		ResultSet rs = pStmt.executeQuery();
+		if (rs.next()) {
+			// Wenn der User Admin war
+			if (rs.getInt(1) > 0) {
+				// Muss der engste Freund innerhalb der Gruppe ermittelt werden
+				sql = sqlSt.getSqlStatement("EngsterFreundInGruppe");
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, userID);
+				pStmt.setInt(2, id);
+				pStmt.setInt(3, userID);
+				pStmt.setInt(4, id);
+				ResultSet rs2 = pStmt.executeQuery();
+				int neueAdminID = -1;
+				// Wenn es einen Freund gibt
+				if (rs2.next()) {
+					// Setze ihn als neuen Admin
+					neueAdminID = rs2.getInt(1);
+				// Wenn es keinen Freund mehr innerhalb der Gruppe gibt
+				} else {
+					sql = sqlSt.getSqlStatement("Mitglieder") + "studentID";
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, id);
+					rs2 = pStmt.executeQuery();
+					// Wenn es noch ein Mitglied gibt
+					if (rs2.next()) {
+						// Setze das erste Mitglied als neuen Admin
+						neueAdminID = rs2.getInt(3);
+					// Wenn es keinen Admin mehr gibt
+					} else {
+						// Loesche die ganze Gruppe
+						sql = sqlSt.getSqlStatement("GruppeLoeschen");
+						pStmt = con.prepareStatement(sql);
+						pStmt.setInt(1, id);
+						pStmt.executeUpdate();
+					}
+				}
+				// Wenn es einen neuen Admin gibt
+				if (neueAdminID != -1) {
+					// Setze den neuen Admin
+					sql = sqlSt.getSqlStatement("AdminIDSetzen");
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, neueAdminID);
+					pStmt.setInt(2, id);
+					pStmt.executeUpdate();
+				}
+			}
+		}
 		// Weiterleitung
 		response.sendRedirect("GruppenServlet?name=Uebersicht");
-		
-		//TODO Was passiert wenn der Admin die Gruppe verlaesst? Adminrechte muessen weitergegeben werden
 	}
 	
 	/**

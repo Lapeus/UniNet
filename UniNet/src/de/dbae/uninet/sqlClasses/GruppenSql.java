@@ -31,7 +31,7 @@ public class GruppenSql {
 			break;
 		// Gibt saemtliche Beitraege aus der Gruppe mit allen Eigenschaften antichronologisch zurueck
 		case "Beitraege":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit "
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet "
 					+ "FROM gruppenbeitraege INNER JOIN beitragsView USING (beitragsID) WHERE gruppenID = ? ORDER BY beitragsID DESC";
 			break;
 		// Gibt alle Gruppen zurueck, in denen der Nutzer aktuell ist (fuer die linke Spalte)
@@ -65,6 +65,18 @@ public class GruppenSql {
 			sql= "SELECT DISTINCT freund AS freundID, Vorname, Nachname FROM gruppenmitglieder "
 					+ "INNER JOIN freundeview ON studentID = nutzer "
 					+ "INNER JOIN nutzer ON freund = userID WHERE gruppenID = ?";
+			break;
+		case "IstAdmin":
+			sql = "SELECT COUNT(gruppenID) FROM gruppen WHERE gruppenID = ? AND adminID = ?";
+			break;
+		case "EngsterFreundInGruppe":
+			sql = "SELECT freund FROM freundeView "
+					+ "INNER JOIN gruppenmitglieder ON (nutzer = ? AND gruppenID = ? AND freund = studentID) WHERE bewertung = "
+					+ "(SELECT MAX(bewertung) FROM freundeView "
+					+ "INNER JOIN gruppenmitglieder ON (nutzer = ? AND gruppenID = ? AND freund = studentID))";
+			break;
+		case "AdminIDSetzen":
+			sql = "UPDATE gruppen SET adminID = ? WHERE gruppenID = ?";
 			break;
 		default:
 			System.err.println("FEHLER IN GRUPPENSQL " + action);

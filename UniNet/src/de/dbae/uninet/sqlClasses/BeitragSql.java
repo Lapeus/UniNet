@@ -19,7 +19,7 @@ public class BeitragSql {
 		switch (action) {
 		// Alle Informationen fuer den Beitrag
 		case "Beitrag":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, Datum, Uhrzeit, Sichtbarkeit FROM beitragsView WHERE beitragsID = ?";
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM beitragsView WHERE beitragsID = ?";
 			break;
 		// Loescht den entsprechenden Beitrag mittels beitragsID
 		case "BeitragLoeschen":
@@ -48,6 +48,10 @@ public class BeitragSql {
 		// Speichert den Beitrag als Gruppenbeitrag
 		case "BeitragAnlegenGruppe":
 			sql = "INSERT INTO gruppenbeitraege VALUES (?, ?)";
+			break;
+		// Aktualisiert den Beitrag und setzt das Bearbeitet-Attribut
+		case "BeitragBearbeiten":
+			sql = "UPDATE beitraege SET beitrag = ?, bearbeitet = TRUE WHERE beitragsID = ?";
 			break;
 		// Speichert, dass dieser Beitrag von einer entsprechenden Person (studentID) mit 'interessiert mich nicht besonders' markiert wurde
 		case "BeitragLiken":
