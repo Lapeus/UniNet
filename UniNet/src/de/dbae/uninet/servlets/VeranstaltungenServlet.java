@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.HashtagVerarbeitung;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.BeitragSql;
@@ -294,6 +295,12 @@ public class VeranstaltungenServlet extends HttpServlet {
 		// Stellt die Sql-Statements zur Verfuegung
 		BeitragSql sqlSt = new BeitragSql();
 		String beitrag = request.getAttribute("beitrag").toString();
+		// Neues Verarbeitungsobjekt
+		HashtagVerarbeitung hv = new HashtagVerarbeitung(beitrag);
+		// Hole die Liste der Hashtags die gesetzt wurden
+		List<String> hashtags = hv.getAndSetHashTags();
+		// Hole die geaenderte Eingabe und ersetze entsprechend den Beitrag
+		beitrag = hv.getEingabe();
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
 		String sichtbarkeit = request.getParameter("sichtbarkeit");
 		boolean sichtbar = true;
@@ -324,6 +331,8 @@ public class VeranstaltungenServlet extends HttpServlet {
 			int veranstaltungsID = Integer.parseInt(request.getParameter("veranstaltungsID"));
 			pStmt.setInt(2, veranstaltungsID);
 			pStmt.executeUpdate();
+			// Mit der BeitragsID koennen nun die Hashtags gesetzt werden
+			hv.setHashTags(con, hashtags, beitragsID);
 			// Weiterleitung
 			response.sendRedirect("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + veranstaltungsID);
 		} else {

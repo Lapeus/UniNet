@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Gruppe;
+import de.dbae.uninet.javaClasses.HashtagVerarbeitung;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.GruppenSql;
 
@@ -255,6 +256,12 @@ public class GruppenServlet extends HttpServlet {
 		BeitragSql sqlSt = new BeitragSql();
 		// Der Beitrag der gepostet werden soll
 		String beitrag = request.getAttribute("beitrag").toString();
+		// Neues Verarbeitungsobjekt
+		HashtagVerarbeitung hv = new HashtagVerarbeitung(beitrag);
+		// Hole die Liste der Hashtags die gesetzt wurden
+		List<String> hashtags = hv.getAndSetHashTags();
+		// Hole die geaenderte Eingabe und ersetze entsprechend den Beitrag
+		beitrag = hv.getEingabe();
 		// Die ID des Verfassers
 		int verfasserID = Integer.parseInt(session.getAttribute("UserID").toString());
 		// Die Sichtbarkeit des Beitrags
@@ -288,6 +295,8 @@ public class GruppenServlet extends HttpServlet {
 			int gruppenID = Integer.parseInt(request.getParameter("gruppenID"));
 			pStmt.setInt(2, gruppenID);
 			pStmt.executeUpdate();
+			// Mit der BeitragsID koennen jetzt die Hashtags gesetzt werden
+			hv.setHashTags(con, hashtags, beitragsID);
 			// Weiterleitung
 			response.sendRedirect("GruppenServlet?tab=beitraege&gruppenID=" + gruppenID);
 		} else {

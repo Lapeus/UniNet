@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
 import de.dbae.uninet.javaClasses.Emoticon;
+import de.dbae.uninet.javaClasses.HashtagVerarbeitung;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Kommentar;
 import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
@@ -170,11 +171,20 @@ public class BeitragServlet extends HttpServlet {
 			} else {
 				switch (name) {
 				case "BeitragBearbeitet":
-					String sql = sqlSt.getSqlStatement("BeitragBearbeiten");
+					int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
+					// Bisherige Hashtags loeschen
+					String sql = sqlSt.getSqlStatement("HashtagsLoeschen");
 					PreparedStatement pStmt = con.prepareStatement(sql);
-					pStmt.setString(1, request.getAttribute("neuerBeitrag").toString());
-					pStmt.setInt(2, Integer.parseInt(request.getParameter("beitragsID")));
+					pStmt.setInt(1, beitragsID);
 					pStmt.executeUpdate();
+					// Beitrag bearbeiten
+					sql = sqlSt.getSqlStatement("BeitragBearbeiten");
+					pStmt = con.prepareStatement(sql);
+					String beitrag = new HashtagVerarbeitung(request.getAttribute("neuerBeitrag").toString()).setHashTags(con, beitragsID);
+					pStmt.setString(1, beitrag);
+					pStmt.setInt(2, beitragsID);
+					pStmt.executeUpdate();
+					// Beitrag neu laden
 					kompletterLoad(request, response, request.getSession());
 					break;
 				default:
@@ -278,8 +288,8 @@ public class BeitragServlet extends HttpServlet {
 				if (optionalParam.length > 0) {
 					// Setze das entsprechende Attribut
 					request.setAttribute("beitragBearbeiten", optionalParam[0]);
-					// Aendere die Darstellung der Emoticons
-					beitrag.setNachricht(inverseEmoticonFilter(beitrag.getNachricht()));
+					// Aendere die Darstellung der Emoticons und Hashtags
+					beitrag.setNachricht(inverseFilter(beitrag.getNachricht()));
 				}
 				// Wenn man den Beitrag selbst markiert hat
 				if (like) {
@@ -476,11 +486,14 @@ public class BeitragServlet extends HttpServlet {
 			page += "?tab=beitraege";
 			page += "&gruppenID=" + request.getParameter("gruppenID");
 		}
+		String kommentar = request.getAttribute("kommentar").toString();
+		// Hashtags verarbeiten
+		kommentar = new HashtagVerarbeitung(kommentar).setHashTags();
 		// Lade das Sql-Statement
 		String sql = sqlSt.getSqlStatement("Kommentieren");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, beitragsID);
-		pStmt.setString(2, request.getAttribute("kommentar").toString());
+		pStmt.setString(2, kommentar);
 		pStmt.setInt(3, userID);
 		// Setzte den Zeitstempel (jetzt)
 		pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
@@ -529,7 +542,6 @@ public class BeitragServlet extends HttpServlet {
 		pStmt.executeUpdate();
 		// Weiterleitung an die entsprechende Seite
 		response.sendRedirect(page);
-			
 	}
 	
 	/**
@@ -859,12 +871,34 @@ public class BeitragServlet extends HttpServlet {
 		request.getRequestDispatcher("Beitrag.jsp").forward(request, response);
 	}
 	
-	private String inverseEmoticonFilter(String beitrag) {
+	private String inverseFilter(String beitrag) {
 		// Lade alle Emoticons
 		List<Emoticon> emoticons = new EmoticonServlet().getEmoticons();
 		for (Emoticon emo : emoticons) {
 			// Ersetze alle Kuerzel durch ihre Unicode-Zeichen
 			beitrag = beitrag.replace(emo.getBild(), emo.getCode());
+		}
+		while (beitrag.contains("<a href='HashtagServlet?tag=#")) {
+			int index = beitrag.indexOf("<a href='HashtagServlet?tag=#") + 28;
+			String hashtag = "";
+			int secondIndex = index;
+			for (int i = index; i < beitrag.length(); i++) {
+				if (beitrag.charAt(i) == '\'') {
+					hashtag = beitrag.substring(index, i);
+					// I ist die Stelle des Endes des Links
+					secondIndex = i;
+					break;
+				}
+			}
+			for (int i = secondIndex + 2; i < beitrag.length(); i++) {
+				if (beitrag.charAt(i) == '>') {
+					// I ist die Stelle des zweite >
+					secondIndex = i;
+				}
+			}
+			beitrag = beitrag.substring(0, index - 28) + hashtag + beitrag.substring(secondIndex + 1);
+			if (beitrag.startsWith(" "))
+				beitrag = beitrag.substring(1);
 		}
 		return beitrag;
 	}

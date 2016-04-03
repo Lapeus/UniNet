@@ -57,6 +57,10 @@ public class BeitragSql {
 		case "BeitragBearbeiten":
 			sql = "UPDATE beitraege SET beitrag = ?, bearbeitet = TRUE WHERE beitragsID = ?";
 			break;
+		// Loescht die Hashtags zu diesem Beitrag (beim Bearbeiten noetig)
+		case "HashtagsLoeschen":
+			sql = "DELETE FROM hashtags WHERE beitragsID = ?";
+			break;
 		// Speichert, dass dieser Beitrag von einer entsprechenden Person (studentID) mit 'interessiert mich nicht besonders' markiert wurde
 		case "BeitragLiken":
 			sql = "INSERT INTO beitraglikes VALUES (?, ?)";
