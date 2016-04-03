@@ -62,16 +62,12 @@ public class Beitrag {
 	private boolean loeschenErlaubt;
 	
 	/**
-	 * Gibt an, ob der Beitrag in der Chronik oder einer Gruppe / Veranstaltung verfasst wurde (wichtig f&uuml;r den Pfeil mit dem Ort)<br>.
-	 * <b>False</b> f&uuml;r Chronik, <b>True</b> f&uuml;r einen anderen Ort
-	 */
-	private boolean nichtChronik = false;
-	
-	/**
 	 * Name der Gruppe / Veranstaltung, in dem der Beitrag gepostet wurde.<br>
 	 * Falls er in der Chronik gepostet wurde, ist der Wert standardm&auml;&szlig;ig leer.
 	 */
 	private String ortName = "";
+	
+	private String ortLink = "";
 	
 	/**
 	 * Gibt an, ob der Beitrag bereits bearbeitet wurde.
@@ -266,22 +262,6 @@ public class Beitrag {
 	}
 
 	/**
-	 * Getter f&uuml;r den Wahrheitswert, ob der Beitrag in der Chronik oder in einer Gruppe / Veranstaltung gepostet wurde.
-	 * @return Wahrheitswert
-	 */
-	public boolean isNichtChronik() {
-		return nichtChronik;
-	}
-
-	/**
-	 * Setter f&uuml;r den Wahrheitswert, ob der Beitrag in der Chronik oder in einer Gruppe / Veranstaltung gepostet wurde.
-	 * @param nichtChronik Wahrheitswert
-	 */
-	public void setNichtChronik(boolean nichtChronik) {
-		this.nichtChronik = nichtChronik;
-	}
-
-	/**
 	 * Getter f&uuml;r den Namen des Ortes, an dem der Beitrag gepostet wurde.
 	 * @return Name des Ortes
 	 */
@@ -311,6 +291,14 @@ public class Beitrag {
 	 */
 	public void setBearbeitet(boolean bearbeitet) {
 		this.bearbeitet = bearbeitet;
+	}
+
+	public String getOrtLink() {
+		return ortLink;
+	}
+
+	public void setOrtLink(String ortLink) {
+		this.ortLink = ortLink;
 	}
 	
 }

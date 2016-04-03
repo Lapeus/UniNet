@@ -248,15 +248,27 @@ public class BeitragServlet extends HttpServlet {
 				beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt, bearbeitet);
 				// Kommentare laden
 				beitrag.setKommentarList(getKommentare(beitragsID, userID));
-				sql = sqlSt.getSqlStatement("OrtName");
+				// Schaue, ob der Beitrag in einer Gruppe gepostet wurde
+				sql = sqlSt.getSqlStatement("GruppenID");
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				ResultSet rs3 = pStmt.executeQuery();
-				// Fuer den Fall dass es kein Chronikbeitrag ist
+				// Wenn er aus einer Gruppe kommt
 				if (rs3.next()) {
-					// Setze den Wahrheitswert und den Ort des Beitrags
-					beitrag.setNichtChronik(true);
-					beitrag.setOrtName(rs3.getString(1));
+					beitrag.setOrtLink("GruppenServlet?tab=beitraege&gruppenID=" + rs3.getInt(1));
+					beitrag.setOrtName(rs3.getString(2));
+				} else {
+					// Schaue, ob der Beitrag in einer Veranstaltung gepostet wurde
+					sql = sqlSt.getSqlStatement("VeranstaltungsID");
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, beitragsID);
+					rs3 = pStmt.executeQuery();
+					// Wenn er aus einer Veranstaltung kommt
+					if (rs3.next()) {
+						beitrag.setOrtLink("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + rs3.getInt(1));
+						beitrag.setOrtName(rs3.getString(2));
+					}
+					// Wenn er aus der Chronik kommt, muessen wir nichts tun
 				}
 				// Grammatikalische Unterscheidung fuer den Sonderfall Anzahl = 1
 				request.setAttribute("beitragLikesPersonen", beitrag.getLikes() == 1 ? "Eine Person" : beitrag.getLikes() + " Personen");
@@ -761,16 +773,27 @@ public class BeitragServlet extends HttpServlet {
 				boolean loeschenErlaubt = userID == id;
 				// Beitrag erstellen
 				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt, bearbeitet);
-				// Wurde der Beitrag in der Chronik oder woanders gepostet
-				sql = sqlSt.getSqlStatement("OrtName");
+				// Schaue, ob der Beitrag in einer Gruppe gepostet wurde
+				sql = sqlSt.getSqlStatement("GruppenID");
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				ResultSet rs3 = pStmt.executeQuery();
-				// Wenn er woanders gepostet wurde
+				// Wenn er aus einer Gruppe kommt
 				if (rs3.next()) {
-					// Wahrheitswert setzen und den Namen des Ortes speichern
-					beitrag.setNichtChronik(true);
-					beitrag.setOrtName(rs3.getString(1));
+					beitrag.setOrtLink("GruppenServlet?tab=beitraege&gruppenID=" + rs3.getInt(1));
+					beitrag.setOrtName(rs3.getString(2));
+				} else {
+					// Schaue, ob der Beitrag in einer Veranstaltung gepostet wurde
+					sql = sqlSt.getSqlStatement("VeranstaltungsID");
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, beitragsID);
+					rs3 = pStmt.executeQuery();
+					// Wenn er aus einer Veranstaltung kommt
+					if (rs3.next()) {
+						beitrag.setOrtLink("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + rs3.getInt(1));
+						beitrag.setOrtName(rs3.getString(2));
+					}
+					// Wenn er aus der Chronik kommt, muessen wir nichts tun
 				}
 				// Beitrag der Liste hinzufuegen
 				beitragList.add(0, beitrag);

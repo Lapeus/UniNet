@@ -60,11 +60,11 @@ public class BeitragTag extends TagSupport {
 		erg += "<div class='col-md-1'><a href='#'><img class='media-object kommentarbild profil' alt='Profilbild' src='LadeProfilbildServlet?userID=" + beitrag.getUserID() + "'></a></div>";
 		erg += "<div class='col-md-9'>";
 		// Ueberpruefung, ob der Beitrag in der Chronik oder wo anders (Gruppe, Veranstaltung) gepostet wurde
-		if (beitrag.isNichtChronik()) {
+		if (!beitrag.getOrtLink().equals("")) {
 			// Wenn nicht in der Chronik, fuege einen Pfeil und den entsprechenden Namen des Ortes hinzu (zB. Autor -> Gruppe1)
 			erg += "<a class='verfasser' href='ProfilServlet?userID=" + beitrag.getUserID() + "'>" + beitrag.getName() + 
 					"</a> <span class='glyphicon glyphicon-arrow-right' style='color: #3b5998;'></span> ";
-			erg += "<a class='verfasser' href='#'>" + beitrag.getOrtName() + "</a><br>";
+			erg += "<a class='verfasser' href='" + beitrag.getOrtLink() + "'>" + beitrag.getOrtName() + "</a><br>";
 		} else {
 			// Sonst nur den Namen anzeigen
 			erg += "<a class='verfasser' href='ProfilServlet?userID=" + beitrag.getUserID() + "'>" + beitrag.getName() + "</a><br>";
@@ -79,7 +79,7 @@ public class BeitragTag extends TagSupport {
 			erg += "<div class='col-md-8'>";
 			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragBearbeiten' title='Beitrag bearbeiten'><span class='glyphicon glyphicon-pencil' style='color:#3b5998;'></span></a>";
 			erg += "</div><div class='col-md-3'>";
-			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen' title='Beitrag löschen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
+			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag löschen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
 			erg += "</div><div class='col-md-1'></div></div></div>";
 		}
 		erg += "</div><label class='beitrag'><br>" + beitrag.getNachricht() + "</label><br><br>";

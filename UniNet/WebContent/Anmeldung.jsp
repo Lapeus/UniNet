@@ -7,12 +7,13 @@
 <head>
 <link rel="stylesheet" href="/UniNet/CSS/bootstrap.css">
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
+<link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Willkommen bei UniNet</title>
 </head>
-<body>
+<body class="anmeldung">
 	<jsp:include page="/AnmeldePassivServlet"></jsp:include>
-	<form class="form-inline containerColor" action="AnmeldeAktivServlet" method="post">
+	<form class="form-inline containerColor anmeldeKopf" action="AnmeldeAktivServlet" method="post">
 		<div class="row"><br></div>
 		<div class="col-md-2"></div>
 		<div class="col-md-4">

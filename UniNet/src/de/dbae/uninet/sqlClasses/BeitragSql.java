@@ -25,9 +25,13 @@ public class BeitragSql {
 		case "BeitragLoeschen":
 			sql = "DELETE FROM beitraege WHERE beitragsID = ?";
 			break;
-		// Gibt den Namen der Gruppe / Veranstaltung zurueck, in der der Beitrag gepostet wurde (null fuer Chronik)
-		case "OrtName":
-			sql = "SELECT name FROM beitragsOrt WHERE beitragsID = ?";
+		// Gibt - sofern vorhanden - den Namen und die GruppenID der Gruppe zurueck, in der der Beitrag gepostet wurde
+		case "GruppenID":
+			sql = "SELECT gruppenID, name FROM gruppen INNER JOIN gruppenbeitraege USING (gruppenID) WHERE beitragsID = ?";
+			break;
+		// Gibt - sofern vorhanden - den Namen und die VeranstaltungsID der Veranstaltung zurueck, in der der Beitrag gepostet wurde	
+		case "VeranstaltungsID":
+			sql = "SELECT veranstaltungsID, name FROM veranstaltungen INNER JOIN veranstaltungsbeitraege USING (veranstaltungsID) WHERE beitragsID = ?";
 			break;
 		// Fuegt einen Beitrag hinzu
 		case "BeitragAnlegen1":

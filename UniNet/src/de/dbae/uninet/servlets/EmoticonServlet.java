@@ -324,6 +324,10 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(open lock)", "&#x1F513"));
 			break;
 		case "Sonstiges":
+			emoticons.add(new Emoticon("(uLogo)", "<img style='margin-left: 4px; margin-right: 4px; width: 16px; height: 16px;'"
+					+ " alt='(uninet)' src='UniNet_Logo.ico'>"));
+			emoticons.add(new Emoticon("(uninet)", "<span class='facebook'>r<span class='facebook2'>UNINET</span>r</span>"));
+			emoticons.add(new Emoticon("(facebook)", "<span class='facebook'>r<span class='facebook2'>facebook</span>r</span>"));
 			emoticons.add(new Emoticon("(door)", "&#x1F6AA"));
 			emoticons.add(new Emoticon("(castle)", "&#x1F3F0"));
 			emoticons.add(new Emoticon("(camera)", "&#x1F3A5"));

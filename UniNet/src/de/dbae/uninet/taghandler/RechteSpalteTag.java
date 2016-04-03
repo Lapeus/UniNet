@@ -47,19 +47,26 @@ public class RechteSpalteTag extends TagSupport {
 	public String getHtmlCode(List<Student> chatfreunde) {
 		String erg = "<div class='rechteSpalte'>";
 		erg += "<ul class='nav nav-stacked chatSpalte'>";
-		erg += "<li role='presentation'><H4 class='mittig'><b>Chat-Fenster (" + chatfreunde.size() + ")</b></H4></li><br>";
+		erg += "<li role='presentation'><H4 class='mittig'><b>FREUNDE";
+		erg += " online</b></H4></li><br>";
 		erg += "<li><ul class='nav nav-pills nav-stacked'>";
+		int anzahlOnline = 0;
 		// Fuer jeden Freund aus der Liste
 		for (Student freund : chatfreunde) {
 			String online = "";
 			// Schaue ob er online ist
 			if (freund.isOnline()) {
+				anzahlOnline++;
 				// Wenn ja, haenge das Online-Symbol an seinen Namen
 				online = "<span class='glyphicon glyphicon-record pull-right' style='color: #00df00;'></span>";
 			}
 			erg += "<li role='presentation' class='chatfreunde'><a href='NachrichtenServlet?userID=" + freund.getUserID()+ "'>" + freund.getVorname() + " " + freund.getNachname() + online + "</a></li>";
 		}
 		erg += "</ul></ul></div>";
+		if (anzahlOnline == 1) 
+			erg = erg.replace("FREUNDE", "1 Freund");
+		else 
+			erg = erg.replace("FREUNDE", anzahlOnline + " Freunde");
 		return erg;
 	}
 	

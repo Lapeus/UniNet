@@ -8,6 +8,7 @@
 <title>UniNet - Profil bearbeiten</title>
 <link rel="stylesheet" href="/UniNet/CSS/bootstrap.css">
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
+<link rel="icon" href="UniNet_Logo.ico">
 </head>
 <body>
 <page:seitenAufbau chatfreunde="${chatfreunde}">

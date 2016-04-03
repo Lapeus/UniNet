@@ -8,6 +8,7 @@
 <head>
 <link rel="stylesheet" href="/UniNet/CSS/bootstrap.css">
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
+<link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>UniNet - Beitrag von ${beitrag.name}</title>
 </head>
@@ -24,13 +25,13 @@
 						</div>
 						<div class="col-md-9">
 							<c:choose>
-								<c:when test="${beitrag.nichtChronik}">
+								<c:when test="${beitrag.ortLink != ''}">
 									<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a> <span class="glyphicon glyphicon-arrow-right" style="color: #3b5998;"></span>
-									<a class="verfasser" href="#">${beitrag.ortName}</a><br>
+									<a class="verfasser" href="${beitrag.ortLink}">${beitrag.ortName}</a><br>
 								</c:when>
-								<c:when test="${!beitrag.nichtChronik}">
+								<c:otherwise>
 									<a class="verfasser" href="ProfilServlet?userID=${beitrag.userID}">${beitrag.name}</a><br>
-								</c:when>
+								</c:otherwise>
 							</c:choose>
 							<label class="zeitstempel">${beitrag.timeStamp}
 								<c:if test="${beitrag.bearbeitet}">

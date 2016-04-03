@@ -8,6 +8,8 @@
 <head>
 <link rel="stylesheet" href="/UniNet/CSS/bootstrap.css">
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
+<link rel="icon" href="UniNet_Logo.ico">
+<link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>UniNet - Profilseite</title>
 </head>

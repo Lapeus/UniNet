@@ -68,7 +68,7 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 				chatfreunde.add(freund);
 			}
 		} catch (Exception e) {
-			System.out.println("SQL-Fehler ist aufgetreten (ChatFrende)");
+			System.out.println("SQL-Fehler ist aufgetreten (ChatFreunde)");
 		} finally {
 			dbcon.close();
 		}
