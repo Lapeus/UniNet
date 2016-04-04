@@ -110,6 +110,7 @@ body.anmeldung {
 	background: -moz-linear-gradient(white, white 20%, #dfe3ee 100%);
 	background: -webkit-linear-gradient(white, white 20%, #dfe3ee 100%);
 	background: -o-linear-gradient(white, white 20%, #dfe3ee 100%); 
+	max-width: 100%; 
 }
 
 div.kopfzeile {
@@ -139,7 +140,7 @@ div.rechteSpalte {
 	height: 85vh;
 	position: fixed;
 	margin-left: 80%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	border: 1px solid #BFBFBF;
 }
 
@@ -157,6 +158,8 @@ h4.mittig {
 
 html {
 	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
 }
 
 img.profilbild {

@@ -75,8 +75,7 @@ public class LadeChatFreundeServlet extends HttpServlet{
 				String nachname = rs.getString(2);
 				int userID = rs.getInt(3);
 				// Lege einen neuen Studenten an und fuege ihn der Liste hinzu
-				for (int i = 0; i < 15; i++)
-					chatfreunde.add(new Student(vorname, nachname, userID, true));
+				chatfreunde.add(new Student(vorname, nachname, userID, true));
 			}
 		} catch (Exception e) {
 			System.err.println("SQL-Fehler ist aufgetreten (ChatFreunde)");

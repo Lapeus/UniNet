@@ -16,16 +16,26 @@ public class HashtagVerarbeitung {
 	}
 	
 	public String setHashTags() {
+		// Neue Liste fuer die Hashtags
 		hashtags = new ArrayList<String>();
-		// Hashtag am Anfang
+		// Wenn die Eingabe mit # beginnt
 		if (eingabe.startsWith("#")) 
+			// Muss aus Gruenden ein Leerzeichen davor gesetzt werden
 			eingabe = " " + eingabe;
+		// Solange noch zu ersetzende Hashtags in der Eingabe vorhanden sind
 		while (eingabe.contains(" #") || eingabe.contains("<br>#")) {
+			// Index des #-Zeichens nach Leerzeichen
 			int index = eingabe.indexOf(" #") + 1;
+			System.out.println("Index = " + index);
+			// Wenn kein #-Zeichen vorgekommen ist
 			if (index == 0)
+				// Index des #-Zeichens nach Zeilenumbruch
 				index = eingabe.indexOf("<br>#") + 4;
+			System.out.println("Index = " + index);
 			int secondIndex;
+			// Index des naechsten Leerzeichens
 			int secondIndex1 = eingabe.substring(index).indexOf(" ");
+			// Index des naechsten Zeilenumbruchs
 			int secondIndex2 = eingabe.substring(index).indexOf("<br>");
 			// Wenn beides drin ist
 			if (secondIndex1 >= 0 && secondIndex2 >= 0)
@@ -39,9 +49,14 @@ public class HashtagVerarbeitung {
 				// Nimm das letzte Zeichen
 				secondIndex = eingabe.substring(index).length();
 			secondIndex += index;
+			if (Character.getNumericValue(eingabe.charAt(secondIndex - 1)) == -1 && secondIndex != eingabe.length()) 
+				secondIndex--;
 			String hashtag = eingabe.substring(index, secondIndex);
 			hashtags.add(hashtag);
-			eingabe = eingabe.replace(hashtag, "<a href='HashtagServlet?tag=" + hashtag + "'>" + hashtag + "</a>");
+			System.out.println(eingabe);
+			eingabe = eingabe.substring(0, index) + "<a href='HashtagServlet?tag=" + hashtag.substring(1) + "'>" + hashtag + "</a>"
+					+ eingabe.substring(secondIndex);
+			System.out.println(eingabe);
 		}
 		return eingabe;
 	}

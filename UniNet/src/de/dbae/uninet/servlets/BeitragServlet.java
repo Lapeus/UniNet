@@ -743,6 +743,12 @@ public class BeitragServlet extends HttpServlet {
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
 			break;
+		case "Hashtag":
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM "
+					+ "(SELECT * FROM hashtags WHERE hashtag = ?) AS Tab1 INNER JOIN beitragsView USING(beitragsID)";
+			pStmt = con.prepareStatement(sql);
+			pStmt.setString(1, optionalParams[0]);
+			break;
 		default:
 			pStmt = con.prepareStatement("");
 			break;
@@ -878,6 +884,7 @@ public class BeitragServlet extends HttpServlet {
 			// Ersetze alle Kuerzel durch ihre Unicode-Zeichen
 			beitrag = beitrag.replace(emo.getBild(), emo.getCode());
 		}
+		beitrag = beitrag.replace("<br>", "\n");
 		while (beitrag.contains("<a href='HashtagServlet?tag=#")) {
 			int index = beitrag.indexOf("<a href='HashtagServlet?tag=#") + 28;
 			String hashtag = "";
@@ -894,6 +901,7 @@ public class BeitragServlet extends HttpServlet {
 				if (beitrag.charAt(i) == '>') {
 					// I ist die Stelle des zweite >
 					secondIndex = i;
+					break;
 				}
 			}
 			beitrag = beitrag.substring(0, index - 28) + hashtag + beitrag.substring(secondIndex + 1);
