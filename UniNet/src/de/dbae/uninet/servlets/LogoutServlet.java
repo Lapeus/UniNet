@@ -3,6 +3,7 @@ package de.dbae.uninet.servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,15 +49,16 @@ public class LogoutServlet extends HttpServlet {
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
 			pStmt.executeUpdate();
-		} catch (Exception e) {
-			System.err.println("Fehler beim Ausloggen");
-			// TODO Fehler
+			// Weiterleitung auf die Anmeldeseite
+			response.sendRedirect("Anmeldung.jsp");
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();
 		}
-		// Weiterleitung auf die Anmeldeseite
-		response.sendRedirect("Anmeldung.jsp");
 	}
 
 	/**

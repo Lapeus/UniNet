@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 
@@ -55,17 +56,16 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Lade Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
-		
 		// Setze die aktuelle Session
 		session = request.getSession();
-		// Die ID des Nutzers, dessen Profil bearbeitet werden soll
-		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		// DB-Verbindung oeffnen
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
+			// Die ID des Nutzers, dessen Profil bearbeitet werden soll
+			int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 			// Lade Sql-Statement um die zu bearbeitenden Infos zu laden
 			String sql = sqlSt.getSqlStatement("InfosBearbeiten");
 			PreparedStatement pStmt = con.prepareStatement(sql);
@@ -96,9 +96,10 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 				// Weiterleitung
 				request.getRequestDispatcher("ProfilBearbeiten.jsp").forward(request, response);
 			}
-		} catch (Exception e) {
-			System.err.println("SQL Fehler in ProfilBearbeitenServlet");
-			// TODO Fehler
+		} catch (NullPointerException npe) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();
@@ -111,12 +112,12 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Setze aktuelle Session
 		session = request.getSession();
-		// Die ID des Nutzers, dessen Profil bearbeitet werden soll
-		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		// Neue DB-Verbindung oeffnen
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Die ID des Nutzers, dessen Profil bearbeitet werden soll
+			int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 			// Lade Sql-Statement um den Namen zu aendern
 			String sql = sqlSt.getSqlStatement("AendereNamen");
 			PreparedStatement pStmt = con.prepareStatement(sql);
@@ -149,10 +150,10 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			pStmt.executeUpdate();
 			// Weiterleitung
 			response.sendRedirect("ProfilServlet?userID=" + userID);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("SQL Fehler in ProfilBearbeitenServlet");
-			// TODO Fehler
+		} catch (NullPointerException npe) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();

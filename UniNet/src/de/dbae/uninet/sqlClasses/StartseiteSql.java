@@ -17,10 +17,17 @@ public class StartseiteSql {
 		String sql = "";
 		// Unterscheidung der verschiedenen Statements
 		switch (action) {
-		// Gibt alle relevanten Beitraege zurueck
-		case "Beitraege":
+		// Gibt alle Beitraege der Freunde der letzten 100 Stunden zurueck
+		case "AlleFreundeBeitraege":
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet, Bewertung FROM "
+					+ "freundeView INNER JOIN beitragsView ON (freund = verfasserID) WHERE nutzer = ? AND "
+					+ "(SELECT DATE_PART('day', ?::timestamp - datum::timestamp) * 24 + DATE_PART('hour', ?::time - uhrzeit::time)) < 100 ORDER BY beitragsID DESC";
+			break;
+		// Gibt alle eigenen Beitraege der letzten 100 Stunden zurueck
+		case "EigeneBeitraege":
 			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM "
-					+ "(beitragsView INNER JOIN freundeView ON VerfasserID = Nutzer) WHERE freund = ? ORDER BY beitragsID";
+					+ "beitragsView WHERE verfasserID = ? AND "
+					+ "(SELECT DATE_PART('day', ?::timestamp - datum::timestamp) * 24 + DATE_PART('hour', ?::time - uhrzeit::time)) < 100";
 			break;
 		// Gibt an, ob der Beitrag vom Nutzer mit 'interessiert mich nicht besonders' markiert wurde
 		case "Like":

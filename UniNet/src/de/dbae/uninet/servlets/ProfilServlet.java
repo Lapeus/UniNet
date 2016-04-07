@@ -58,31 +58,30 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
-				
 		// Setze die aktuelle Session
 		session = request.getSession();
 		// Oeffne eine neue DB-Verbindung
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
-		// Die UserID unter Vorbehalt
-		String user = request.getParameter("userID");
-		boolean eigenesProfil = false;
-		// Wenn keine UserID gesetzt wurde
-		if (user == null) {
-			// Ist es das Profil des aktuellen Nutzers
-			user = session.getAttribute("UserID").toString();
-		}
-		if (user.equals(session.getAttribute("UserID").toString())) {
-			eigenesProfil = true;
-		}
-		int userID = Integer.parseInt(user);
-		// Setze die UserID als request-Attribut
-		request.setAttribute("userID", user);
-		// Setze den Wahrheitswert, ob auf dem Profil Beitraege gepostet werden duerfen (eigenes Profil)
-		request.setAttribute("beitragPosten", eigenesProfil);
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
+			// Die UserID unter Vorbehalt
+			String user = request.getParameter("userID");
+			boolean eigenesProfil = false;
+			// Wenn keine UserID gesetzt wurde
+			if (user == null) {
+				// Ist es das Profil des aktuellen Nutzers
+				user = session.getAttribute("UserID").toString();
+			}
+			if (user.equals(session.getAttribute("UserID").toString())) {
+				eigenesProfil = true;
+			}
+			int userID = Integer.parseInt(user);
+			// Setze die UserID als request-Attribut
+			request.setAttribute("userID", user);
+			// Setze den Wahrheitswert, ob auf dem Profil Beitraege gepostet werden duerfen (eigenes Profil)
+			request.setAttribute("beitragPosten", eigenesProfil);
 			// Lade und setze alle Beitraege
 			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Profilseite", userID));
 			// Lade Sql-Statement um die Infos zu laden
@@ -135,10 +134,10 @@ public class ProfilServlet extends HttpServlet {
 			}
 			// Weiterleitung
 			request.getRequestDispatcher("Profil.jsp").forward(request, response);
-		} catch (Exception e) {
-			System.err.println("SQL Fehler im ProfilServlet");
-			e.printStackTrace();
-			// TODO Fehler
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();
@@ -155,6 +154,8 @@ public class ProfilServlet extends HttpServlet {
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
 			// Je nach Aktion
 			switch (name) {
 			case "BeitragPosten":
@@ -164,9 +165,10 @@ public class ProfilServlet extends HttpServlet {
 				doGet(request, response);
 				break;
 			}
-		} catch (Exception e) {
-			System.err.println("SQL Fehler im ProfilServlet");
-			// TODO Fehler
+		} catch (NullPointerException npe) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();
@@ -179,8 +181,9 @@ public class ProfilServlet extends HttpServlet {
 	 * @param response Das Response-Objekt
 	 * @throws SQLException
 	 * @throws IOException
+	 * @throws NullPointerException
 	 */
-	private void posteBeitrag(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+	private void posteBeitrag(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NullPointerException {
 		// Die aktuelle Session
 		session = request.getSession();
 		// Stellt die Sql-Statements zur Verfuegung

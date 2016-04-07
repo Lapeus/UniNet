@@ -81,7 +81,7 @@ a.kopfzeile, a.kopfzeile:active, a.kopfzeile:hover, a.kopzeile:focus {
 	font-size: 13px;
 }
 
-a.logo {
+a.logo, a.logo:active, a.logo:hover, a.logo:focus {
 	font-size: 18px;
 	font-family: "FacebookLetterFace", Arial;
 	font-weight: bold;
@@ -176,6 +176,12 @@ img.kommentarbild {
 
 img.profil {
 	margin-top: 25%;
+}
+
+img.kopfzeile {
+	width: 20px;
+	height: 20px;
+	float: left;
 }
 
 label.platzhalter {

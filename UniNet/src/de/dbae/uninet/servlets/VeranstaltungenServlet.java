@@ -57,9 +57,6 @@ public class VeranstaltungenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
-		
 		// Die Aktion, die vom Servlet ausgefuhrt werden soll
 		String name = request.getParameter("name");
 		// Wenn keine Aktion angegeben wurde
@@ -67,12 +64,14 @@ public class VeranstaltungenServlet extends HttpServlet {
 			// Lade die Veranstaltung
 			name = "Veranstaltung";
 		}
-		// Die ID des aktuellen Users
-		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
 		// Oeffne eine neue Verbindung
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
+			// Die ID des aktuellen Users
+			int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
 			// Lade Sql-Statement um die eigenen Veranstaltungen (linke Spalte) zu laden
 			String sql = sqlSt.getSqlStatement("EigeneVeranstaltungen");
 			PreparedStatement pStmt = con.prepareStatement(sql);
@@ -110,9 +109,10 @@ public class VeranstaltungenServlet extends HttpServlet {
 			default:
 				break;
 			}
-		} catch (Exception e) {
-			System.err.println("SQL Fehler im VeranstaltungenSerlet");
-			// TODO Fehler
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();
@@ -123,9 +123,6 @@ public class VeranstaltungenServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
-		
 		// Oeffne eine neue DB-Verbindung
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
@@ -135,6 +132,8 @@ public class VeranstaltungenServlet extends HttpServlet {
 			name = "";
 		}
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
 			// Je nach Aktion
 			switch (name) {
 			case "BeitragPosten":
@@ -144,9 +143,10 @@ public class VeranstaltungenServlet extends HttpServlet {
 				doGet(request, response);
 				break;
 			}
-		} catch (Exception e) {
-			System.out.println("Fehler in VeranstaltungenServlet");
-			// TODO Fehler
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();

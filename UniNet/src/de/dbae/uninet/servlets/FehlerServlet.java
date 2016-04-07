@@ -27,6 +27,9 @@ public class FehlerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String fehler = request.getParameter("fehler");
+		if (fehler == null) {
+			fehler = "";
+		}
 		String meldung = "Es ist ein unerwarteter Fehler aufgetreten.";
 		String page = "Anmeldung.jsp";
 		switch (fehler) {

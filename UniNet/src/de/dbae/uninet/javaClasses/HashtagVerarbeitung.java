@@ -26,12 +26,10 @@ public class HashtagVerarbeitung {
 		while (eingabe.contains(" #") || eingabe.contains("<br>#")) {
 			// Index des #-Zeichens nach Leerzeichen
 			int index = eingabe.indexOf(" #") + 1;
-			System.out.println("Index = " + index);
 			// Wenn kein #-Zeichen vorgekommen ist
 			if (index == 0)
 				// Index des #-Zeichens nach Zeilenumbruch
 				index = eingabe.indexOf("<br>#") + 4;
-			System.out.println("Index = " + index);
 			int secondIndex;
 			// Index des naechsten Leerzeichens
 			int secondIndex1 = eingabe.substring(index).indexOf(" ");
@@ -51,12 +49,24 @@ public class HashtagVerarbeitung {
 			secondIndex += index;
 			if (Character.getNumericValue(eingabe.charAt(secondIndex - 1)) == -1 && secondIndex != eingabe.length()) 
 				secondIndex--;
-			String hashtag = eingabe.substring(index, secondIndex);
+			// Hashtags werden ohne # gespeichert, weil es sich nicht als Parameter uebergeben laesst
+			String hashtag = eingabe.substring(index + 1, secondIndex);
+			int i = 0;
+			int length = hashtag.length();
+			while (i < length) {
+				int number = hashtag.charAt(i);
+				if (/*Ziffern*/(number < 48 || number > 57) && /*Gross*/(number < 65 || number > 90) 
+						&& /*klein*/(number < 97 || number > 122) && /*_*/number != 95 && /*.*/number != 46) {
+					hashtag = hashtag.substring(0, i) + hashtag.substring(i + 1);
+					length = hashtag.length();
+				}
+				i++;
+			}
 			hashtags.add(hashtag);
-			System.out.println(eingabe);
-			eingabe = eingabe.substring(0, index) + "<a href='HashtagServlet?tag=" + hashtag.substring(1) + "'>" + hashtag + "</a>"
+			eingabe = eingabe.substring(0, index) + "<a href='HashtagServlet?tag=" + hashtag + "'>#" + hashtag + "</a>"
 					+ eingabe.substring(secondIndex);
-			System.out.println(eingabe);
+			if (eingabe.startsWith(" "))
+				eingabe = eingabe.substring(1);
 		}
 		return eingabe;
 	}

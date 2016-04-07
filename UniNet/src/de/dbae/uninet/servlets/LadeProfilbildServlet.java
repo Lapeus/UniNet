@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -47,15 +48,15 @@ public class LadeProfilbildServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Die ID des Users, dessen Bild geladen werden soll
 		int userID;
-		if (request.getParameter("userID") == null || request.getParameter("userID").equals("")) {
-			userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
-		} else {
-			userID = Integer.parseInt(request.getParameter("userID"));
-		}
 		// Oeffne neue DB-Verbindung
 		DBConnection dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		try {
+			if (request.getParameter("userID") == null || request.getParameter("userID").equals("")) {
+				userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
+			} else {
+				userID = Integer.parseInt(request.getParameter("userID"));
+			}
 			// Sql-Statement um das Profilbild zu bekommen
 			String sql = "SELECT profilbild FROM nutzer WHERE userID = ?";
 			PreparedStatement pStmt = con.prepareStatement(sql);
@@ -69,9 +70,10 @@ public class LadeProfilbildServlet extends HttpServlet {
 				// Das Bild an das Response-Objekt anhaengen
 				ImageIO.write(img, "jpg", response.getOutputStream());
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO Fehler
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();

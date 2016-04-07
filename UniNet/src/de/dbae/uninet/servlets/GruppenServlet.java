@@ -59,9 +59,6 @@ public class GruppenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Chatfreunde laden
-		new LadeChatFreundeServlet().setChatfreunde(request);
-		
 		// Lade die Aktion, die vom Servlet durchgefuehrt werden soll
 		String name = request.getParameter("name");
 		// Wenn keine Aktion angegeben wurde
@@ -74,7 +71,9 @@ public class GruppenServlet extends HttpServlet {
 		con = dbcon.getCon();
 		// Setze die Session
 		session = request.getSession();
-		try {
+		try { 
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
 			// ID des aktuellen Users
 			int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 			// Sql-Statement fuer die eigenen Gruppen (linke Spalte)
@@ -108,10 +107,10 @@ public class GruppenServlet extends HttpServlet {
 			default:
 				break;
 			}
-		} catch (Exception e) {
-			System.out.println("SQL Fehler in GruppenServlet");
-			// TODO Fehler
-			e.printStackTrace();
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Beende die Verbindung
 			dbcon.close();
@@ -123,7 +122,7 @@ public class GruppenServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
+		new LadeChatFreundeServlet().setChatfreunde(request, response);
 				
 		// Neue DB-Verbindung oeffnen
 		DBConnection dbcon = new DBConnection();

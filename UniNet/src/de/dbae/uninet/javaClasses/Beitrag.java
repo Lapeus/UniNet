@@ -74,6 +74,8 @@ public class Beitrag {
 	 */
 	private boolean bearbeitet = false;
 	
+	private int bewertung;
+	
 	/**
 	 * Erstellt einen Beitrag mit allen Eigenschaften.<br>
 	 * Einziger Konstruktor dieser Klasse.
@@ -299,6 +301,14 @@ public class Beitrag {
 
 	public void setOrtLink(String ortLink) {
 		this.ortLink = ortLink;
+	}
+
+	public int getBewertung() {
+		return bewertung;
+	}
+
+	public void setBewertung(int bewertung) {
+		this.bewertung = bewertung;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,7 @@ import de.dbae.uninet.javaClasses.HashtagVerarbeitung;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Kommentar;
 import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
+import de.dbae.uninet.javaClasses.StartseitenBeitrag;
 import de.dbae.uninet.javaClasses.Unterkommentar;
 import de.dbae.uninet.sqlClasses.BeitragSql;
 import de.dbae.uninet.sqlClasses.GruppenSql;
@@ -62,9 +64,6 @@ public class BeitragServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Lade Chatfreunde
-	    new LadeChatFreundeServlet().setChatfreunde(request);
-				
 		// Lade die Aktion, die vom Servlet durchgefuehrt werden soll
 		String name = request.getParameter("name");
 		// Standardmaessig soll der Beitrag und nicht die Like-Liste angezeigt werden
@@ -81,6 +80,8 @@ public class BeitragServlet extends HttpServlet {
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
 			// Wenn keine Aktion angegeben wurde
 			if (name == null) {
 				// Lade den kompletten Beitrag und zeige ihn an
@@ -140,10 +141,10 @@ public class BeitragServlet extends HttpServlet {
 					break;
 				}
 			}
-		} catch (Exception e) {
-			System.out.println("SQL Fehler im BeitragServlet");
-			// TODO Fehler
-			e.printStackTrace();
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Schliesse die Verbindung 
 			dbcon.close();
@@ -156,9 +157,6 @@ public class BeitragServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Lade Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
-				
 		// Standardmaessig soll der Beitrag und nicht die Like-Liste angezeigt werden
 		request.setAttribute("beitragAnzeigen", true);
 		// Lade die Aktion, die vom Servlet durchgefuehrt werden soll
@@ -166,6 +164,8 @@ public class BeitragServlet extends HttpServlet {
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
 			if (name == null) {
 				kompletterLoad(request, response, request.getSession());
 			} else {
@@ -723,10 +723,19 @@ public class BeitragServlet extends HttpServlet {
 		PreparedStatement pStmt;
 		// Je nach Seite wird das entsprechende Sql-Statement geladen
 		switch (seite) {
-		case "Startseite":
-			sql = new StartseiteSql().getSqlStatement("Beitraege");
+		case "Startseite1":
+			sql = new StartseiteSql().getSqlStatement("AlleFreundeBeitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
+			pStmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
+			pStmt.setTime(3, new Time(System.currentTimeMillis()));
+			break;
+		case "Startseite2":
+			sql = new StartseiteSql().getSqlStatement("EigeneBeitraege");
+			pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, userID);
+			pStmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
+			pStmt.setTime(3, new Time(System.currentTimeMillis()));
 			break;
 		case "Profilseite":
 			sql = new ProfilSql().getSqlStatement("Beitraege");
@@ -744,10 +753,12 @@ public class BeitragServlet extends HttpServlet {
 			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
 			break;
 		case "Hashtag":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM "
-					+ "(SELECT * FROM hashtags WHERE hashtag = ?) AS Tab1 INNER JOIN beitragsView USING(beitragsID)";
+			sql = "SELECT  VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM "
+					+ "(SELECT * FROM hashtags WHERE hashtag = ?) AS Tab1 INNER JOIN "
+					+ "(SELECT * FROM beitragsView INNER JOIN studenten ON (verfasserID = studentID) WHERE uniID = (SELECT uniID FROM studenten WHERE studentID = ?)) AS Tab2 USING (beitragsID) ORDER BY beitragsID DESC";
 			pStmt = con.prepareStatement(sql);
 			pStmt.setString(1, optionalParams[0]);
+			pStmt.setInt(2, userID);
 			break;
 		default:
 			pStmt = con.prepareStatement("");
@@ -788,9 +799,16 @@ public class BeitragServlet extends HttpServlet {
 			if (rs2.next()) {
 				boolean like = rs2.getInt(1) == 0 ? false : true;
 				// Wenn es der eigene Beitrag ist, darf man ihn loeschen
-				boolean loeschenErlaubt = userID == id;
+				boolean loeschenErlaubt = Integer.parseInt(request.getSession().getAttribute("UserID").toString()) == id;
 				// Beitrag erstellen
 				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt, bearbeitet);
+				// Bewertung der Freundschaft bei Startseitenbeitraegen setzen
+				if (seite.startsWith("Startseite")) {
+					if (seite.equals("Startseite1"))
+						beitrag = new StartseitenBeitrag(rs.getDate(8).getTime() + rs.getTime(9).getTime(), rs.getInt(12), beitrag);
+					else 
+						beitrag = new StartseitenBeitrag(rs.getDate(8).getTime() + rs.getTime(9).getTime(), 1000, beitrag);
+				}
 				// Schaue, ob der Beitrag in einer Gruppe gepostet wurde
 				sql = sqlSt.getSqlStatement("GruppenID");
 				pStmt = con.prepareStatement(sql);
@@ -814,7 +832,7 @@ public class BeitragServlet extends HttpServlet {
 					// Wenn er aus der Chronik kommt, muessen wir nichts tun
 				}
 				// Beitrag der Liste hinzufuegen
-				beitragList.add(0, beitrag);
+				beitragList.add(beitrag);
 			}
 		}
 		return beitragList;
@@ -885,8 +903,8 @@ public class BeitragServlet extends HttpServlet {
 			beitrag = beitrag.replace(emo.getBild(), emo.getCode());
 		}
 		beitrag = beitrag.replace("<br>", "\n");
-		while (beitrag.contains("<a href='HashtagServlet?tag=#")) {
-			int index = beitrag.indexOf("<a href='HashtagServlet?tag=#") + 28;
+		while (beitrag.contains("<a href='HashtagServlet?tag=")) {
+			int index = beitrag.indexOf("<a href='HashtagServlet?tag=") + 28;
 			String hashtag = "";
 			int secondIndex = index;
 			for (int i = index; i < beitrag.length(); i++) {
@@ -904,9 +922,7 @@ public class BeitragServlet extends HttpServlet {
 					break;
 				}
 			}
-			beitrag = beitrag.substring(0, index - 28) + hashtag + beitrag.substring(secondIndex + 1);
-			if (beitrag.startsWith(" "))
-				beitrag = beitrag.substring(1);
+			beitrag = beitrag.substring(0, index - 28) + "#" + hashtag + beitrag.substring(secondIndex + 1);
 		}
 		return beitrag;
 	}

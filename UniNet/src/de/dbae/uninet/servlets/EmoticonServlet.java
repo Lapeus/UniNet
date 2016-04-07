@@ -52,7 +52,7 @@ public class EmoticonServlet extends HttpServlet {
 		request.setAttribute("emoticons16", getEmoticons("Sonstiges"));
 		
 		// Lade Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
+		new LadeChatFreundeServlet().setChatfreunde(request, response);
 		
 		// Weiterleitung an die Hilfeseite
 		request.getRequestDispatcher("Hilfe.jsp").forward(request, response);
@@ -119,11 +119,11 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(sleeping)", "&#x1F4A4"));
 			break;
 		case "Liebe":
-			emoticons.add(new Emoticon("<3", "<span style='color: #E30000'>&#x2764</span>"));
-			emoticons.add(new Emoticon("(heart blue)", "<span style='color: blue'>&#x2764</span>"));
+			emoticons.add(new Emoticon("<3", "<span style='color:#E30000'>&#x2764</span>"));
+			emoticons.add(new Emoticon("(heart blue)", "<span style='color:blue'>&#x2764</span>"));
 			emoticons.add(new Emoticon("(heart black)", "&#x2764"));
-			emoticons.add(new Emoticon("(heart green)", "<span style='color: green'>&#x2764</span>"));
-			emoticons.add(new Emoticon("(heart pink)", "<span style='color: #FF80EE'>&#x2764</span>"));
+			emoticons.add(new Emoticon("(heart green)", "<span style='color:green'>&#x2764</span>"));
+			emoticons.add(new Emoticon("(heart pink)", "<span style='color:#FF80EE'>&#x2764</span>"));
 			emoticons.add(new Emoticon("(double heart)", "&#x1F495"));
 			emoticons.add(new Emoticon("(broken heart)", "&#x1F494"));
 			emoticons.add(new Emoticon("(family)", "&#x1F46A"));
@@ -134,14 +134,14 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(kiss)", "&#x1F48B"));
 			break;
 		case "Gestiken":
-			emoticons.add(new Emoticon("(stop)", "<span style='color: " + hautfarbe + "'>&#x270B</span>"));
-			emoticons.add(new Emoticon("(peace)", "<span style='color: " + hautfarbe + "'>&#x270C</span>"));
-			emoticons.add(new Emoticon("(pointing index)", "<span style='color: " + hautfarbe + "'>&#x1F446</span>"));
-			emoticons.add(new Emoticon("(fisted hand)", "<span style='color: " + hautfarbe + "'>&#x1F44A</span>"));
-			emoticons.add(new Emoticon("(waving)", "<span style='color: " + hautfarbe + "'>&#x1F44B</span>"));
-			emoticons.add(new Emoticon("(ok)", "<span style='color: " + hautfarbe + "'>&#x1F44C</span>"));
-			emoticons.add(new Emoticon("(y)", "<span style='color: " + hautfarbe + "'>&#x1F44D</span>"));
-			emoticons.add(new Emoticon("(n)", "<span style='color: " + hautfarbe + "'>&#x1F44E</span>"));
+			emoticons.add(new Emoticon("(stop)", "<span style='color:" + hautfarbe + "'>&#x270B</span>"));
+			emoticons.add(new Emoticon("(peace)", "<span style='color:" + hautfarbe + "'>&#x270C</span>"));
+			emoticons.add(new Emoticon("(pointing index)", "<span style='color:" + hautfarbe + "'>&#x1F446</span>"));
+			emoticons.add(new Emoticon("(fisted hand)", "<span style='color:" + hautfarbe + "'>&#x1F44A</span>"));
+			emoticons.add(new Emoticon("(waving)", "<span style='color:" + hautfarbe + "'>&#x1F44B</span>"));
+			emoticons.add(new Emoticon("(ok)", "<span style='color:" + hautfarbe + "'>&#x1F44C</span>"));
+			emoticons.add(new Emoticon("(y)", "<span style='color:" + hautfarbe + "'>&#x1F44D</span>"));
+			emoticons.add(new Emoticon("(n)", "<span style='color:" + hautfarbe + "'>&#x1F44E</span>"));
 			emoticons.add(new Emoticon("(paw prints)", "&#x1F43E"));
 			emoticons.add(new Emoticon("(eyes)", "&#x1F440"));
 			emoticons.add(new Emoticon("(ear)", "&#x1F442"));
@@ -150,14 +150,14 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(thoughtbubble)", "&#x1F4AD"));
 			break;
 		case "Natur":
-			emoticons.add(new Emoticon("(snow)", "<span style='color: #B1C5CC'>&#x2744</span>"));
+			emoticons.add(new Emoticon("(snow)", "<span style='color:#B1C5CC'>&#x2744</span>"));
 			emoticons.add(new Emoticon("(snowman)", "&#x26C4"));
-			emoticons.add(new Emoticon("(sun)", "<span style='color: #FFF700'>&#x2600</span>"));
+			emoticons.add(new Emoticon("(sun)", "<span style='color:#FFF700'>&#x2600</span>"));
 			emoticons.add(new Emoticon("(rainbow)", "&#x1F308"));
-			emoticons.add(new Emoticon("(stars)", "<span style='color: #FFEF0D'>&#x2728</span>"));
-			emoticons.add(new Emoticon("(star)", "<span style='color: #FFEF0D'>&#x2850</span>"));
-			emoticons.add(new Emoticon("(cloud)", "<span style='color: #D1DCE3'>&#x2601</span>"));
-			emoticons.add(new Emoticon("(umbrella)", "<span style='color: #0984D6'>&#x2614</span>"));
+			emoticons.add(new Emoticon("(stars)", "<span style='color:#FFEF0D'>&#x2728</span>"));
+			emoticons.add(new Emoticon("(star)", "<span style='color:#FFEF0D'>&#x2850</span>"));
+			emoticons.add(new Emoticon("(cloud)", "<span style='color:#D1DCE3'>&#x2601</span>"));
+			emoticons.add(new Emoticon("(umbrella)", "<span style='color:#0984D6'>&#x2614</span>"));
 			emoticons.add(new Emoticon("(globe)", "&#x1F30F"));
 			emoticons.add(new Emoticon("(wave)", "&#x1F30A"));
 			emoticons.add(new Emoticon("(volcano)", "&#x1F30B"));
@@ -201,7 +201,7 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(strawberry)", "&#x1F353"));
 			emoticons.add(new Emoticon("(burger)", "&#x1F354"));
 			emoticons.add(new Emoticon("(pizza)", "&#x1F355"));
-			emoticons.add(new Emoticon("(bread)", "<span style='color: #C7AE0A'>&#x1F35E</span>"));
+			emoticons.add(new Emoticon("(bread)", "<span style='color:#C7AE0A'>&#x1F35E</span>"));
 			emoticons.add(new Emoticon("(french fries)", "&#x1F35F"));
 			emoticons.add(new Emoticon("(doughnut)", "&#x1F369"));
 			emoticons.add(new Emoticon("(cookie)", "&#x1F36A"));
@@ -274,8 +274,8 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon("(smoke)", "&#x1F6AC"));
 			emoticons.add(new Emoticon("(dont smoke)", "&#x1F6AD"));
 			emoticons.add(new Emoticon("(dont)", "&#x1F6AB"));
-			emoticons.add(new Emoticon("(check)", "<span style='color: #00AB03'>&#x2714</span>"));
-			emoticons.add(new Emoticon("(cross)", "<span style='color: #ED0000'>&#x2716</span>"));
+			emoticons.add(new Emoticon("(check)", "<span style='color:#00AB03'>&#x2714</span>"));
+			emoticons.add(new Emoticon("(cross)", "<span style='color:#ED0000'>&#x2716</span>"));
 			break;
 		case "Zeit":
 			emoticons.add(new Emoticon("(alarm clock)", "&#x23F0"));

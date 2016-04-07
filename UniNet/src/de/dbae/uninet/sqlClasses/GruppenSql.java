@@ -32,7 +32,7 @@ public class GruppenSql {
 		// Gibt saemtliche Beitraege aus der Gruppe mit allen Eigenschaften antichronologisch zurueck
 		case "Beitraege":
 			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet "
-					+ "FROM gruppenbeitraege INNER JOIN beitragsView USING (beitragsID) WHERE gruppenID = ? ORDER BY beitragsID";
+					+ "FROM gruppenbeitraege INNER JOIN beitragsView USING (beitragsID) WHERE gruppenID = ? ORDER BY beitragsID DESC";
 			break;
 		// Gibt alle Gruppen zurueck, in denen der Nutzer aktuell ist (fuer die linke Spalte)
 		case "EigeneGruppen":

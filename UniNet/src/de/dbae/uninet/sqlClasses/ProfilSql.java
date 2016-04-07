@@ -19,7 +19,7 @@ public class ProfilSql {
 		switch (action) {
 		// Gibt alle Chronikbeitraege des Studenten zurueck
 		case "Beitraege":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM beitragsView INNER JOIN chronikbeitraege USING (beitragsID) WHERE VerfasserID = ? ORDER BY beitragsID ASC";
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM beitragsView INNER JOIN chronikbeitraege USING (beitragsID) WHERE VerfasserID = ? ORDER BY beitragsID DESC";
 			break;
 		// Gibt an, ob der Beitrag vom Student mit 'interessiert mich nicht besonders' markiert wurde
 		case "Like":

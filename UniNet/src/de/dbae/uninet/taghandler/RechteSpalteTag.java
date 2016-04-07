@@ -58,9 +58,9 @@ public class RechteSpalteTag extends TagSupport {
 			if (freund.isOnline()) {
 				anzahlOnline++;
 				// Wenn ja, haenge das Online-Symbol an seinen Namen
-				online = "<span class='glyphicon glyphicon-record pull-right' style='color: #00df00;'></span>";
+				online = "<span class='glyphicon glyphicon-record pull-right' style='color: #00aa00;'></span>";
 			}
-			erg += "<li role='presentation' class='chatfreunde'><a href='NachrichtenServlet?userID=" + freund.getUserID()+ "'>" + freund.getVorname() + " " + freund.getNachname() + online + "</a></li>";
+			erg += "<li role='presentation' class='chatfreunde'><a href='NachrichtenServlet?userID=" + freund.getUserID()+ "'><img class='media-object kopfzeile' alt='' src='LadeProfilbildServlet?userID=" + freund.getUserID() + "'</img>&nbsp;" + freund.getVorname() + " " + freund.getNachname() + online + "</a></li>";
 		}
 		erg += "</ul></ul></div>";
 		if (anzahlOnline == 1) 

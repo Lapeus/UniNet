@@ -2,6 +2,7 @@ package de.dbae.uninet.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,20 +31,20 @@ public class HashtagServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Lade Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request);
-		
 		String hashtag = request.getParameter("tag");
 		request.setAttribute("hashtag", hashtag);
 		DBConnection dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
 			int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
-			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Hashtag", userID, "#" + hashtag));
+			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Hashtag", userID, hashtag));
 			request.getRequestDispatcher("Hashtags.jsp").forward(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO Fehler
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			dbcon.close();
 		}

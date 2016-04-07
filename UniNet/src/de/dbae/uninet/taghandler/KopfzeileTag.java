@@ -48,7 +48,7 @@ public class KopfzeileTag extends TagSupport {
 		kopfzeile += "</div>";
 		kopfzeile += "<button type='submit' class='btn btn-default'>Suchen</button>";
 		kopfzeile += "</form></li>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='ProfilServlet'>Profilseite</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='ProfilServlet'><img class='media-object kopfzeile' alt='' src='LadeProfilbildServlet'</img>&nbsp;Profilseite</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='StartseiteServlet'>Startseite</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='NachrichtenServlet'><b>Chat(1)</b></a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='BenachrichtigungenServlet'><b>Benachrichtigung(2)</b></a></li>";
