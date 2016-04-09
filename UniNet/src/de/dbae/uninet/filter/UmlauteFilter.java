@@ -73,6 +73,7 @@ public class UmlauteFilter implements Filter {
 		umlaute.put("ü", "&uuml");
 		umlaute.put("Ü", "&Uuml");
 		umlaute.put("ß", "&szlig");
+		// Zeilenumbruch durch <br> ersetzen
 		umlaute.put("\n", "<br>");
 		try {
 			// Fuer jeden Eintrag der Map

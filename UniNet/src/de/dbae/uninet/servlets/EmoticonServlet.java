@@ -1,6 +1,8 @@
 package de.dbae.uninet.servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Emoticon;
 
 /**
@@ -51,11 +54,20 @@ public class EmoticonServlet extends HttpServlet {
 		request.setAttribute("emoticons15", getEmoticons("Party"));
 		request.setAttribute("emoticons16", getEmoticons("Sonstiges"));
 		
-		// Lade Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request, response);
-		
-		// Weiterleitung an die Hilfeseite
-		request.getRequestDispatcher("Hilfe.jsp").forward(request, response);
+		DBConnection dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
+		try {
+			// Lade Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
+			// Weiterleitung an die Hilfeseite
+			request.getRequestDispatcher("Hilfe.jsp").forward(request, response);
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
+		} finally {
+			dbcon.close();
+		}
 	}
 
 	/**

@@ -230,7 +230,6 @@ public class ProfilServlet extends HttpServlet {
 			response.sendRedirect("ProfilServlet");
 		} else {
 			System.err.println("Problem beim Anlegen des Beitrags");
-			// TODO Fehler
 		}
 	}
 	

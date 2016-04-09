@@ -192,9 +192,10 @@ public class BeitragServlet extends HttpServlet {
 					break;
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO Fehler
+		} catch (NullPointerException npex) {
+			response.sendRedirect("FehlerServlet?fehler=Session");
+		} catch (SQLException sqlex) {
+			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			dbcon.close();
 		}
@@ -723,15 +724,8 @@ public class BeitragServlet extends HttpServlet {
 		PreparedStatement pStmt;
 		// Je nach Seite wird das entsprechende Sql-Statement geladen
 		switch (seite) {
-		case "Startseite1":
-			sql = new StartseiteSql().getSqlStatement("AlleFreundeBeitraege");
-			pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, userID);
-			pStmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
-			pStmt.setTime(3, new Time(System.currentTimeMillis()));
-			break;
-		case "Startseite2":
-			sql = new StartseiteSql().getSqlStatement("EigeneBeitraege");
+		case "Startseite":
+			sql = new StartseiteSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
 			pStmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
@@ -745,20 +739,24 @@ public class BeitragServlet extends HttpServlet {
 		case "Veranstaltungen":
 			sql = new VeranstaltungenSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
+			pStmt.setInt(1, userID);
+			pStmt.setInt(2, Integer.parseInt(optionalParams[0]));
 			break;
 		case "Gruppen":
 			sql = new GruppenSql().getSqlStatement("Beitraege");
 			pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, Integer.parseInt(optionalParams[0]));
+			pStmt.setInt(1, userID);
+			pStmt.setInt(2, Integer.parseInt(optionalParams[0]));
 			break;
 		case "Hashtag":
 			sql = "SELECT  VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM "
-					+ "(SELECT * FROM hashtags WHERE hashtag = ?) AS Tab1 INNER JOIN "
-					+ "(SELECT * FROM beitragsView INNER JOIN studenten ON (verfasserID = studentID) WHERE uniID = (SELECT uniID FROM studenten WHERE studentID = ?)) AS Tab2 USING (beitragsID) ORDER BY beitragsID DESC";
+					+ "(SELECT * FROM hashtags WHERE hashtag = ?) AS Tab1 INNER JOIN (SELECT * FROM beitragsView INNER JOIN studenten ON (verfasserID = studentID) "
+					+ "WHERE uniID = (SELECT uniID FROM studenten WHERE studentID = ?)) AS Tab2 USING (beitragsID) "
+					+ "LEFT JOIN freundeView ON (verfasserID = freund AND nutzer = ?) WHERE (nutzer IS NOT NULL OR sichtbarkeit = TRUE) ORDER BY beitragsID DESC";
 			pStmt = con.prepareStatement(sql);
 			pStmt.setString(1, optionalParams[0]);
 			pStmt.setInt(2, userID);
+			pStmt.setInt(3, userID);
 			break;
 		default:
 			pStmt = con.prepareStatement("");
@@ -803,33 +801,30 @@ public class BeitragServlet extends HttpServlet {
 				// Beitrag erstellen
 				Beitrag beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt, bearbeitet);
 				// Bewertung der Freundschaft bei Startseitenbeitraegen setzen
-				if (seite.startsWith("Startseite")) {
-					if (seite.equals("Startseite1"))
-						beitrag = new StartseitenBeitrag(rs.getDate(8).getTime() + rs.getTime(9).getTime(), rs.getInt(12), beitrag);
-					else 
-						beitrag = new StartseitenBeitrag(rs.getDate(8).getTime() + rs.getTime(9).getTime(), 1000, beitrag);
-				}
-				// Schaue, ob der Beitrag in einer Gruppe gepostet wurde
-				sql = sqlSt.getSqlStatement("GruppenID");
-				pStmt = con.prepareStatement(sql);
-				pStmt.setInt(1, beitragsID);
-				ResultSet rs3 = pStmt.executeQuery();
-				// Wenn er aus einer Gruppe kommt
-				if (rs3.next()) {
-					beitrag.setOrtLink("GruppenServlet?tab=beitraege&gruppenID=" + rs3.getInt(1));
-					beitrag.setOrtName(rs3.getString(2));
-				} else {
-					// Schaue, ob der Beitrag in einer Veranstaltung gepostet wurde
-					sql = sqlSt.getSqlStatement("VeranstaltungsID");
+				if (seite.equals("Startseite")) {
+					beitrag = new StartseitenBeitrag(rs.getDate(8).getTime() + rs.getTime(9).getTime(), rs.getInt(12), beitrag);
+					// Schaue, ob der Beitrag in einer Gruppe gepostet wurde
+					sql = sqlSt.getSqlStatement("GruppenID");
 					pStmt = con.prepareStatement(sql);
 					pStmt.setInt(1, beitragsID);
-					rs3 = pStmt.executeQuery();
-					// Wenn er aus einer Veranstaltung kommt
+					ResultSet rs3 = pStmt.executeQuery();
+					// Wenn er aus einer Gruppe kommt
 					if (rs3.next()) {
-						beitrag.setOrtLink("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + rs3.getInt(1));
+						beitrag.setOrtLink("GruppenServlet?tab=beitraege&gruppenID=" + rs3.getInt(1));
 						beitrag.setOrtName(rs3.getString(2));
+					} else {
+						// Schaue, ob der Beitrag in einer Veranstaltung gepostet wurde
+						sql = sqlSt.getSqlStatement("VeranstaltungsID");
+						pStmt = con.prepareStatement(sql);
+						pStmt.setInt(1, beitragsID);
+						rs3 = pStmt.executeQuery();
+						// Wenn er aus einer Veranstaltung kommt
+						if (rs3.next()) {
+							beitrag.setOrtLink("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + rs3.getInt(1));
+							beitrag.setOrtName(rs3.getString(2));
+						}
+						// Wenn er aus der Chronik kommt, muessen wir nichts tun
 					}
-					// Wenn er aus der Chronik kommt, muessen wir nichts tun
 				}
 				// Beitrag der Liste hinzufuegen
 				beitragList.add(beitrag);

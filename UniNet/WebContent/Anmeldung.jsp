@@ -119,8 +119,8 @@
 		<div class="row">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-4">
-				<button type="submit" class="btn btn-success btn-sm" name="registrieren">Registrieren</button>
-				<button type="reset" class="btn btn-default btn-sm">Zurücksetzen</button>
+				<button type="submit" class="btn btn-register" name="registrieren">Registrieren</button>
+				<button type="reset" class="btn btn-default">Zurücksetzen</button>
 			</div>
 		</div>
 	</form>

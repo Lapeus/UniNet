@@ -6,11 +6,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Diese Klasse filtert Sonderzeichen aus Hashtags heraus, ersetzt sie durch Links auf die entsprechende Hashtag-&Uuml;bersicht
+ * und speichert sie in der DB.<br>
+ * @author Christian Ackermann
+ */
 public class HashtagVerarbeitung {
 
+	/**
+	 * Der gepostete Beitrag / Kommentar.
+	 */
 	private String eingabe;
+	
+	/**
+	 * Eine Liste aller vorgekommener Hashtags um sie sp&auml;ter in der DB speichern zu k&ouml;nnen.
+	 */
 	private List<String> hashtags;
 	
+	/**
+	 * Konstruktor dieser Klasse. Setzt den Eingabe-String.
+	 * @param eingabe Der gepostete Beitrag / Kommentar
+	 */
 	public HashtagVerarbeitung(String eingabe) {
 		this.eingabe = eingabe;
 	}

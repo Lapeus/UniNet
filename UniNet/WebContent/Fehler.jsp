@@ -10,7 +10,6 @@
 <title></title>
 </head>
 <body>
-<jsp:include page="/AnmeldePassivServlet"></jsp:include>
 <form class="form-inline containerColor">
 	<div class="row containerColor"><br></div>
 	<div class="col-md-2"></div>

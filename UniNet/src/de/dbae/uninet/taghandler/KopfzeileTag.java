@@ -43,10 +43,10 @@ public class KopfzeileTag extends TagSupport {
 		kopfzeile += "<li><label class='platzhalter'></label></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile logo' href='StartseiteServlet'><b>UNINET</b></a></li>";
 		kopfzeile += "<li><form class='navbar-form navbar-left' role='search' action='SuchergebnisseServlet' method='get'>";
-		kopfzeile += "<div class='form-group containerColor'>";
+		kopfzeile += "<span class='form-group containerColor'>";
 		kopfzeile += "<input type='text' class='form-control' name='suchanfrage' size=50 placeholder='Suchbegriff eingeben'>";
-		kopfzeile += "</div>";
 		kopfzeile += "<button type='submit' class='btn btn-default'>Suchen</button>";
+		kopfzeile += "</span>";
 		kopfzeile += "</form></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='ProfilServlet'><img class='media-object kopfzeile' alt='' src='LadeProfilbildServlet'</img>&nbsp;Profilseite</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='StartseiteServlet'>Startseite</a></li>";

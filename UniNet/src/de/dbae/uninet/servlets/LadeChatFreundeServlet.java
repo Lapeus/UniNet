@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jdt.internal.compiler.ast.ThrowStatement;
-
-import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
 
@@ -52,13 +49,11 @@ public class LadeChatFreundeServlet extends HttpServlet{
 		doGet(request, response);
 	}
 	
-	public void setChatfreunde(HttpServletRequest request, HttpServletResponse reponse) {
-		
-	}
 	/**
 	 * Setzt eine Liste von verf&uuml;gbaren Chatfreunden als Attribut des Request-Objektes.
 	 * @param request Das Request-Objekt
 	 * @param response Das Response-Objekt
+	 * @param con Die Datenbank-Verbindung
 	 * @throws IOException
 	 * @throws SQLException
 	 * @throws NullPointerException

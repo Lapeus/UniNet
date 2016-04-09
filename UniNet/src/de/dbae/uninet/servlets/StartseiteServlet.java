@@ -2,8 +2,6 @@ package de.dbae.uninet.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,11 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
-import de.dbae.uninet.javaClasses.Gruppe;
 import de.dbae.uninet.javaClasses.StartseitenBeitrag;
-import de.dbae.uninet.javaClasses.Veranstaltung;
-import de.dbae.uninet.sqlClasses.GruppenSql;
-import de.dbae.uninet.sqlClasses.VeranstaltungenSql;
 
 /**
  * Dieses Servlet verarbeit alle Anfragen die die Startseite betreffen.
@@ -39,7 +33,6 @@ public class StartseiteServlet extends HttpServlet {
      */
     public StartseiteServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -78,10 +71,8 @@ public class StartseiteServlet extends HttpServlet {
 	private List<Beitrag> getBeitraege(HttpServletRequest request, Connection con, int userID) throws SQLException {
 		List<Beitrag> beitraege = new ArrayList<Beitrag>();
 		BeitragServlet bs = new BeitragServlet();
-		// Beitraege von Freunden
-		beitraege = bs.getBeitraege(request, con, "Startseite1", userID);
-		// Eigene Beitraege
-		beitraege.addAll(bs.getBeitraege(request, con, "Startseite2", userID));
+		// Beitraege
+		beitraege = bs.getBeitraege(request, con, "Startseite", userID);
 		List<StartseitenBeitrag> sBeitraege = new ArrayList<StartseitenBeitrag>();
 		// Zeitrelevanz berechnen und addieren
 		long time = System.currentTimeMillis();

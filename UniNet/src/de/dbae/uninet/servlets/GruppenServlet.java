@@ -120,10 +120,7 @@ public class GruppenServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Chatfreunde
-		new LadeChatFreundeServlet().setChatfreunde(request, response);
-				
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		// Neue DB-Verbindung oeffnen
 		DBConnection dbcon = new DBConnection();
 		con = dbcon.getCon();
@@ -135,6 +132,9 @@ public class GruppenServlet extends HttpServlet {
 			name = "";
 		}
 		try {
+			// Chatfreunde
+			new LadeChatFreundeServlet().setChatfreunde(request, response, con);
+			
 			// Je nach Aktion
 			switch (name) {
 			case "BeitragPosten":

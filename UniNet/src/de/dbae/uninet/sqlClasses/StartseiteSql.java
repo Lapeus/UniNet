@@ -17,17 +17,11 @@ public class StartseiteSql {
 		String sql = "";
 		// Unterscheidung der verschiedenen Statements
 		switch (action) {
-		// Gibt alle Beitraege der Freunde der letzten 100 Stunden zurueck
-		case "AlleFreundeBeitraege":
+		// Gibt alle Beitraege der letzten 100 Stunden zurueck
+		case "Beitraege":
 			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet, Bewertung FROM "
 					+ "freundeView INNER JOIN beitragsView ON (freund = verfasserID) WHERE nutzer = ? AND "
 					+ "(SELECT DATE_PART('day', ?::timestamp - datum::timestamp) * 24 + DATE_PART('hour', ?::time - uhrzeit::time)) < 100 ORDER BY beitragsID DESC";
-			break;
-		// Gibt alle eigenen Beitraege der letzten 100 Stunden zurueck
-		case "EigeneBeitraege":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet FROM "
-					+ "beitragsView WHERE verfasserID = ? AND "
-					+ "(SELECT DATE_PART('day', ?::timestamp - datum::timestamp) * 24 + DATE_PART('hour', ?::time - uhrzeit::time)) < 100";
 			break;
 		// Gibt an, ob der Beitrag vom Nutzer mit 'interessiert mich nicht besonders' markiert wurde
 		case "Like":
@@ -35,7 +29,7 @@ public class StartseiteSql {
 			break;
 		// Gibt eine Liste mit allen Freunden zurueck, die momentan online sind
 		case "Chatfreunde":
-			sql = "SELECT Vorname, Nachname, userID FROM (FreundeView INNER JOIN Studenten ON Freund = StudentID INNER JOIN Nutzer ON StudentID = UserID) WHERE Nutzer = ? AND Online = TRUE";
+			sql = "SELECT Vorname, Nachname, userID FROM (FreundeView INNER JOIN Studenten ON Freund = StudentID INNER JOIN Nutzer ON StudentID = UserID) WHERE Nutzer = ? AND Nutzer != Freund AND Online = TRUE";
 			break;
 		default:
 			System.err.println("FEHLER IN STARTSEITESQL " + action);

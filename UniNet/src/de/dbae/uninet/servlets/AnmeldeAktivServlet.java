@@ -236,7 +236,11 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						psTmtStudent.setInt(3, Integer.parseInt(studiengangid));
 						psTmtStudent.setDate(4, new Date(new Semesterrechner().getStudienbeginn(semester)));
 						psTmtStudent.execute();
-						
+						// Freundschaft mit sich selbst eintragen
+						PreparedStatement psTmtFreund = con.prepareStatement("INSERT INTO freunde VALUES (?, ?, 1000, 1000)");
+						psTmtFreund.setInt(1, Integer.parseInt(userid));
+						psTmtFreund.setInt(2, Integer.parseInt(userid));
+						psTmtFreund.executeUpdate();
 						// Setzt fuer den Fall, dass kein Profilbild eingestellt wurde, das Default-Profilbild
 						defaultProfilbildSetzen(userid, con);
 						

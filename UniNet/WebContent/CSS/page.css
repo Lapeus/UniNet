@@ -6,7 +6,12 @@
 	src: url("/fonts/FACEBOLF.OTF") format("opentype");
 }
 .anmeldeKopf {
-	border-bottom: 2px solid #334e84;
+	background-color: #3B5998;
+	background: linear-gradient(#4E69A2, #3B5998 100%);
+	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
+	border-bottom: 1px solid #103480;
 	box-shadow:0 1px 3px #808080; 
 }
 
@@ -24,11 +29,12 @@
 }
 
 .containerColor2 {
-	background-color: #f7f7f7;
+	background-color: #E9EAED;
 }
 
-.buttonLightBlue {
-	background-color: #2c4271;
+.buttonLightBlue, .buttonLightBlue:hover, .buttonLightBlue:focus {
+	background-color: #5972A7;
+	border: 1px solid #2F477A;
 	color: white;
 }
 
@@ -75,13 +81,22 @@
 }
 
 a.kopfzeile, a.kopfzeile:active, a.kopfzeile:hover, a.kopzeile:focus {
-	background-color: #3b5998;
+	background-color: #3B5998;
+	background: linear-gradient(#4E69A2, #3B5998 100%);
+	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
+	border-bottom: 1px solid #103480;
 	color: white;
 	outline: 0;
 	font-size: 13px;
 }
 
 a.logo, a.logo:active, a.logo:hover, a.logo:focus {
+	background: linear-gradient(#4E69A2, #3B5998 100%);
+	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
 	font-size: 18px;
 	font-family: "FacebookLetterFace", Arial;
 	font-weight: bold;
@@ -100,23 +115,45 @@ a.zeitstempel {
 }
 
 body {
-	background-color: #dfe3ee;
+	background-color: #E9EAED;
 }
 
 body.anmeldung {
 	height: 100%;
-	background-color: #dfe3ee;
-	background: linear-gradient(white, white 20%, #dfe3ee 100%);
-	background: -moz-linear-gradient(white, white 20%, #dfe3ee 100%);
-	background: -webkit-linear-gradient(white, white 20%, #dfe3ee 100%);
-	background: -o-linear-gradient(white, white 20%, #dfe3ee 100%); 
+	background-color: #D9DDEB;
+	background: linear-gradient(white, white 10%, #D9DDEB 100%);
+	background: -moz-linear-gradient(white, white 10%, #D9DDEB 100%);
+	background: -webkit-linear-gradient(white, white 10%, #D9DDEB 100%);
+	background: -o-linear-gradient(white, white 10%, #D9DDEB 100%); 
 	max-width: 100%; 
 }
 
+button.btn-register, button.btn-register:hover {
+	background-color: #65AA53;
+	background: linear-gradient(#65AA53, #578843 100%);
+	background: -moz-linear-gradient(#65AA53, #578843 100%);
+	background: -webkit-linear-gradient(#65AA53, #578843 100%);
+	background: -o-linear-gradient(#65AA53, #578843 100%); 
+	border-bottom: 1px solid #3B6E22;
+	color: white;
+	text-shadow: 2px, 2px, #4C7B3D;
+}
+
+button.btn-register:hover {
+	background: linear-gradient(#76B761, #578843 100%);
+	background: -moz-linear-gradient(#76B761, #578843 100%);
+	background: -webkit-linear-gradient(#76B761, #578843 100%);
+	background: -o-linear-gradient(#76B761, #578843 100%); 
+}
+
 div.kopfzeile {
-	background-color: #3b5998;
-	border-bottom: 1px solid #334e84;
-	box-shadow:0 3px 8px #808080;
+	background-color: #3B5998;
+	background: linear-gradient(#4E69A2, #3B5998 100%);
+	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
+	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
+	border-bottom: 1px solid #103480;
+	box-shadow:0 3px 8px #A3A3A5;
 	color: white;
 	height: 50px;
 }
@@ -229,7 +266,7 @@ li.kommentareAnzeigen {
 }
 
 li.chatfreunde {
-	background-color: #dfe3ee;
+	background-color: #E9EAED;
 	border-radius: 3px;
 }
 
