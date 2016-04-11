@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/UniNet/CSS/page.css">
 <link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="author" content="Christian Ackermann">
 <title>UniNet - Emoticons</title>
 </head>
 <body>

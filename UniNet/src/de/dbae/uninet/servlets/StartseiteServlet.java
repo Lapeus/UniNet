@@ -39,6 +39,12 @@ public class StartseiteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//is client behind something?
+		String ipAddress = request.getHeader("X-FORWARDED-FOR");  
+		if (ipAddress == null) {  
+			ipAddress = request.getRemoteAddr();  
+		}
+		System.out.println(ipAddress);
 		// Oeffne eine neue DB-Verbindung
 		DBConnection dbcon = new DBConnection();
 		Connection con = dbcon.getCon();

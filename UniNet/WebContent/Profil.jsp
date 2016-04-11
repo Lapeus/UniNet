@@ -11,6 +11,7 @@
 <link rel="icon" href="UniNet_Logo.ico">
 <link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="author" content="Christian Ackermann">
 <title>UniNet - Profilseite</title>
 </head>
 <body>

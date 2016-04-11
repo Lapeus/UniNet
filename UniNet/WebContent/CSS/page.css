@@ -5,12 +5,17 @@
 	font-weight: bold;
 	src: url("/fonts/FACEBOLF.OTF") format("opentype");
 }
+
+:root {
+	--blue: #3b5998;
+}
+
 .anmeldeKopf {
-	background-color: #3B5998;
-	background: linear-gradient(#4E69A2, #3B5998 100%);
-	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
+	background-color: var(--blue);
+	background: linear-gradient(#4E69A2, var(--blue) 100%);
+	background: -moz-linear-gradient(#4E69A2, var(--blue) 100%);
+	background: -webkit-linear-gradient(#4E69A2, var(--blue) 100%);
+	background: -o-linear-gradient(#4E69A2, var(--blue) 100%); 
 	border-bottom: 1px solid #103480;
 	box-shadow:0 1px 3px #808080; 
 }
@@ -24,7 +29,7 @@
 }
 
 .containerColor {
-	background-color: #3b5998;
+	background-color: var(--blue);
 	color: white;
 }
 
@@ -63,12 +68,12 @@
 
 .verfasser {
 	font-size: 20px;
-	color: #3b5998;
+	color: var(--blue);
 	font-weight: bold; 
 }
 
 .kommentarVerfasser {
-	color: #3b5998;
+	color: var(--blue);
 	font-weight: bold;
 }
 
@@ -77,15 +82,19 @@
 }
 
 .blau {
-	color: #3b5998;
+	color: var(--blue);
+}
+
+a {
+	color: var(--blue);	
 }
 
 a.kopfzeile, a.kopfzeile:active, a.kopfzeile:hover, a.kopzeile:focus {
-	background-color: #3B5998;
-	background: linear-gradient(#4E69A2, #3B5998 100%);
-	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
+	background-color: #3b5998;
+	background: linear-gradient(#4E69A2, #3b5998 100%);
+	background: -moz-linear-gradient(#4E69A2, #3b5998 100%);
+	background: -webkit-linear-gradient(#4E69A2, #3b5998 100%);
+	background: -o-linear-gradient(#4E69A2, #3b5998 100%); 
 	border-bottom: 1px solid #103480;
 	color: white;
 	outline: 0;
@@ -93,10 +102,10 @@ a.kopfzeile, a.kopfzeile:active, a.kopfzeile:hover, a.kopzeile:focus {
 }
 
 a.logo, a.logo:active, a.logo:hover, a.logo:focus {
-	background: linear-gradient(#4E69A2, #3B5998 100%);
-	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
+	background: linear-gradient(#4E69A2, #3b5998 100%);
+	background: -moz-linear-gradient(#4E69A2, #3b5998 100%);
+	background: -webkit-linear-gradient(#4E69A2, #3b5998 100%);
+	background: -o-linear-gradient(#4E69A2, #3b5998 100%); 
 	font-size: 18px;
 	font-family: "FacebookLetterFace", Arial;
 	font-weight: bold;
@@ -104,7 +113,7 @@ a.logo, a.logo:active, a.logo:hover, a.logo:focus {
 
 a.mitglieder {
 	font-size: 14px;
-	color: #3b5998; 
+	color: var(--blue); 
 }
 
 a.zeitstempel {
@@ -147,11 +156,11 @@ button.btn-register:hover {
 }
 
 div.kopfzeile {
-	background-color: #3B5998;
-	background: linear-gradient(#4E69A2, #3B5998 100%);
-	background: -moz-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -webkit-linear-gradient(#4E69A2, #3B5998 100%);
-	background: -o-linear-gradient(#4E69A2, #3B5998 100%); 
+	background-color: #3b5998;
+	background: linear-gradient(#4E69A2, #3b5998 100%);
+	background: -moz-linear-gradient(#4E69A2, #3b5998 100%);
+	background: -webkit-linear-gradient(#4E69A2, #3b5998 100%);
+	background: -o-linear-gradient(#4E69A2, #3b5998 100%); 
 	border-bottom: 1px solid #103480;
 	box-shadow:0 3px 8px #A3A3A5;
 	color: white;
@@ -216,8 +225,8 @@ img.profil {
 }
 
 img.kopfzeile {
-	width: 20px;
-	height: 20px;
+	width: 24px;
+	height: 24px;
 	float: left;
 }
 
@@ -240,7 +249,7 @@ label.beitrag {
 
 label.anzahlLikes {
 	font-size: 14px;
-	color: #3b5998;
+	color: var(--blue);
 	font-weight: lighter;
 	border-bottom: 1px solid #ebebeb;
 	display: block;
@@ -248,16 +257,16 @@ label.anzahlLikes {
 
 label.profilName {
 	font-size: 30px;
-	color: #3b5998;
+	color: var(--blue);
 	font-weight: bold; 
 }
 
 li a {
-	color: #3b5998;
+	color: var(--blue);
 }
 
-li.geliket {
-	background-color: #b7c5e2;
+li.geliket, li.geliket a {
+	color: #5890FF;
 }
 
 li.kommentareAnzeigen {
@@ -271,10 +280,10 @@ li.chatfreunde {
 }
 
 span.facebook {
-	color: #3b5998;
+	color: var(--blue);
 	font-size: 25px;
 	vertical-align: -5%;
-	background-color: #3b5998;
+	background-color: var(--blue);
 }
 
 span.facebook2 {
@@ -283,7 +292,7 @@ span.facebook2 {
 	font-family: "FacebookLetterFace", Arial;
 	font-weight: bold;
 	vertical-align: 10%;
-	background-color: #3b5998;
+	background-color: var(--blue);
 }
 
 textarea {

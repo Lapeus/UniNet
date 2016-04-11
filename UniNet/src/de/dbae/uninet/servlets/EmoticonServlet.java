@@ -125,6 +125,7 @@ public class EmoticonServlet extends HttpServlet {
 			emoticons.add(new Emoticon(":P", "&#x1F61C"));
 			emoticons.add(new Emoticon(":*", "&#x1F618"));
 			emoticons.add(new Emoticon(":/", "&#x1F629"));
+			emoticons.add(new Emoticon("*_*", "&#x1F60D"));
 			emoticons.add(new Emoticon("(angry)", "&#x1F620"));
 			emoticons.add(new Emoticon("(tired)", "&#x1F62A"));
 			emoticons.add(new Emoticon("(no evil monkey)", "&#x1F648"));
