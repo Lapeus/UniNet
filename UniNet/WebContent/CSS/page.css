@@ -182,6 +182,7 @@ div.mittlereSpalte {
 }
 
 div.rechteSpalte {
+	background-color: #E9EAED;
 	width: 20%;
 	height: 85vh;
 	position: fixed;

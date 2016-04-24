@@ -7,9 +7,10 @@ public class Nachricht {
 	private Date date;
 	private String nachrichtenText;
 	
-	public Nachricht(String name, String nachrichtenText) {
+	public Nachricht(String name, String nachrichtenText, Date date) {
 		this.name = name;
 		this.nachrichtenText = nachrichtenText;
+		this.date = date;
 	}
 
 	public String getName() {
@@ -28,4 +29,12 @@ public class Nachricht {
 		this.nachrichtenText = nachrichtenText;
 	}
 	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 }

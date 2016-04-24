@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,6 +52,31 @@ public class NachrichtenServlet extends HttpServlet {
 			userId = userIDFreund+"";
 		}
 		userIDFreund = Integer.parseInt(userId);
+		// Name des Freundes herausfinden
+		NachrichtenSql nSql = new NachrichtenSql();
+		Connection con = new DBConnection().getCon();
+		String sNameFreund = "";
+		try {
+			PreparedStatement pStmt = con.prepareStatement(nSql.getName());
+			pStmt.setInt(1, userIDFreund);
+			ResultSet result = pStmt.executeQuery();
+			while (result.next()) {
+				sNameFreund = result.getString(1) + " " + result.getString(2);
+				System.out.println(sNameFreund);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL Fehler NameFreund - NachrichtenServletGET");
+		} finally {
+			if	(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("Verbindung konnte nicht beendet werden - NachrichtenServeletGET");
+				}
+			}
+		}
+	
+		request.setAttribute("nameFreund", sNameFreund);
 		request.setAttribute("UserIDFreund", userId);
 		request.setAttribute("nachrichten", getNachrichten(Integer.parseInt(userId)));
 		request.getRequestDispatcher("Nachrichten.jsp").forward(request, response);
@@ -62,31 +90,37 @@ public class NachrichtenServlet extends HttpServlet {
 		Connection con = null;
 		NachrichtenSql nSql = new NachrichtenSql();
 		if(request.getParameter("senden") != null){
-			try {
-				con = new DBConnection().getCon();
-				PreparedStatement pStmt = con.prepareStatement(nSql.nachrichtSenden());
-				pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
-				pStmt.setInt(2, userIDFreund);
-				pStmt.setString(3, request.getParameter("nachricht"));
-				pStmt.execute();
-				request.setAttribute("userID", userIDFreund);
-				doGet(request, response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
+			if(!request.getParameter("nachricht").equals("")) {
 				try {
-					if (con != null) {
-						con.close();
-						System.out.println("Die Verbindung wurde erfolgreich beendet! (NachrichtenServletPOST)");
+					con = new DBConnection().getCon();
+					PreparedStatement pStmt = con.prepareStatement(nSql.nachrichtSenden());
+					// Prepared Stmt mit Argumenten fuellen
+					pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+					pStmt.setInt(2, userIDFreund);
+					pStmt.setString(3, request.getParameter("nachricht"));
+					// Datestamp erstellen
+					java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+					pStmt.setDate(4, sqlDate);
+					// Timestamp erstellen
+					java.sql.Time sqlTime = new java.sql.Time(System.currentTimeMillis());
+					pStmt.setTime(5, sqlTime);
+					pStmt.execute();
+					request.setAttribute("userID", userIDFreund);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						if (con != null) {
+							con.close();
+							System.out.println("Die Verbindung wurde erfolgreich beendet! (NachrichtenServletPOST)");
+						}
+					} catch (Exception ignored) {
+						ignored.printStackTrace();
 					}
-				} catch (Exception ignored) {
-					ignored.printStackTrace();
 				}
-			}
-		} else if (request.getParameter("reload") != null) {
-			System.out.println("drin");
-			doGet(request, response);
+			} 
 		}
+		doGet(request, response);
 	}
 	
 	private List<Nachricht> getNachrichten(int userIDFreund) {
@@ -106,7 +140,13 @@ public class NachrichtenServlet extends HttpServlet {
 			while (result.next()) {
 				String name = result.getString(1) +" "+ result.getString(2);
 				String nachricht = result.getString(3);
-				nachrichten.add(new Nachricht(name, nachricht));
+				java.sql.Date date = result.getDate(4);
+				java.sql.Time time = result.getTime(5);
+				Date finalDate = null;
+				if (date != null) {
+					finalDate = new Date(time.getTime());
+				}
+				nachrichten.add(new Nachricht(name, nachricht, finalDate));
 			}
 			for (Nachricht nachricht : nachrichten) {
 				nachricht.getName();

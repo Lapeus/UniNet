@@ -17,9 +17,12 @@
 <jsp:include page="/LadeChatAlleFreundeServlet"></jsp:include>
 <page:kopfzeile></page:kopfzeile>
 <div class="mainPart">
-<page:linkeSpalte use="standard"></page:linkeSpalte>
+<page:linkeSpalte>
+</page:linkeSpalte>
 <page:mittlereSpalte>
-<div class="row">
+<h4>${ nameFreund }</h4>
+<hr>
+<div class="row" style="background-color: white">
 	<div class="msg-warp">
 		 <div class="msg-wrap">
 		 	<c:forEach items="${ nachrichten }" var="nachrichten">
@@ -28,7 +31,7 @@
 		 </div>
 		 <form action="NachrichtenServlet" method="POST">
 			 <div class="send-wrap">
-			     <textarea class="form-control send-message" rows="3" placeholder="Schreibe jetzt..." name="nachricht"></textarea>
+			     <textarea class="form-control send-message" rows="2" placeholder="Schreibe jetzt..." name="nachricht"></textarea>
 			 </div>
 			 <div class="btn-panel">
 			     <a href="NachrichtenServlet" class=" col-lg-3 btn send-message-btn " role="button" name="reload">Reload</a>
