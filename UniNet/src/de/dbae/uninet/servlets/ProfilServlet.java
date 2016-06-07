@@ -118,7 +118,7 @@ public class ProfilServlet extends HttpServlet {
 				}
 				// Wenn etwas ueber die eigene Persoenlichkeit eingetragen wurde
 				if (rs.getString(9) != null && !rs.getString(9).equals("")) {
-					request.setAttribute("ueberMich", getInfoString("Über mich:<br>" + rs.getString(9)));
+					request.setAttribute("ueberMich", getInfoString("&uuml;ber mich:<br>" + rs.getString(9)));
 				}
 				// Setze die Email-Adresse
 				request.setAttribute("email", rs.getString(10));

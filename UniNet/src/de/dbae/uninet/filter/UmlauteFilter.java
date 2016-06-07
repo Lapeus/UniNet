@@ -66,13 +66,13 @@ public class UmlauteFilter implements Filter {
 		// Eine Map fuer alle Umlaute
 		Map<String, String> umlaute = new HashMap<String, String>();
 		// Fuellung der Map mit dem Umlaut und der entsprechenden Html-Codierung
-		umlaute.put("ä", "&auml");
-		umlaute.put("Ä", "&Auml");
-		umlaute.put("ö", "&ouml");
-		umlaute.put("Ö", "&Ouml");
-		umlaute.put("ü", "&uuml");
-		umlaute.put("Ü", "&Uuml");
-		umlaute.put("ß", "&szlig");
+		umlaute.put("Ã¤", "&auml");
+		umlaute.put("Ã„", "&Auml");
+		umlaute.put("Ã¶", "&ouml");
+		umlaute.put("Ã–", "&Ouml");
+		umlaute.put("Ã¼", "&uuml");
+		umlaute.put("Ãœ", "&Uuml");
+		umlaute.put("ÃŸ", "&szlig");
 		// Zeilenumbruch durch <br> ersetzen
 		umlaute.put("\n", "<br>");
 		try {

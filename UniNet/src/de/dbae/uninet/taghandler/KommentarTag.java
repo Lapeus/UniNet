@@ -33,7 +33,7 @@ public class KommentarTag extends TagSupport {
 		try {
 			out.append(getHtmlCode());
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anhängen!");
+			System.out.println("Fehler beim Anh&auml;ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -55,7 +55,7 @@ public class KommentarTag extends TagSupport {
 		int userID = kommentar.getUserIDsession();
 		// Wenn es der eigene Kommentar ist, kann man ihn loeschen
 		if (userID == kommentar.getUserID()) {
-			erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KommentarLoeschen&id=" + kommentar.getKommID() + "'>Löschen</a></div>";
+			erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KommentarLoeschen&id=" + kommentar.getKommID() + "'>L&ouml;schen</a></div>";
 		}
 		erg += "<div class='col-md-8'><a class='zeitstempel'>" + kommentar.getTimeStamp() + "</a></div></div>"; 
 		// Anzeige saemtlicher Unterkommentare
@@ -67,7 +67,7 @@ public class KommentarTag extends TagSupport {
 			erg += "<div class='row'><div class='col-md-2'><a class='blau'href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=AntwortAufKomm&kommID=" + komm.getKommID() + "&userName=" + komm.getName() + "&userID=" + komm.getUserID() + "'>Antworten</a></div>";
 			// Wenn es der eigene Unterkommentar ist, kann man ihn loeschen
 			if (userID == komm.getUserID()) {
-				erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KommLoeschen&id=" + komm.getKommID() + "'>Löschen</a></div>"; 
+				erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KommLoeschen&id=" + komm.getKommID() + "'>L&ouml;schen</a></div>"; 
 			}
 			erg += "<div class='col-md-8'><a class='zeitstempel'>" + komm.getTimeStamp() + "</a></div></div>"; 
 			erg += "</div></div>";
@@ -81,7 +81,7 @@ public class KommentarTag extends TagSupport {
 				erg += "<div class='col-md-2'></div>";
 				// Wenn es der eigene Kommentar ist, kann man ihn loeschen
 				if (userID == kzukomm.getUserID()) {
-					erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KzukommLoeschen&id=" + kzukomm.getKommID() + "'>Löschen</a></div>"; 	
+					erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KzukommLoeschen&id=" + kzukomm.getKommID() + "'>L&ouml;schen</a></div>"; 	
 				}
 				erg += "<div class='col-md-8'><a class='zeitstempel'>" + kzukomm.getTimeStamp() + "</a></div></div>"; 
 				erg += "</div></div>";

@@ -14,7 +14,7 @@ import de.dbae.uninet.sqlClasses.BeziehungsSql;
 
 /**
  * Diese Klasse stellt Methoden zur Verf&uuml;gung, um die Beziehungen eines Nutzers zu seinen Freunden zu bewerten.<br>
- * Die Bewertung basiert auf einer natürlichen Zahl zwischen 0 und 1000, wobei 0 f&uuml;r <b>keine Relevanz / nicht vorhandene Beziehung</b>
+ * Die Bewertung basiert auf einer nat&uuml;rlichen Zahl zwischen 0 und 1000, wobei 0 f&uuml;r <b>keine Relevanz / nicht vorhandene Beziehung</b>
  * und 1000 f&uuml;r <b>sehr hohe Relevanz / enge Beziehung</b>
  * @author Christian Ackermann
  */

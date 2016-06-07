@@ -77,7 +77,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				String password = request.getParameter("password");
 				String email = request.getParameter("email");
 
-				// Statement für userid
+				// Statement fï¿½r userid
 				String stUserid = sqlSt.getNutzerId();
 				PreparedStatement eins = con.prepareStatement(stUserid);
 				eins.setString(1, email);
@@ -88,7 +88,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					userid = rsUserid.getString(1);
 				}
 
-				// Statement für email und PW kontrolle
+				// Statement fï¿½r email und PW kontrolle
 				String sql = sqlSt.ueberpruefeAnmeldedaten();
 				PreparedStatement pStmt = con.prepareStatement(sql);
 				pStmt.setString(1, email);
@@ -114,7 +114,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						System.out.println("Passwort Hash Fehler");
 						e.printStackTrace();
 					}
-					// Teste ob die Passwörter übereinstimmen
+					// Teste ob die Passwï¿½rter ï¿½bereinstimmen
 					if (!hash.equals(rs.getString(1))) {
 						meldung1 = "Es wurde ein falsches Passwort eingegeben!";
 						request.setAttribute("meldung", meldung1);
@@ -178,7 +178,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				
 				try {
 					if (password1.equals(password2)) {
-						// PASSWÖRTER GLEICH
+						// PASSWï¿½RTER GLEICH
 						// Passwort hashen
 						String hash = "";
 						String salt = "";
@@ -204,15 +204,15 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						pStmtNutzer.setString(5, hash);
 						pStmtNutzer.setString(6, salt);
 						pStmtNutzer.execute();
-						// Statement für userid
+						// Statement fï¿½r userid
 						String stUserid = sqlSt.getNutzerId();
 						PreparedStatement eins = con.prepareStatement(stUserid);
 						eins.setString(1, email);
-						// Statement für uniid
+						// Statement fï¿½r uniid
 						String stUniid = sqlSt.getUniId();
 						PreparedStatement zwei = con.prepareStatement(stUniid);
 						zwei.setString(1, uni);
-						// Statement für studiengangid
+						// Statement fï¿½r studiengangid
 						String stStudiengangid = sqlSt.getStudiengangId();
 						PreparedStatement drei = con.prepareStatement(stStudiengangid);
 						drei.setString(1, studiengang);
@@ -248,10 +248,10 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						userSession.setAttribute("UserID", userid);
 						response.sendRedirect("StartseiteServlet");
 					} else {
-						// PASSWÖRTER UNGLEICH
+						// PASSWï¿½RTER UNGLEICH
 
 						// Meldung bei ungleichem Passwort
-						meldung = "Keine übereinstimmung - Geben das Passwort erneut ein";
+						meldung = "Keine &Uuml;bereinstimmung - Geben das Passwort erneut ein";
 						request.setAttribute("meldung", meldung);
 						// Studiengaenge updaten
 						updateStudiengaenge(request, response, con, sqlSt, uni);
@@ -269,10 +269,10 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					killConnection(con);
 				}
 			} else {
-				// DATEN UNVOLLSTÄNDIG
+				// DATEN UNVOLLSTï¿½NDIG
 				
-				// Meldung bei unvollständiger Registrierung
-				meldung = "Bitte füllen Sie das Formular vollständig aus";
+				// Meldung bei unvollstï¿½ndiger Registrierung
+				meldung = "Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus";
 				request.setAttribute("meldung", meldung);
 				// Studiengaenge updaten
 				updateStudiengaenge(request, response, con, sqlSt, uni);
@@ -296,7 +296,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	}
 	
 	private void felderFuellen(HttpServletRequest request) {
-		// und in die Felder füllen wenn neu geladen
+		// und in die Felder fï¿½llen wenn neu geladen
 		String anrede = request.getParameter("anrede");
 		boolean bAnrede = anrede.equals("Herr") ? true : false;
 		String vorname = request.getParameter("vorname");

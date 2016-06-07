@@ -130,7 +130,7 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			pStmt = con.prepareStatement(sql);
 			int semester = Integer.parseInt(request.getParameter("semester"));
 			// Formatierung des Geburtstags
-			SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 			Date date = null;
 			try {
 				date = new Date(sdf.parse(request.getParameter("geburtstag").toString()).getTime());

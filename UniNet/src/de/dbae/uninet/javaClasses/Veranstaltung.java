@@ -22,7 +22,7 @@ public class Veranstaltung {
 	private String dozent;
 	
 	/**
-	 * Das empfohlene Semester (String, da auch z.B. 3-4 möglich ist).
+	 * Das empfohlene Semester (String, da auch z.B. 3-4 m&ouml;glich ist).
 	 */
 	private String semester;
 	

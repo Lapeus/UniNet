@@ -37,7 +37,7 @@ public class BeitragTag extends TagSupport {
 		try {
 			out.append(getHtmlCode());
 		} catch (Exception e) {
-			System.out.println("Fehler beim Anhängen!");
+			System.out.println("Fehler beim Anhï¿½ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -79,7 +79,7 @@ public class BeitragTag extends TagSupport {
 			erg += "<div class='col-md-8'>";
 			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragBearbeiten' title='Beitrag bearbeiten'><span class='glyphicon glyphicon-pencil' style='color:#3b5998;'></span></a>";
 			erg += "</div><div class='col-md-3'>";
-			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag löschen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
+			erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag l&ouml;schen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
 			erg += "</div><div class='col-md-1'></div></div></div>";
 		}
 		erg += "</div><label class='beitrag'><br>" + beitrag.getNachricht() + "</label><br><br>";

@@ -34,10 +34,10 @@ public class FehlerServlet extends HttpServlet {
 		String page = "Anmeldung.jsp";
 		switch (fehler) {
 		case "DBCon":
-			meldung = "Leider konnte keine Verbindung zur Datenbank aufgebaut werden. Bitte versuchen Sie es später erneut.";
+			meldung = "Leider konnte keine Verbindung zur Datenbank aufgebaut werden. Bitte versuchen Sie es sp&auml;ter erneut.";
 			break;
 		case "Session":
-			meldung = "Ihre aktuelle Sitzung ist abgelaufen. Aus Sicherheitsgründen wurden Sie ausgeloggt.";
+			meldung = "Ihre aktuelle Sitzung ist abgelaufen. Aus Sicherheitsgr&uuml;nden wurden Sie ausgeloggt.";
 			break;
 		default:
 			break;
