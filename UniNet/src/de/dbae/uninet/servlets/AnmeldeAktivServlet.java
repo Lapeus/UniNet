@@ -138,14 +138,33 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						while (rs.next()) {
 							studentenIDs.add(rs.getString(1));
 						}
+						System.out.println("Toller Text");
+						sql = sqlSt.getNutzerTyp();
+						pStmt = con.prepareStatement(sql);
+						pStmt.setString(1, email);
+						rs = pStmt.executeQuery();
+						int nutzertyp = 4;
+						while (rs.next()) {
+							nutzertyp = rs.getInt(1);
+						}
 						// Wenn es ein Student ist, leite an Startseite weiter
-						if (studentenIDs.contains(userid)) {
+						/*if (studentenIDs.contains(userid)) {
 							// Freundesbewertung fuer diesen Nutzer aktualisieren
 							new Beziehungsrechner().setBeziehung(Integer.parseInt(userid));
 							response.sendRedirect("StartseiteServlet");
-						// Sonst an die LocalAdmin Verwaltung
-						} else {
+						// Sonst an die Admin Verwaltung*/
+						System.out.println("Toller Text");
+						if (nutzertyp == 1) {
+							response.sendRedirect("AdminServlet");
+						} else if (nutzertyp == 2) {
+							response.sendRedirect("AdminServlet");
+						} else if (nutzertyp == 3) {
 							response.sendRedirect("LocalAdminServlet");
+						} else {
+							// Wenn es kein Admin ist, leite an Startseite weiter
+							// Freundesbewertung fuer diesen Nutzer aktualisieren
+							new Beziehungsrechner().setBeziehung(Integer.parseInt(userid));
+							response.sendRedirect("StartseiteServlet");
 						}
 					}
 				}
@@ -162,7 +181,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			boolean bAnrede = anrede.equals("Herr") ? true : false;
 			String vorname = request.getParameter("vorname");
 			String nachname = request.getParameter("nachname");
-			String email = request.getParameter("email");
+			String email = request.getParameter("email");	
 			String uni = request.getParameter("uni");
 			String studiengang = request.getParameter("studiengang");
 			int semester = Integer.parseInt(request.getParameter("semester"));
@@ -203,6 +222,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						pStmtNutzer.setString(4, email);
 						pStmtNutzer.setString(5, hash);
 						pStmtNutzer.setString(6, salt);
+						pStmtNutzer.setInt(7, 4);
 						pStmtNutzer.execute();
 						// Statement f�r userid
 						String stUserid = sqlSt.getNutzerId();

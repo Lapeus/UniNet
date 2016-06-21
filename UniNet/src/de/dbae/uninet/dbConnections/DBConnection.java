@@ -19,7 +19,7 @@ public class DBConnection {
 	
 	static final String DB_SERVER = "localhost:5432";
 	static final String DB_NAME = "postgres";
-	static final String PASSWORD = "sicher123";
+	static final String PASSWORD = "asdfghjkl";
 	static final String USER = "postgres";
 
 	static final String URL = "jdbc:postgresql://"+DB_SERVER+ "/"+DB_NAME;
@@ -36,14 +36,14 @@ public class DBConnection {
 	}
 	
 	public Connection getCon() {
-		System.out.println("Die Verbindung wurde geöffnet(" + ++anzahlVerbindungen + ")");
+		System.out.println("Diie Verbindung wurde geöffnet(" + ++anzahlVerbindungen + ")");
 		return con;
 	}
 	
 	public void close() {
 		try {
 			con.close();
-			System.out.println("Die Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
+			System.out.println("Diie Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
 		} catch (SQLException e) {
 			System.err.println("SQL-Fehler");
 			e.printStackTrace();
