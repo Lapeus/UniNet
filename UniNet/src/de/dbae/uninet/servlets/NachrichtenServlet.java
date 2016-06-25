@@ -127,23 +127,25 @@ public class NachrichtenServlet extends HttpServlet {
 		
 		try {
 			con = new DBConnection().getCon();
+			int userId = Integer.parseInt(session.getAttribute("UserID").toString());
 			System.out.println("Verbindung wurde geöffnet (NachrichtenServletGET)");
 			PreparedStatement pStmt = con.prepareStatement(nSql.getNachrichtenListe());
-			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+			pStmt.setInt(1, userId);
 			pStmt.setInt(2, userIDFreund);
 			pStmt.setInt(3, userIDFreund);
-			pStmt.setInt(4, Integer.parseInt(session.getAttribute("UserID").toString()));
+			pStmt.setInt(4, userId);
 			ResultSet result = pStmt.executeQuery();
 			while (result.next()) {
-				String name = result.getString(1) +" "+ result.getString(2);
-				String nachricht = result.getString(3);
-				java.sql.Date date = result.getDate(4);
-				java.sql.Time time = result.getTime(5);
-				Date finalDate = null;
-				if (date != null) {
-					finalDate = new Date(time.getTime());
+				int senderId = result.getInt(1);
+				String name = result.getString(2) +" "+ result.getString(3);
+				String nachricht = result.getString(4);
+				java.sql.Date date = result.getDate(5);
+				java.sql.Time time = result.getTime(6);
+				Date finalTime = null;
+				if (time != null) {
+					finalTime = new Date(date.getTime() + time.getTime());
 				}
-				nachrichten.add(new Nachricht(name, nachricht, finalDate));
+				nachrichten.add(new Nachricht(senderId, name, nachricht, finalTime));
 			}
 			for (Nachricht nachricht : nachrichten) {
 				nachricht.getName();

@@ -6,7 +6,7 @@ public class NachrichtenSql {
 	}
 	
 	public String getNachrichtenListe() {
-		String sql = "SELECT vorname, nachname, nachricht, datum, uhrzeit FROM nachrichten JOIN nutzer ON (senderid = userid) WHERE senderid = ? AND empfaengerid = ? OR senderid = ? AND empfaengerid = ? ORDER BY nachrichtid;";
+		String sql = "SELECT senderid, vorname, nachname, nachricht, datum, uhrzeit FROM nachrichten JOIN nutzer ON (senderid = userid) WHERE senderid = ? AND empfaengerid = ? OR senderid = ? AND empfaengerid = ? ORDER BY nachrichtid;";
 		return sql;
 	}
 	
@@ -22,6 +22,11 @@ public class NachrichtenSql {
 	
 	public String getName() {
 		String sql = "SELECT Vorname, Nachname FROM nutzer WHERE userid = ?";
+		return sql;
+	}
+	
+	public String getProfilbild() {
+		String sql = "SELECT profilbild FROM Nutzer WHERE userID = ?";
 		return sql;
 	}
 }

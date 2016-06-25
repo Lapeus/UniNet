@@ -37,7 +37,6 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("TESTAUSGABE DIE ÜBERALL GESEHEN WERDEN SOLLTE");
 		HttpSession session = request.getSession();
 		request.setAttribute("chatfreundeAlle", getChatfreunde(session));
 	}
