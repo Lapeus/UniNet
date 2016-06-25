@@ -6,12 +6,9 @@ import java.io.Writer;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import java.util.Date;
 import java.text.*;
 
 import de.dbae.uninet.javaClasses.Nachricht;
-import de.dbae.uninet.sqlClasses.NachrichtenSql;
-import javafx.scene.input.DataFormat;
 
 public class NachrichtenTag extends TagSupport {
 
@@ -46,6 +43,7 @@ public class NachrichtenTag extends TagSupport {
 		// Zeit aus Date holen TODO null wegen alten Testdaten darf eig nicht mehr vorkommen
 		SimpleDateFormat time = new SimpleDateFormat("HH:mm");
 		String uhrzeit = "";
+		// Falls keine Zeit angegeben ist
 		if (nachricht.getDate() != null) {
 			uhrzeit = time.format(nachricht.getDate());
 		}
