@@ -93,6 +93,13 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 				request.setAttribute("interessen", rs.getString(7));
 				// Aktuelle Aussage ueber den Nutzer selbst
 				request.setAttribute("ueberMich", rs.getString(8));
+				
+				// Sichtbarkeiten laden
+				request.setAttribute("geburtsichtbar", rs.getBoolean(9));
+				request.setAttribute("wohnortsichtbar", rs.getBoolean(10));
+				request.setAttribute("hobbyssichtbar", rs.getBoolean(11));
+				request.setAttribute("interessenichtbar", rs.getBoolean(12));
+				request.setAttribute("uebermichsichtbar", rs.getBoolean(13));
 				// Weiterleitung
 				request.getRequestDispatcher("ProfilBearbeiten.jsp").forward(request, response);
 			}
