@@ -57,13 +57,17 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 		try {
 			String sql = sqlSt.getFreundeSql();
 			PreparedStatement pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+			int iUserId = Integer.parseInt(session.getAttribute("UserID").toString());
+			pStmt.setInt(1, iUserId);
+			pStmt.setInt(2, iUserId);
+			System.out.println(pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				String vorname = rs.getString(1);
 				String nachname = rs.getString(2);
 				int userID = rs.getInt(3);
 				boolean online = rs.getBoolean(4);
+				System.out.println(vorname + " " + nachname);
 				Student freund = new Student(vorname, nachname, userID, online);
 				chatfreunde.add(freund);
 			}

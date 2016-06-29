@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-	private Connection con;
+	private Connection con = null;
 	public static int anzahlVerbindungen = 0;
 	static final String DRIVER = "org.postgresql.Driver";
 	
@@ -42,8 +42,10 @@ public class DBConnection {
 	
 	public void close() {
 		try {
-			con.close();
-			System.out.println("Die Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
+			if (con != null) {
+				con.close();
+				System.out.println("Die Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
+			}
 		} catch (SQLException e) {
 			System.err.println("SQL-Fehler");
 			e.printStackTrace();

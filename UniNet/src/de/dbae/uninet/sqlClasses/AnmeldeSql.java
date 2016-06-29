@@ -7,12 +7,17 @@ public class AnmeldeSql {
 	
 	// Methods
 	public String getRegistrierungNutzerSql() {
-		String sql = "INSERT INTO Nutzer (anrede, vorname, nachname, email, passwort, salt)  VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO Nutzer (anrede, vorname, nachname, email, passwort, salt, nutzertyp)  VALUES (?,?,?,?,?,?,?)";
 		return sql; 
 	}
 	
 	public String getNutzerId() {
 		String sql = "SELECT userid FROM nutzer WHERE email=?";
+	    return sql;
+	}
+	
+	public String getNutzerTyp() {
+		String sql = "SELECT nutzertyp FROM nutzer WHERE email=?";
 	    return sql;
 	}
 	
