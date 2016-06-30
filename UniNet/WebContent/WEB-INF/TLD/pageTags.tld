@@ -97,6 +97,17 @@
 		</attribute>
 	</tag>
 	<tag>
+		<!-- Tag, der einen gesuchten Nutzer erstellt -->
+		<name>gesuchtNutzer</name>
+		<tag-class>de.dbae.uninet.taghandler.GesuchterNutzerTag</tag-class>
+		<attribute>
+			<!-- NachrichtObjekt -->
+			<name>user</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
 		<!-- Tag, der einen Chat erstellt -->
 		<name>chat</name>
 		<tag-class>de.dbae.uninet.taghandler.ChatTag</tag-class>

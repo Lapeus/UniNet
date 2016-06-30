@@ -36,7 +36,7 @@ public class DBConnection {
 	}
 	
 	public Connection getCon() {
-		System.out.println("Die Verbindung wurde ge�ffnet(" + ++anzahlVerbindungen + ")");
+		System.out.println("Die Verbindung wurde geöffnet(" + ++anzahlVerbindungen + ")");
 		return con;
 	}
 	

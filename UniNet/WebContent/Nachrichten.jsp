@@ -25,8 +25,8 @@
 <div class="row" style="background-color: white">
 	<div class="msg-warp">
 		 <div class="msg-wrap">
-		 	<c:forEach items="${ nachrichten }" var="nachrichten">
-		    	<page:nachricht nachricht="${ nachrichten }"></page:nachricht>
+		 	<c:forEach items="${ nachrichten }" var="nachricht">
+		    	<page:nachricht nachricht="${ nachricht }"></page:nachricht>
 		 	</c:forEach>
 		 </div>
 		 <form action="NachrichtenServlet" method="POST">
