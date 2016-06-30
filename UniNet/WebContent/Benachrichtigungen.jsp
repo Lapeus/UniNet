@@ -12,9 +12,16 @@
 <title>UniNet - Aktuelle Benachrichtungen</title>
 </head>
 <body>
-<page:seitenAufbau chatfreunde='${ chatfreunde }'>
-Hier steht dann der tolle Inhalt
-<!-- Seiteninhalt einfuegen -->
-</page:seitenAufbau>
+<jsp:include page="/LadeChatAlleFreundeServlet"></jsp:include>
+<page:kopfzeile></page:kopfzeile>
+<div class="mainPart">
+<page:linkeSpalte>
+</page:linkeSpalte>
+<page:mittlereSpalte>
+<h4>Test</h4>
+<hr>
+</page:mittlereSpalte>
+<page:rechteSpalte chatfreunde="${ chatfreundeAlle }"></page:rechteSpalte>
+</div>
 </body>
 </html>
