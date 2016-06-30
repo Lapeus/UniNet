@@ -35,6 +35,12 @@ public class BenachrichtigungErstellenSql {
 		case "Gruppenname":
 			sql = "SELECT Name FROM Gruppen WHERE gruppenID = ?";
 			break;
+		case "Veranstaltungsmitglieder":
+			sql = "SELECT studentID FROM veranstaltungsmitglieder WHERE veranstaltungsID = ?";
+			break;
+		case "Gruppenmitglieder":
+			sql = "SELECT studentID FROM gruppenmitglieder WHERE gruppenID = ?";
+			break;
 		default:
 			System.err.println("FEHLER IM BENACHRICHTIGUNGERSTELLENGSQL " + action);
 			break;

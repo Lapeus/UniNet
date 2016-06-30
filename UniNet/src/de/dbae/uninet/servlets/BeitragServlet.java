@@ -506,6 +506,8 @@ public class BeitragServlet extends HttpServlet {
 		pStmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
 		pStmt.setTime(5, new java.sql.Time(System.currentTimeMillis()));
 		pStmt.executeUpdate();
+		// Benachrichtigung erstellen
+		new ErstelleBenachrichtigung(con).beitragReaktion(userID, beitragsID, false);
 		// Weiterleitung an die angegebene Seite
 		response.sendRedirect(page);
 	}

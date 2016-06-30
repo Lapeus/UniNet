@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.ErstelleBenachrichtigung;
 import de.dbae.uninet.javaClasses.HashtagVerarbeitung;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Veranstaltung;
@@ -333,6 +334,8 @@ public class VeranstaltungenServlet extends HttpServlet {
 			pStmt.executeUpdate();
 			// Mit der BeitragsID koennen nun die Hashtags gesetzt werden
 			hv.setHashTags(con, hashtags, beitragsID);
+			// Benachrichtigungen erstellen
+			new ErstelleBenachrichtigung(con).gruppenveranstaltungenpost(verfasserID, beitragsID, veranstaltungsID, false);
 			// Weiterleitung
 			response.sendRedirect("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + veranstaltungsID);
 		} else {
