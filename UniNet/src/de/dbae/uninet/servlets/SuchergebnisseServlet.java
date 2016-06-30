@@ -35,6 +35,8 @@ public class SuchergebnisseServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
+		// Suchparameter auslesen
+		String search = request.getParameter("search");
 		try {
 			Connection con = new DBConnection().getCon();
 			PreparedStatement pStmtNachrichten = con.prepareStatement(sql)
