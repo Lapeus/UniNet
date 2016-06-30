@@ -54,9 +54,9 @@ public class NachrichtenServlet extends HttpServlet {
 		Connection con = new DBConnection().getCon();
 		String sNameFreund = "";
 		try {
-			PreparedStatement pStmt = con.prepareStatement(nSql.getName());
-			pStmt.setInt(1, userIDFreund);
-			ResultSet result = pStmt.executeQuery();
+			PreparedStatement pStmtName = con.prepareStatement(nSql.getName());
+			pStmtName.setInt(1, userIDFreund);
+			ResultSet result = pStmtName.executeQuery();
 			while (result.next()) {
 				sNameFreund = result.getString(1) + " " + result.getString(2);
 				System.out.println(sNameFreund);
@@ -90,18 +90,18 @@ public class NachrichtenServlet extends HttpServlet {
 			if(!request.getParameter("nachricht").equals("")) {
 				try {
 					con = new DBConnection().getCon();
-					PreparedStatement pStmt = con.prepareStatement(nSql.nachrichtSenden());
+					PreparedStatement pStmtSenden = con.prepareStatement(nSql.nachrichtSenden());
 					// Prepared Stmt mit Argumenten fuellen
-					pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
-					pStmt.setInt(2, userIDFreund);
-					pStmt.setString(3, request.getParameter("nachricht"));
+					pStmtSenden.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+					pStmtSenden.setInt(2, userIDFreund);
+					pStmtSenden.setString(3, request.getParameter("nachricht"));
 					// Datestamp erstellen
 					java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-					pStmt.setDate(4, sqlDate);
+					pStmtSenden.setDate(4, sqlDate);
 					// Timestamp erstellen
 					java.sql.Time sqlTime = new java.sql.Time(System.currentTimeMillis());
-					pStmt.setTime(5, sqlTime);
-					pStmt.execute();
+					pStmtSenden.setTime(5, sqlTime);
+					pStmtSenden.execute();
 					request.setAttribute("userID", userIDFreund);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -129,12 +129,12 @@ public class NachrichtenServlet extends HttpServlet {
 			con = new DBConnection().getCon();
 			int userId = Integer.parseInt(session.getAttribute("UserID").toString());
 			System.out.println("Verbindung wurde geöffnet (NachrichtenServletGET)");
-			PreparedStatement pStmt = con.prepareStatement(nSql.getNachrichtenListe());
-			pStmt.setInt(1, userId);
-			pStmt.setInt(2, userIDFreund);
-			pStmt.setInt(3, userIDFreund);
-			pStmt.setInt(4, userId);
-			ResultSet result = pStmt.executeQuery();
+			PreparedStatement pStmtNachrichten = con.prepareStatement(nSql.getNachrichtenListe());
+			pStmtNachrichten.setInt(1, userId);
+			pStmtNachrichten.setInt(2, userIDFreund);
+			pStmtNachrichten.setInt(3, userIDFreund);
+			pStmtNachrichten.setInt(4, userId);
+			ResultSet result = pStmtNachrichten.executeQuery();
 			while (result.next()) {
 				int senderId = result.getInt(1);
 				String name = result.getString(2) +" "+ result.getString(3);
@@ -147,6 +147,7 @@ public class NachrichtenServlet extends HttpServlet {
 				}
 				nachrichten.add(new Nachricht(senderId, name, nachricht, finalTime));
 			}
+			// TESTING
 			for (Nachricht nachricht : nachrichten) {
 				nachricht.getName();
 				nachricht.getNachrichtenText();
