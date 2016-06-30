@@ -138,7 +138,6 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						while (rs.next()) {
 							studentenIDs.add(rs.getString(1));
 						}
-						System.out.println("Toller Text");
 						sql = sqlSt.getNutzerTyp();
 						pStmt = con.prepareStatement(sql);
 						pStmt.setString(1, email);
@@ -153,12 +152,9 @@ public class AnmeldeAktivServlet extends HttpServlet {
 							new Beziehungsrechner().setBeziehung(Integer.parseInt(userid));
 							response.sendRedirect("StartseiteServlet");
 						// Sonst an die Admin Verwaltung*/
-						System.out.println("Toller Text");
 						if (nutzertyp == 1) {
 							response.sendRedirect("AdminServlet");
 						} else if (nutzertyp == 2) {
-							response.sendRedirect("AdminServlet");
-						} else if (nutzertyp == 3) {
 							response.sendRedirect("LocalAdminServlet");
 						} else {
 							// Wenn es kein Admin ist, leite an Startseite weiter
@@ -222,7 +218,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						pStmtNutzer.setString(4, email);
 						pStmtNutzer.setString(5, hash);
 						pStmtNutzer.setString(6, salt);
-						pStmtNutzer.setInt(7, 4);
+						pStmtNutzer.setInt(7, 3);
 						pStmtNutzer.execute();
 						// Statement f�r userid
 						String stUserid = sqlSt.getNutzerId();
