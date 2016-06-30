@@ -1,31 +1,23 @@
 package de.dbae.uninet.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import de.dbae.uninet.dbConnections.DBConnection;
 
 /**
- * Servlet implementation class SuchergebnisseServlet
+ * Servlet implementation class UnisVerwaltenServlet
  */
-@WebServlet("/SuchergebnisseServlet")
-public class SuchergebnisseServlet extends HttpServlet {
-	
+@WebServlet("/UnisVerwaltenServlet")
+public class UnisVerwaltenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private HttpSession session;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SuchergebnisseServlet() {
+    public UnisVerwaltenServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,27 +26,15 @@ public class SuchergebnisseServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		session = request.getSession();
-		// Suchparameter auslesen
-		String search = request.getParameter("search");
-		try {
-			Connection con = new DBConnection().getCon();
-			PreparedStatement pStmtNachrichten = con.prepareStatement("SELECT");
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-			
-		}
-		// Attribute setzen
-		request.getRequestDispatcher("Suchergebnisse.jsp").forward(request, response);
+		request.getRequestDispatcher("UninetVerwaltung.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

@@ -29,6 +29,10 @@ public class ProfilSql {
 		case "Infos":
 			sql = "SELECT Vorname, Nachname, StudiengangName, Studienbeginn, Geburtstag, Wohnort, Hobbys, Interessen, UeberMich, Email FROM Nutzer INNER JOIN Studenten ON UserID = StudentID INNER JOIN Studiengaenge USING (StudiengangID) WHERE StudentID = ?";
 			break;
+		// Gibt alle Sichtbarkeiten der Informationen des Studenten zurueck
+		case "Sichtbarkeiten":
+			sql = "SELECT GeburtSichtbar, WohnortSichtbar, HobbysSichtbar, InteressenSichtbar, UeberMichSichtbar FROM Profilsichtbarkeiten WHERE StudentID = ?";
+			break;
 		// Gibt die Anzahl der Freunde zurueck
 		case "AnzahlFreunde":
 			sql = "SELECT COUNT(Freund) FROM freundeView WHERE Nutzer = ?";
@@ -37,13 +41,21 @@ public class ProfilSql {
 		case "InfosBearbeiten":
 			sql = "SELECT Vorname, Nachname, Studienbeginn, Geburtstag, Wohnort, Hobbys, Interessen, UeberMich FROM Nutzer INNER JOIN Studenten ON UserID = StudentID WHERE StudentID = ?";
 			break;
+		// Gibt an, ob die beiden Nutzer befreundet sind
+		case "Befreundet":
+			sql = "SELECT Nutzer, Freund FROM Freundeview WHERE Nutzer = ? AND Freund = ?";
+			break;
 		// Aendert den Namen
 		case "AendereNamen":
 			sql = "UPDATE Nutzer SET vorname = ?, nachname = ? WHERE userID = ?";
 			break;
 		// Aendert die uebrigen Informationen
 		case "AendereInfos":
-			sql = "UPDATE Studenten SET studienbeginn = ?, geburtstag = ?, wohnort = ?, hobbys = ?, interessen = ?, ueberMich = ? WHERE studentID = ?";
+			sql = "UPDATE Studenten SET Studienbeginn = ?, Geburtstag = ?, Wohnort = ?, Hobbys = ?, Interessen = ?, UeberMich = ? WHERE StudentID = ?";
+			break;
+		// Aendert die Sichtbarkeiten der Informationen
+		case "AendereSichtbarkeiten":
+			sql = "UPDATE Profilsichtbarkeiten SET GeburtSichtbar = ?, WohnortSichtbar = ?, HobbysSichtbar = ?, InteressenSichtbar = ?, UeberMichSichtbar = ? WHERE StudentID = ?";
 			break;
 		default:
 			System.err.println("FEHLER IN PROFILSQL " + action);

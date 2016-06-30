@@ -78,17 +78,48 @@ public class ProfilServlet extends HttpServlet {
 				eigenesProfil = true;
 			}
 			int userID = Integer.parseInt(user);
+			// Ist der aktuelle User mit dem Besitzer des Profils befreundet?
+			boolean privatSichtbar = false;
+			// Lade Sql-Statement um zu ueberpruefen ob der Nutzer mit dem Besitzer der Seite befreundet ist
+			String sql = sqlSt.getSqlStatement("Befreundet");
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, userID);
+			pStmt.setInt(2, Integer.parseInt(session.getAttribute("UserID").toString()));
+			ResultSet rs = pStmt.executeQuery();
+			// Wenn er befreundet ist
+			if (rs.next()) {
+				// Kann er private Infos sehen
+				privatSichtbar = true;
+			}
 			// Setze die UserID als request-Attribut
 			request.setAttribute("userID", user);
 			// Setze den Wahrheitswert, ob auf dem Profil Beitraege gepostet werden duerfen (eigenes Profil)
 			request.setAttribute("beitragPosten", eigenesProfil);
 			// Lade und setze alle Beitraege
 			request.setAttribute("beitragList", new BeitragServlet().getBeitraege(request, con, "Profilseite", userID));
-			// Lade Sql-Statement um die Infos zu laden
-			String sql = sqlSt.getSqlStatement("Infos");
-			PreparedStatement pStmt = con.prepareStatement(sql);
+			// Lade Sql-Statement um die Sichtbarkeiten zu laden
+			sql = sqlSt.getSqlStatement("Sichtbarkeiten");
+			pStmt = con.prepareStatement(sql);
 			pStmt.setInt(1, userID);
-			ResultSet rs = pStmt.executeQuery();
+			rs = pStmt.executeQuery();
+			// Die Angaben, ob die Info oeffentlich sichtbar ist
+			boolean geburtSichtbar = false;
+			boolean wohnortSichtbar = false;
+			boolean hobbysSichtbar = false;
+			boolean interessenSichtbar = false;
+			boolean ueberMichSichtbar = false;
+			if (rs.next()) {
+				geburtSichtbar = rs.getBoolean(1);
+				wohnortSichtbar = rs.getBoolean(2);
+				hobbysSichtbar = rs.getBoolean(3);
+				interessenSichtbar = rs.getBoolean(4);
+				ueberMichSichtbar = rs.getBoolean(5);
+			}
+			// Lade Sql-Statement um die Infos zu laden
+			sql = sqlSt.getSqlStatement("Infos");
+			pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, userID);
+			rs = pStmt.executeQuery();
 			if (rs.next()) {
 				// Setze den Namen
 				request.setAttribute("name", rs.getString(1) + " " + rs.getString(2));
@@ -100,25 +131,25 @@ public class ProfilServlet extends HttpServlet {
 				int semester = new Semesterrechner().getSemester(rs.getDate(4).getTime());
 				request.setAttribute("semester", semester);
 				// Wenn ein Geburtstag eingetragen wurde
-				if (rs.getString(5) != null) {
+				if (rs.getString(5) != null && (privatSichtbar || geburtSichtbar)) {
 					// Setze den Geburstag als Teil einer Aufzaehlung (vgl. getInfoString)
 					request.setAttribute("geburtstag", getInfoString("Geburtstag:<br>" + sdf.format(new Date(rs.getDate(5).getTime()))));
 				}
 				// Wenn ein Wohnort eingetragen wurde
-				if (rs.getString(6) != null && !rs.getString(6).equals("")) {
+				if (rs.getString(6) != null && !rs.getString(6).equals("") && (privatSichtbar || wohnortSichtbar)) {
 					request.setAttribute("wohnort", getInfoString("Wohnort:<br>" + rs.getString(6)));
 				}
 				// Wenn Hobbys eingetragen wurden
-				if (rs.getString(7) != null && !rs.getString(7).equals("")) {
+				if (rs.getString(7) != null && !rs.getString(7).equals("") && (privatSichtbar || hobbysSichtbar)) {
 					request.setAttribute("hobbys", getInfoString("Hobbys:<br>" + rs.getString(7)));
 				}
 				// Wenn Interessen eingetragen wurden
-				if (rs.getString(8) != null && !rs.getString(8).equals("")) {
+				if (rs.getString(8) != null && !rs.getString(8).equals("") && (privatSichtbar || interessenSichtbar)) {
 					request.setAttribute("interessen", getInfoString("Interessen:<br>" + rs.getString(8)));
 				}
 				// Wenn etwas ueber die eigene Persoenlichkeit eingetragen wurde
-				if (rs.getString(9) != null && !rs.getString(9).equals("")) {
-					request.setAttribute("ueberMich", getInfoString("&uuml;ber mich:<br>" + rs.getString(9)));
+				if (rs.getString(9) != null && !rs.getString(9).equals("") && (privatSichtbar || ueberMichSichtbar)) {
+					request.setAttribute("ueberMich", getInfoString("&Uuml;ber mich:<br>" + rs.getString(9)));
 				}
 				// Setze die Email-Adresse
 				request.setAttribute("email", rs.getString(10));

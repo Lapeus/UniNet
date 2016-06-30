@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="page" uri="/WEB-INF/TLD/pageTags.tld"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -47,11 +48,33 @@
 			<div class="col-md-6">
 				<input type="text" name="geburtstag" class="form-control" value="${geburtstag}">
 			</div>
+			<div class="col-md-4">
+				<label class="radio-inline"><input type="radio" name="radGeburt" value="privat" checked>Privat</label>
+				<c:choose >
+					<c:when test="${geburtSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radGeburt" value="oeffentlich" checked>Öffentlich</label>
+					</c:when>
+					<c:otherwise>
+						<label class="radio-inline"><input type="radio" name="radGeburt" value="oeffentlich">Öffentlich</label>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 		<div class="row">
 			<h4>Wohnort</h4>
 			<div class="col-md-6">
 				<input type="text" name="wohnort" class="form-control" value="${wohnort}">
+			</div>
+			<div class="col-md-4">
+				<label class="radio-inline"><input type="radio" name="radWohnort" value="privat" checked>Privat</label>
+				<c:choose >
+					<c:when test="${wohnortSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radWohnort" value="oeffentlich" checked>Öffentlich</label>
+					</c:when>
+					<c:otherwise>
+						<label class="radio-inline"><input type="radio" name="radWohnort" value="oeffentlich">Öffentlich</label>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 		<div class="row">
@@ -59,17 +82,50 @@
 			<div class="col-md-6">
 				<input type="text" name="hobbys" class="form-control" value="${hobbys}">
 			</div>
+			<div class="col-md-4">
+				<label class="radio-inline"><input type="radio" name="radHobbys" value="privat" checked>Privat</label>
+				<c:choose >
+					<c:when test="${hobbysSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radHobbys" value="oeffentlich" checked>Öffentlich</label>
+					</c:when>
+					<c:otherwise>
+						<label class="radio-inline"><input type="radio" name="radHobbys" value="oeffentlich">Öffentlich</label>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 		<div class="row">
 			<h4>Interessen</h4>
 			<div class="col-md-6">
 				<input type="text" name="interessen" class="form-control" value="${interessen}">
 			</div>
+			<div class="col-md-4">
+				<label class="radio-inline"><input type="radio" name="radInteressen" value="privat" checked>Privat</label>
+				<c:choose >
+					<c:when test="${interessenSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radInteressen" value="oeffentlich" checked>Öffentlich</label>
+					</c:when>
+					<c:otherwise>
+						<label class="radio-inline"><input type="radio" name="radInteressen" value="oeffentlich">Öffentlich</label>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 		<div class="row">
 			<h4>Über mich</h4>
 			<div class="col-md-6">
 				<textarea style="resize: none;" type="text" row=2 name="ueberMich" class="form-control">${ueberMich}</textarea>
+			</div>
+			<div class="col-md-4">
+				<label class="radio-inline"><input type="radio" name="radUeberMich" value="privat" checked>Privat</label>
+				<c:choose >
+					<c:when test="${ueberMichSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radUeberMich" value="oeffentlich" checked>Öffentlich</label>
+					</c:when>
+					<c:otherwise>
+						<label class="radio-inline"><input type="radio" name="radUeberMich" value="oeffentlich">Öffentlich</label>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 		<div class="row"><div class="col-md-6">
