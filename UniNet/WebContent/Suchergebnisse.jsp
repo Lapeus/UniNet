@@ -25,7 +25,6 @@
 		<h1>Suchergebnisse</h1>
 		<h2 class="lead"><strong class="text-danger">Personen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
 	</hgroup>
-	
     <section class="col-xs-12 col-sm-6 col-md-12">
     	<c:forEach items="${ Nutzerliste }" var="nutzer">
 	    	<page:gesuchtNutzer user="${ nutzer }"></page:gesuchtNutzer>
@@ -34,6 +33,11 @@
 	<hgroup class="mb20">
 		<h2 class="lead"><strong class="text-danger">Gruppen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
 	</hgroup>
+	<section class="col-xs-12 col-sm-6 col-md-12">
+    	<c:forEach items="${ Gruppenliste }" var="gruppe">
+	    	<page:gesuchtGruppe group="${ gruppe }"></page:gesuchtGruppe>
+		</c:forEach>
+	</section>
 	<section class="col-xs-12 col-sm-6 col-md-12">
 		<article class="search-result row">
 			<div class="col-xs-12 col-sm-12 col-md-3">

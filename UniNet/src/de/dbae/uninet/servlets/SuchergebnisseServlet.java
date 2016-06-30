@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.javaClasses.Gruppe;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.sqlClasses.SuchergebnisseSql;
 
@@ -53,6 +54,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 		request.setAttribute("Suche", search);
 		search = "%" + search + "%";
 		request.setAttribute("Nutzerliste", (List<Student>)getNutzer(search));
+		request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
 		request.getRequestDispatcher("Suchergebnisse.jsp").forward(request, response);
 	}
 
@@ -101,5 +103,56 @@ public class SuchergebnisseServlet extends HttpServlet {
 		}
 		
 		return nutzer;
+	}
+	
+	private List<Gruppe> getGruppen(String search) { 
+		DBConnection dbcon = null;
+		SuchergebnisseSql seSql = new SuchergebnisseSql();
+		List<Gruppe> gruppen = new ArrayList<>();
+		
+		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
+			PreparedStatement pStmt = con.prepareStatement(seSql.getGruppenSql());
+			pStmt.setString(1, search);
+			pStmt.setString(2, search);
+			System.out.println("GETNUTZER" + pStmt.toString());
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {
+				System.out.println("DRIEINEINEINIENFIHSIDFHSIDFHSKJDFHJKDSHF");
+				int gruppenID       = rs.getInt(1);
+				String name         = rs.getString(2);
+				String beschreibung = rs.getString(3);
+				String gruendung    = rs.getString(4);
+				int adminID         = rs.getInt(5);
+				
+				// ADMINNAME
+				String adminName = "Marvin";
+//				PreparedStatement pStmtName = con.prepareStatement(seSql.getNutzerZuId());
+//				pStmtName.setInt(1, adminID);
+//				ResultSet rsName = pStmtName.executeQuery();
+//				if(rs.next()) {
+//					adminName = rsName.getString(1);
+//				}
+				System.out.println("ADMINNAME: " + adminName);
+				gruppen.add(new Gruppe(gruppenID, name, beschreibung, gruendung, adminName, adminID));
+			}
+			
+			for (Gruppe gruppe : gruppen) {
+				System.out.println("Vorname: " + gruppe.getName());
+			}
+		} catch (Exception e) {
+			System.out.println("SuchergebnisServlet - getNutzer");
+		} finally {
+			try {
+				if (dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				ignored.printStackTrace();
+			}
+		}
+		
+		return gruppen;
 	}
 }

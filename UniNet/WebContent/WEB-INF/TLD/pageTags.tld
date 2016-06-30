@@ -101,8 +101,19 @@
 		<name>gesuchtNutzer</name>
 		<tag-class>de.dbae.uninet.taghandler.GesuchterNutzerTag</tag-class>
 		<attribute>
-			<!-- NachrichtObjekt -->
+			<!-- User -->
 			<name>user</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der einen gesuchten Nutzer erstellt -->
+		<name>gesuchtGruppe</name>
+		<tag-class>de.dbae.uninet.taghandler.GesuchteGruppeTag</tag-class>
+		<attribute>
+			<!-- User -->
+			<name>group</name> 
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
