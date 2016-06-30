@@ -36,14 +36,14 @@ public class DBConnection {
 	}
 	
 	public Connection getCon() {
-		System.out.println("Diie Verbindung wurde geöffnet(" + ++anzahlVerbindungen + ")");
+		System.out.println("Die Verbindung wurde geöffnet(" + ++anzahlVerbindungen + ")");
 		return con;
 	}
 	
 	public void close() {
 		try {
 			con.close();
-			System.out.println("Diie Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
+			System.out.println("Die Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
 		} catch (SQLException e) {
 			System.err.println("SQL-Fehler");
 			e.printStackTrace();

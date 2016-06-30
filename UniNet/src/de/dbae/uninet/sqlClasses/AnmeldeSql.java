@@ -35,6 +35,10 @@ public class AnmeldeSql {
 		String sql = "INSERT INTO studenten (studentid, uniid, studiengangid, studienbeginn, online) VALUES (?,?,?,?,TRUE)";
 		return sql;
 	}
+	public String getRegistrierungAdminSql () {
+		String sql = "INSERT INTO admins (adminid, uniid) VALUES (?,?)";
+		return sql;
+	}
 	
 	public String ueberpruefeAnmeldedaten() {
 		String sql = "SELECT passwort, salt FROM nutzer WHERE email=?";
