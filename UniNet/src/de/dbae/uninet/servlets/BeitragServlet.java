@@ -144,6 +144,7 @@ public class BeitragServlet extends HttpServlet {
 		} catch (NullPointerException npex) {
 			response.sendRedirect("FehlerServlet?fehler=Session");
 		} catch (SQLException sqlex) {
+			sqlex.printStackTrace();
 			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Schliesse die Verbindung 
@@ -355,6 +356,7 @@ public class BeitragServlet extends HttpServlet {
 				String timeStamp2 = sdf.format(new Date(rs2.getDate(6).getTime())) + " " + rs2.getTime(7).toString();
 				// Neuer Unterkommentar
 				Unterkommentar ukomm = new Unterkommentar(userID2, kommID2, name2, kommentar2, kommID, timeStamp2);
+				System.out.println(ukomm.getKommentar() + " : " + ukomm.getKommID());
 				// Lade Kommentare zum Unterkommentar
 				sql = sqlSt.getSqlStatement("KommentareZuUnterkommentaren");
 				pStmt = con.prepareStatement(sql);
@@ -442,7 +444,7 @@ public class BeitragServlet extends HttpServlet {
 				pStmt.setInt(2, userID);
 				pStmt.executeUpdate();
 			} catch (Exception e2) {
-				// Wenn das auch nicht geht, ist es ein groeßerer Fehler
+				// Wenn das auch nicht geht, ist es ein groeï¿½erer Fehler
 				// TODO Fehler
 				System.out.println("SQL Fehler in BeitragServlet");
 			}
@@ -652,6 +654,7 @@ public class BeitragServlet extends HttpServlet {
 		default:
 			break;
 		}
+		System.out.println(kommID + " lautet die KommID");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, kommID);
 		pStmt.setString(2, request.getAttribute("kommentar").toString());

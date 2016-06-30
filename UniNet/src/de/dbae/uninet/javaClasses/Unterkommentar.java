@@ -31,7 +31,7 @@ public class Unterkommentar extends AllgemeinerKommentar {
 	 * @param timeStamp Der Zeitstempel der Verfassung des Kommentars
 	 */
 	public Unterkommentar(int userID, int kommID, String name, String kommentar, int antwortAufKommID, String timeStamp) {
-		super(userID, antwortAufKommID, name, kommentar, timeStamp);
+		super(userID, kommID, name, kommentar, timeStamp);
 		this.setAntwortAufKommID(antwortAufKommID);
 	}
 

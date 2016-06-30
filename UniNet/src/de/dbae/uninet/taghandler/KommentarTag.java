@@ -65,6 +65,7 @@ public class KommentarTag extends TagSupport {
 			erg += "<div class='col-md-11'><h5 class='media-heading kommentarVerfasser'><a class='kommentarVerfasser' href='ProfilServlet?userID=" + komm.getUserID() + "'>" + komm.getName() + "</a></h5>";
 			erg += komm.getKommentar();
 			erg += "<div class='row'><div class='col-md-2'><a class='blau'href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=AntwortAufKomm&kommID=" + komm.getKommID() + "&userName=" + komm.getName() + "&userID=" + komm.getUserID() + "'>Antworten</a></div>";
+			System.out.println(komm.getKommentar() + " " + komm.getKommID());
 			// Wenn es der eigene Unterkommentar ist, kann man ihn loeschen
 			if (userID == komm.getUserID()) {
 				erg += "<div class='col-md-2'><a class='blau' href='BeitragServlet?beitragsID=" + kommentar.getZielID() + "&name=KommLoeschen&id=" + komm.getKommID() + "'>L&ouml;schen</a></div>"; 

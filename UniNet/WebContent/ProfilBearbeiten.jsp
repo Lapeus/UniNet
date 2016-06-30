@@ -49,13 +49,13 @@
 				<input type="text" name="geburtstag" class="form-control" value="${geburtstag}">
 			</div>
 			<div class="col-md-4">
-				<label class="radio-inline"><input type="radio" name="radGeburt" checked>Privat</label>
+				<label class="radio-inline"><input type="radio" name="radGeburt" value="privat" checked>Privat</label>
 				<c:choose >
-					<c:when test="${geburtsichtbar}">
-						<label class="radio-inline"><input type="radio" name="radGeburt" checked>Öffentlich</label>
+					<c:when test="${geburtSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radGeburt" value="oeffentlich" checked>Öffentlich</label>
 					</c:when>
 					<c:otherwise>
-						<label class="radio-inline"><input type="radio" name="radGeburt">Öffentlich</label>
+						<label class="radio-inline"><input type="radio" name="radGeburt" value="oeffentlich">Öffentlich</label>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -66,13 +66,13 @@
 				<input type="text" name="wohnort" class="form-control" value="${wohnort}">
 			</div>
 			<div class="col-md-4">
-				<label class="radio-inline"><input type="radio" name="radWohnort" checked>Privat</label>
+				<label class="radio-inline"><input type="radio" name="radWohnort" value="privat" checked>Privat</label>
 				<c:choose >
-					<c:when test="${wohnortsichtbar}">
-						<label class="radio-inline"><input type="radio" name="radWohnort" checked>Öffentlich</label>
+					<c:when test="${wohnortSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radWohnort" value="oeffentlich" checked>Öffentlich</label>
 					</c:when>
 					<c:otherwise>
-						<label class="radio-inline"><input type="radio" name="radWohnort">Öffentlich</label>
+						<label class="radio-inline"><input type="radio" name="radWohnort" value="oeffentlich">Öffentlich</label>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -83,13 +83,13 @@
 				<input type="text" name="hobbys" class="form-control" value="${hobbys}">
 			</div>
 			<div class="col-md-4">
-				<label class="radio-inline"><input type="radio" name="radHobbys" checked>Privat</label>
+				<label class="radio-inline"><input type="radio" name="radHobbys" value="privat" checked>Privat</label>
 				<c:choose >
-					<c:when test="${hobbyssichtbar}">
-						<label class="radio-inline"><input type="radio" name="radHobbys" checked>Öffentlich</label>
+					<c:when test="${hobbysSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radHobbys" value="oeffentlich" checked>Öffentlich</label>
 					</c:when>
 					<c:otherwise>
-						<label class="radio-inline"><input type="radio" name="radHobbys">Öffentlich</label>
+						<label class="radio-inline"><input type="radio" name="radHobbys" value="oeffentlich">Öffentlich</label>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -100,13 +100,13 @@
 				<input type="text" name="interessen" class="form-control" value="${interessen}">
 			</div>
 			<div class="col-md-4">
-				<label class="radio-inline"><input type="radio" name="radInteressen" checked>Privat</label>
+				<label class="radio-inline"><input type="radio" name="radInteressen" value="privat" checked>Privat</label>
 				<c:choose >
-					<c:when test="${interessensichtbar}">
-						<label class="radio-inline"><input type="radio" name="radInteressen" checked>Öffentlich</label>
+					<c:when test="${interessenSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radInteressen" value="oeffentlich" checked>Öffentlich</label>
 					</c:when>
 					<c:otherwise>
-						<label class="radio-inline"><input type="radio" name="radInteressen">Öffentlich</label>
+						<label class="radio-inline"><input type="radio" name="radInteressen" value="oeffentlich">Öffentlich</label>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -117,13 +117,13 @@
 				<textarea style="resize: none;" type="text" row=2 name="ueberMich" class="form-control">${ueberMich}</textarea>
 			</div>
 			<div class="col-md-4">
-				<label class="radio-inline"><input type="radio" name="radÜberMich" checked>Privat</label>
+				<label class="radio-inline"><input type="radio" name="radUeberMich" value="privat" checked>Privat</label>
 				<c:choose >
-					<c:when test="${uebermichsichtbar}">
-						<label class="radio-inline"><input type="radio" name="radUeberMich" checked>Öffentlich</label>
+					<c:when test="${ueberMichSichtbar}">
+						<label class="radio-inline"><input type="radio" name="radUeberMich" value="oeffentlich" checked>Öffentlich</label>
 					</c:when>
 					<c:otherwise>
-						<label class="radio-inline"><input type="radio" name="radUeberMich">Öffentlich</label>
+						<label class="radio-inline"><input type="radio" name="radUeberMich" value="oeffentlich">Öffentlich</label>
 					</c:otherwise>
 				</c:choose>
 			</div>

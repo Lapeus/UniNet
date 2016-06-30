@@ -94,14 +94,21 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 				// Aktuelle Aussage ueber den Nutzer selbst
 				request.setAttribute("ueberMich", rs.getString(8));
 				
-				// Sichtbarkeiten laden
-				request.setAttribute("geburtsichtbar", rs.getBoolean(9));
-				request.setAttribute("wohnortsichtbar", rs.getBoolean(10));
-				request.setAttribute("hobbyssichtbar", rs.getBoolean(11));
-				request.setAttribute("interessenichtbar", rs.getBoolean(12));
-				request.setAttribute("uebermichsichtbar", rs.getBoolean(13));
-				// Weiterleitung
-				request.getRequestDispatcher("ProfilBearbeiten.jsp").forward(request, response);
+				// Lade Sql-Statement um die Sichtbarkeiten zu laden
+				sql = sqlSt.getSqlStatement("Sichtbarkeiten");
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, userID);
+				ResultSet rs2 = pStmt.executeQuery();
+				if (rs2.next()) {
+					// Sichtbarkeiten laden
+					request.setAttribute("geburtSichtbar", rs2.getBoolean(1));
+					request.setAttribute("wohnortSichtbar", rs2.getBoolean(2));
+					request.setAttribute("hobbysSichtbar", rs2.getBoolean(3));
+					request.setAttribute("interessenSichtbar", rs2.getBoolean(4));
+					request.setAttribute("ueberMichSichtbar", rs2.getBoolean(5));
+					// Weiterleitung
+					request.getRequestDispatcher("ProfilBearbeiten.jsp").forward(request, response);
+				}
 			}
 		} catch (NullPointerException npe) {
 			response.sendRedirect("FehlerServlet?fehler=Session");
@@ -154,6 +161,21 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			pStmt.setString(5, interessen);
 			pStmt.setString(6, ueberMich);
 			pStmt.setInt(7, userID);
+			pStmt.executeUpdate();
+			// Lade SQL-Statement um die Sichtbarkeiten zu aendern
+			sql = sqlSt.getSqlStatement("AendereSichtbarkeiten");
+			pStmt = con.prepareStatement(sql);
+			boolean geburtSichtbar = request.getParameter("radGeburt").equals("oeffentlich");
+			boolean wohnortSichtbar = request.getParameter("radWohnort").equals("oeffentlich");
+			boolean hobbysSichtbar = request.getParameter("radHobbys").equals("oeffentlich");
+			boolean interessenSichtbar = request.getParameter("radInteressen").equals("oeffentlich");
+			boolean ueberMichSichtbar = request.getParameter("radUeberMich").equals("oeffentlich");
+			pStmt.setBoolean(1, geburtSichtbar);
+			pStmt.setBoolean(2, wohnortSichtbar);
+			pStmt.setBoolean(3, hobbysSichtbar);
+			pStmt.setBoolean(4, interessenSichtbar);
+			pStmt.setBoolean(5, ueberMichSichtbar);
+			pStmt.setInt(6, userID);
 			pStmt.executeUpdate();
 			// Weiterleitung
 			response.sendRedirect("ProfilServlet?userID=" + userID);
