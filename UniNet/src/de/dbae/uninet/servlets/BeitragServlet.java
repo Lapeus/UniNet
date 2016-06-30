@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
 import de.dbae.uninet.javaClasses.Emoticon;
+import de.dbae.uninet.javaClasses.ErstelleBenachrichtigung;
 import de.dbae.uninet.javaClasses.HashtagVerarbeitung;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.javaClasses.Kommentar;
@@ -28,6 +29,7 @@ import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
 import de.dbae.uninet.javaClasses.StartseitenBeitrag;
 import de.dbae.uninet.javaClasses.Unterkommentar;
 import de.dbae.uninet.sqlClasses.BeitragSql;
+import de.dbae.uninet.sqlClasses.BenachrichtigungErstellenSql;
 import de.dbae.uninet.sqlClasses.GruppenSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 import de.dbae.uninet.sqlClasses.StartseiteSql;
@@ -434,6 +436,8 @@ public class BeitragServlet extends HttpServlet {
 			pStmt.setInt(1, beitragsID);
 			pStmt.setInt(2, userID);
 			pStmt.executeUpdate();
+			// Erstelle die Benachrichtigung
+			new ErstelleBenachrichtigung(con).beitragReaktion(userID, beitragsID, true);
 		} catch (SQLException e) {
 			// Wenn es einen Fehler gab, wurde der Beitrag bereits geliket
 			try {

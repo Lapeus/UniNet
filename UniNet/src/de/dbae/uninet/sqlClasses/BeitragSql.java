@@ -118,7 +118,7 @@ public class BeitragSql {
 			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentareZuUnterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
 			break;
 		default:
-			System.err.println("FEHLER IM BETRAGSQL " + action);
+			System.err.println("FEHLER IM BEITRAGSQL " + action);
 			break;
 		}
 		return sql;
