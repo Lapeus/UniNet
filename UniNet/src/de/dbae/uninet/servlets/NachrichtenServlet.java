@@ -42,6 +42,7 @@ public class NachrichtenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DBConnection dbcon = null;
 		session = request.getSession();
 		// Attribute setzen
 		String userId = request.getParameter("userID");
@@ -51,9 +52,10 @@ public class NachrichtenServlet extends HttpServlet {
 		userIDFreund = Integer.parseInt(userId);
 		// Name des Freundes herausfinden
 		NachrichtenSql nSql = new NachrichtenSql();
-		Connection con = new DBConnection().getCon();
 		String sNameFreund = "";
 		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
 			PreparedStatement pStmtName = con.prepareStatement(nSql.getName());
 			pStmtName.setInt(1, userIDFreund);
 			ResultSet result = pStmtName.executeQuery();
@@ -64,12 +66,12 @@ public class NachrichtenServlet extends HttpServlet {
 		} catch (SQLException e) {
 			System.out.println("SQL Fehler NameFreund - NachrichtenServletGET");
 		} finally {
-			if	(con!=null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					System.out.println("Verbindung konnte nicht beendet werden - NachrichtenServeletGET");
+			try {
+				if (dbcon != null) {
+					dbcon.close();
 				}
+			} catch (Exception ignored) {
+				ignored.printStackTrace();
 			}
 		}
 	
@@ -84,12 +86,13 @@ public class NachrichtenServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
-		Connection con = null;
+		DBConnection dbcon = null;
 		NachrichtenSql nSql = new NachrichtenSql();
 		if(request.getParameter("senden") != null){
 			if(!request.getParameter("nachricht").equals("")) {
 				try {
-					con = new DBConnection().getCon();
+					dbcon = new DBConnection();
+					Connection con = dbcon.getCon();
 					PreparedStatement pStmtSenden = con.prepareStatement(nSql.nachrichtSenden());
 					// Prepared Stmt mit Argumenten fuellen
 					pStmtSenden.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
@@ -107,9 +110,8 @@ public class NachrichtenServlet extends HttpServlet {
 					e.printStackTrace();
 				} finally {
 					try {
-						if (con != null) {
-							con.close();
-							System.out.println("Die Verbindung wurde erfolgreich beendet! (NachrichtenServletPOST)");
+						if (dbcon != null) {
+							dbcon.close();
 						}
 					} catch (Exception ignored) {
 						ignored.printStackTrace();
@@ -121,19 +123,21 @@ public class NachrichtenServlet extends HttpServlet {
 	}
 	
 	private List<Nachricht> getNachrichten(int userIDFreund) {
-		Connection con = null;
+		DBConnection dbcon = null;
 		NachrichtenSql nSql = new NachrichtenSql();
 		List<Nachricht> nachrichten = new ArrayList<>();
 		
 		try {
-			con = new DBConnection().getCon();
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
 			int userId = Integer.parseInt(session.getAttribute("UserID").toString());
-			System.out.println("Verbindung wurde geöffnet (NachrichtenServletGET)");
+			// Nachrichten Abrufen
 			PreparedStatement pStmtNachrichten = con.prepareStatement(nSql.getNachrichtenListe());
 			pStmtNachrichten.setInt(1, userId);
 			pStmtNachrichten.setInt(2, userIDFreund);
 			pStmtNachrichten.setInt(3, userIDFreund);
 			pStmtNachrichten.setInt(4, userId);
+			System.out.println("LISTE: " + pStmtNachrichten.toString());
 			ResultSet result = pStmtNachrichten.executeQuery();
 			while (result.next()) {
 				int senderId = result.getInt(1);
@@ -147,6 +151,12 @@ public class NachrichtenServlet extends HttpServlet {
 				}
 				nachrichten.add(new Nachricht(senderId, name, nachricht, finalTime));
 			}
+			
+			// Nachrichten als gelesen makieren
+			PreparedStatement pStmtUpdate = con.prepareStatement(nSql.updateNachrichtenListe());
+			pStmtUpdate.setInt(1, userId);
+			pStmtUpdate.executeUpdate();
+			
 			// TESTING
 			for (Nachricht nachricht : nachrichten) {
 				nachricht.getName();
@@ -157,9 +167,8 @@ public class NachrichtenServlet extends HttpServlet {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (con != null) {
-					con.close();
-					System.out.println("Die Verbindung wurde erfolgreich beendet! (NachrichtenServletGET)");
+				if (dbcon != null) {
+					dbcon.close();
 				}
 			} catch (Exception ignored) {
 				ignored.printStackTrace();

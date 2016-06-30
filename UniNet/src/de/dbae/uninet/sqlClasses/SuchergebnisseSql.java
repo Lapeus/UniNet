@@ -7,8 +7,8 @@ public class SuchergebnisseSql {
 	
 	// SQL Methoden
 	
-	public String getNachrichtenBenachrichtigung() {
-		return "";
+	public String getFreundesanfragen() {
+		return "SELECT DISTINCT benachrichtigung, datum FROM (SELECT * FROM Benachrichtigungen WHERE art = 1 AND gelesen = false AND userid=? ORDER BY benachrichtigungid) as temp;";
 	}
 }
 

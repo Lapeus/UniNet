@@ -3,6 +3,7 @@ package de.dbae.uninet.servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
+import de.dbae.uninet.sqlClasses.SuchergebnisseSql;
 
 /**
  * Servlet implementation class SuchergebnisseServlet
@@ -35,11 +37,14 @@ public class SuchergebnisseServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
+		SuchergebnisseSql seSql = new SuchergebnisseSql();
 		// Suchparameter auslesen
 		String search = request.getParameter("search");
 		try {
 			Connection con = new DBConnection().getCon();
-			PreparedStatement pStmtNachrichten = con.prepareStatement("SELECT");
+			PreparedStatement pStmtNachrichten = con.prepareStatement(seSql.getFreundesanfragen());
+			pStmtNachrichten.setInt(1 ,Integer.parseInt(session.getAttribute("userid").toString()));
+			ResultSet rs = pStmtNachrichten.executeQuery();
 			
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -74,7 +74,13 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("SQL-Fehler ist aufgetreten (ChatFreunde)");
 		} finally {
-			dbcon.close();
+			try {
+				if(dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				ignored.printStackTrace();
+			}
 		}
 		return chatfreunde;
 	}
