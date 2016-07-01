@@ -43,7 +43,7 @@ public class NachrichtenTag extends TagSupport {
 	private String getNachrichtenJSPCode() {
 		// Zeit aus Date holen TODO null wegen alten Testdaten darf eig nicht mehr vorkommen
 		SimpleDateFormat f_Time = new SimpleDateFormat("HH:mm");
-		// TODO Wenn Datum über einen Tag alt dann Datum Hinschreiben (vllt. auch Wochentag / "Gestern")
+		// TODO Wenn Datum Ã¼ber einen Tag alt dann Datum Hinschreiben (vllt. auch Wochentag / "Gestern")
 		SimpleDateFormat f_Date = new SimpleDateFormat("dd.MM.yy HH:mm");
 		String zeitpunkt = "";
 		// Falls keine Zeit angegeben ist

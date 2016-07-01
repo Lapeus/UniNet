@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="page" uri="/WEB-INF/TLD/pageTags.tld"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,13 +21,24 @@
 </page:linkeSpalte>
 <page:mittlereSpalte>
 <div class="container">
-
     <hgroup class="mb20">
 		<h1>Suchergebnisse</h1>
-		<h2 class="lead"><strong class="text-danger">3</strong> Ergebnisse wurde gefunden für <strong class="text-danger">Lorem</strong></h2>								
+		<h2 class="lead"><strong class="text-danger">Personen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
 	</hgroup>
-
     <section class="col-xs-12 col-sm-6 col-md-12">
+    	<c:forEach items="${ Nutzerliste }" var="nutzer">
+	    	<page:gesuchtNutzer user="${ nutzer }"></page:gesuchtNutzer>
+		</c:forEach>
+	</section>
+	<hgroup class="mb20">
+		<h2 class="lead"><strong class="text-danger">Gruppen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
+	</hgroup>
+	<section class="col-xs-12 col-sm-6 col-md-12">
+    	<c:forEach items="${ Gruppenliste }" var="gruppe">
+	    	<page:gesuchtGruppe group="${ gruppe }"></page:gesuchtGruppe>
+		</c:forEach>
+	</section>
+	<section class="col-xs-12 col-sm-6 col-md-12">
 		<article class="search-result row">
 			<div class="col-xs-12 col-sm-12 col-md-3">
 				<a href="#" title="Lorem ipsum" class="thumbnail"><img alt="Profilbild" src="LadeProfilbildServlet" /></a>
@@ -87,7 +99,6 @@
 	</section>
 </div>
 </page:mittlereSpalte>
-<page:rechteSpalte chatfreunde="${ chatfreundeAlle }"></page:rechteSpalte>
 </div>
 </body>
 </html>
