@@ -63,7 +63,24 @@ public class Veranstaltung {
 		this.setBeschreibung(beschreibung);
 		this.setSonstiges(sonstiges);
 	}
+	
+	/**
+	 * Erstellt eine Veranstaltung f&uuml;r den Mittelblock mit allen Informationen.
+	 * @param id Die VeranstaltungsID
+	 * @param name Der Veranstaltungsname
+	 * @param dozent Der Name des Dozenten
+	 * @param semester Das empfohlene Semester
+	 * @param beschreibung Die Beschreibung der Veranstaltung
+	 */
+	public Veranstaltung(int id, String name, String dozent, String semester, String beschreibung) {
+		this.setId(id);
+		this.setName(name);
+		this.setDozent(dozent);
+		this.setSemester(semester);
+		this.setBeschreibung(beschreibung);
+	}
 
+	
 	/**
 	 * Getter f&uuml;r die VeranstaltungsID.
 	 * @return Die VeranstaltungsID

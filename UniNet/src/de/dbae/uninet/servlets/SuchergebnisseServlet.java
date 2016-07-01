@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Gruppe;
 import de.dbae.uninet.javaClasses.Student;
+import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.SuchergebnisseSql;
 
 /**
@@ -43,6 +44,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DBConnection dbcon = null;
 		session = request.getSession();
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		SuchergebnisseSql seSql = new SuchergebnisseSql();
 		// Suchparameter auslesen
 		String search = request.getParameter("suchanfrage");
@@ -52,9 +54,12 @@ public class SuchergebnisseServlet extends HttpServlet {
 				
 		// Attribute setzen
 		request.setAttribute("Suche", search);
-		search = ".*" + search.replace(" ", "") + "*.";
-		request.setAttribute("Nutzerliste", (List<Student>)getNutzer(search));
-		request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
+		search = search.replaceAll(" ", "");
+		if (!search.equals("") && !search.equals(null)) {
+			request.setAttribute("Nutzerliste", (List<Student>)getNutzer(search));
+			request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
+			request.setAttribute("Veranstaltungenliste", (List<Veranstaltung>)getVeranstaltungen(search, userID));
+		}
 		request.getRequestDispatcher("Suchergebnisse.jsp").forward(request, response);
 	}
 
@@ -84,10 +89,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				
 				nutzer.add(new Student(vorname, nachname, userID));
 			}
-			
-			for (Student student : nutzer) {
-				System.out.println("Vorname: " + student.getVorname());
-			}
 		} catch (Exception e) {
 			System.out.println("ERROR - SuchergebnisServlet - getNutzer");
 		} finally {
@@ -113,7 +114,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 			Connection con = dbcon.getCon();
 			PreparedStatement pStmt = con.prepareStatement(seSql.getGruppenSql());
 			pStmt.setString(1, search);
-			System.out.println("GETGRUPPEN " + pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				int gruppenID       = rs.getInt(1);
@@ -133,10 +133,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				System.out.println("ADMINNAME: " + adminName);
 				gruppen.add(new Gruppe(gruppenID, name, beschreibung, gruendung, adminName, adminID));
 			}
-			
-			for (Gruppe gruppe : gruppen) {
-				System.out.println("Gruppenname: " + gruppe.getName());
-			}
 		} catch (Exception e) {
 			System.out.println("ERROR - SuchergebnisServlet - getGruppen");
 		} finally {
@@ -150,5 +146,46 @@ public class SuchergebnisseServlet extends HttpServlet {
 		}
 		
 		return gruppen;
+	}
+	
+	private List<Veranstaltung> getVeranstaltungen(String search, int userID) { 
+		DBConnection dbcon = null;
+		SuchergebnisseSql seSql = new SuchergebnisseSql();
+		List<Veranstaltung> events = new ArrayList<>();
+		
+		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
+			PreparedStatement pStmt = con.prepareStatement(seSql.getVeranstaltungenSql());
+			pStmt.setInt(1, userID);
+			pStmt.setString(2, search);
+			System.out.println("GETVeranstaltungen: " + pStmt.toString());
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {
+				int eventID         = rs.getInt(1);
+				String name         = rs.getString(2);
+				String beschreibung = rs.getString(3);
+				String dozent       = rs.getString(4);
+				String semester     = rs.getString(5);
+				
+				events.add(new Veranstaltung(eventID, name, dozent, semester, beschreibung));
+			}
+			
+			for (Veranstaltung event : events) {
+				System.out.println("Veranstaltunsname: " + event.getName());
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR - SuchergebnisServlet - getGruppen");
+		} finally {
+			try {
+				if (dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				ignored.printStackTrace();
+			}
+		}
+		
+		return events;
 	}
 }

@@ -38,7 +38,7 @@ public class GesuchteGruppeTag extends TagSupport {
 				page.append(getGruppeJSPCode());
 			}
 		} catch (IOException e) {
-			System.out.println("GesucheterNutzerTag - doStartTag");
+			System.out.println("GesuchteGruppeTag - doStartTag");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;
