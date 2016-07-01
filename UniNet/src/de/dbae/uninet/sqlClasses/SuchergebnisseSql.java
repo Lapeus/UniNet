@@ -8,11 +8,11 @@ public class SuchergebnisseSql {
 	// SQL Methoden
 	
 	public String getNutzerSql() {
-		return "SELECT userid, vorname, nachname FROM nutzer WHERE vorname LIKE ? OR nachname LIKE ? ORDER BY nachname;";
+		return "SELECT userid, vorname, nachname FROM nutzer WHERE REPLACE(CONCAT(vorname, nachname), ' ', '') ~* ? ORDER BY nachname;";
 	}
 	
 	public String getGruppenSql() {
-		return "SELECT gruppenid, name, beschreibung, gruendung, adminid FROM gruppen WHERE name LIKE ? OR beschreibung LIKE ? ORDER BY name;";
+		return "SELECT gruppenid, name, beschreibung, gruendung, adminid FROM gruppen WHERE REPLACE(CONCAT(name, beschreibung), ' ', '') ~* ? ORDER BY name;";
 	}
 	
 	public String getNutzerZuId() {

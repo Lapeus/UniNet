@@ -52,7 +52,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 				
 		// Attribute setzen
 		request.setAttribute("Suche", search);
-		search = "%" + search + "%";
+		search = ".*" + search.replace(" ", "") + "*.";
 		request.setAttribute("Nutzerliste", (List<Student>)getNutzer(search));
 		request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
 		request.getRequestDispatcher("Suchergebnisse.jsp").forward(request, response);
@@ -76,8 +76,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 			Connection con = dbcon.getCon();
 			PreparedStatement pStmt = con.prepareStatement(seSql.getNutzerSql());
 			pStmt.setString(1, search);
-			pStmt.setString(2, search);
-			System.out.println("GETNUTZER" + pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				int userID      = rs.getInt(1);
@@ -91,7 +89,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 				System.out.println("Vorname: " + student.getVorname());
 			}
 		} catch (Exception e) {
-			System.out.println("SuchergebnisServlet - getNutzer");
+			System.out.println("ERROR - SuchergebnisServlet - getNutzer");
 		} finally {
 			try {
 				if (dbcon != null) {
@@ -115,11 +113,9 @@ public class SuchergebnisseServlet extends HttpServlet {
 			Connection con = dbcon.getCon();
 			PreparedStatement pStmt = con.prepareStatement(seSql.getGruppenSql());
 			pStmt.setString(1, search);
-			pStmt.setString(2, search);
-			System.out.println("GETNUTZER" + pStmt.toString());
+			System.out.println("GETGRUPPEN " + pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("DRIEINEINEINIENFIHSIDFHSIDFHSKJDFHJKDSHF");
 				int gruppenID       = rs.getInt(1);
 				String name         = rs.getString(2);
 				String beschreibung = rs.getString(3);
@@ -139,10 +135,10 @@ public class SuchergebnisseServlet extends HttpServlet {
 			}
 			
 			for (Gruppe gruppe : gruppen) {
-				System.out.println("Vorname: " + gruppe.getName());
+				System.out.println("Gruppenname: " + gruppe.getName());
 			}
 		} catch (Exception e) {
-			System.out.println("SuchergebnisServlet - getNutzer");
+			System.out.println("ERROR - SuchergebnisServlet - getGruppen");
 		} finally {
 			try {
 				if (dbcon != null) {
