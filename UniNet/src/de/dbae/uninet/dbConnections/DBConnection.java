@@ -46,8 +46,6 @@ public class DBConnection {
 				con.close();
 				System.out.println("Die Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
 			}
-			con.close();
-			System.out.println("Die Verbindung wurde erfolgreich beendet! (" + --anzahlVerbindungen + ")");
 		} catch (SQLException e) {
 			System.err.println("SQL-Fehler");
 			e.printStackTrace();
