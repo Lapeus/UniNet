@@ -50,7 +50,7 @@ public class GesuchteVeranstaltungTag extends TagSupport {
 				+ "</div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-2'>"
 				+ "<ul class='meta-search'>"
-				+ "<li><i class='glyphicon glyphicon-user'></i><span>"+ veranstaltung.getDozent() +"</span></li>"
+				+ "<li><i class='glyphicon glyphicon-education'></i><span>"+ veranstaltung.getDozent() +"</span></li>"
 				+ "<li><i class='glyphicon glyphicon-tasks'></i><span>"+ veranstaltung.getSemester() +"</span></li>"
 				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Veranstaltung</span></li>"
 				+ "</ul></div>"

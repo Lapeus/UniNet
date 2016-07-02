@@ -39,28 +39,19 @@ public class GesuchterNutzer {
 	private boolean istFreund = false;
 	
 	/**
-	 * Erstellt einen neuen gesuchten Nutzer.<br>
-	 * Hauptkonstruktor dieser Klasse.
-	 * @param vorname Der Vorname
-	 * @param nachname Der Nachname
-	 * @param userID Die UserID
-	 */
-	public GesuchterNutzer(String vorname, String nachname, int userID) {
-		this(vorname, nachname, userID, false);
-	}
-	
-	/**
 	 * Erstellt einen gesuchten Nutzer und setzt seinen Online-Status.
 	 * @param vorname Der Vorname
 	 * @param nachname Der Nachname
 	 * @param userID Die UserID
 	 * @param online Der Online-Status
 	 */
-	public GesuchterNutzer(String vorname, String nachname, int userID, boolean online) {
+	public GesuchterNutzer(String vorname, String nachname, int userID, Date geburtsdatum ,boolean online, boolean istFreund) {
 		this.setVorname(vorname);
 		this.setNachname(nachname);
 		this.setUserID(userID);
+		this.setGeburtsdatum(geburtsdatum);
 		this.setOnline(online);
+		this.setFreund(istFreund);
 	}
 
 	/**

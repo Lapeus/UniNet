@@ -29,6 +29,10 @@ public class SuchergebnisseSql {
 	public String getNutzerZuId() {
 		return "SELECT vorname, nachname FROM Nutzer WHERE userid = ?";
 	}
+	
+	public String isFreundSql() {
+		return "SELECT COUNT(freund) FROM freundeView WHERE nutzer = ? AND freund = ?";
+	}
 }
 
 

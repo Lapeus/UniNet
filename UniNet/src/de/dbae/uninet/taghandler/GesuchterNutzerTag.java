@@ -2,11 +2,13 @@ package de.dbae.uninet.taghandler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import de.dbae.uninet.javaClasses.Student;
+import de.dbae.uninet.javaClasses.GesuchterNutzer;
 
 public class GesuchterNutzerTag extends TagSupport {
 	/**
@@ -14,7 +16,7 @@ public class GesuchterNutzerTag extends TagSupport {
 	 */
 	private static final long serialVersionUID = -4082131407797643462L;
 
-	private Student student;
+	private GesuchterNutzer student;
 
 	@Override
 	public int doStartTag() throws JspException {
@@ -28,28 +30,60 @@ public class GesuchterNutzerTag extends TagSupport {
 		return EVAL_PAGE;
 	}
 
-	public Student getUser() {
+	public GesuchterNutzer getUser() {
 		return student;
 	}
 
-	public void setUser(Student student) {
+	public void setUser(GesuchterNutzer student) {
 		this.student = student;
 	}
 	
 	private String getUserJSPCode() {
+		// Online Status	
+		String onlineStatus = "";
+		if (student.isOnline()) {
+			onlineStatus = "#00aa00;'>online";
+		}
+		else {
+			onlineStatus = "red;'>offline";
+		}
+		
+		// Geburtsdatum
+		String sGeburt = "Keine Angaben";
+		if (student.getGeburtsdatum() != null) {
+			SimpleDateFormat tst = new SimpleDateFormat("dd.MM.yyyy");
+			Date tst2 = student.getGeburtsdatum();
+			sGeburt = tst.format(tst2);
+		}
+		
+		// Freunschaftsanfrage
+		String sFreundschaft = "FILLER";
+		if (student.isFreund()) {
+			sFreundschaft = "Ihr seid befreundet";
+		}
+		else {
+			sFreundschaft = "<p>Ihr seid noch nicht befreundet</p>"
+					+ "<span>"
+					+ "<form action='SuchergebnisseServlet' method='post'>"
+					+ "<input type='hidden' name='search' value='${ search }'>"
+					+ "<button class='button btn-danger' type='submit' name='freundID' value='"+ student.getUserID() +"'>Freunschaftsanfrage senden</button>"
+					+ "</form>"
+					+ "</span>";
+		}
+		
 		String jsp = "<article class='search-result row'>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-3'>"
 				+ "<a href='#' title='Lorem ipsum' class='thumbnail'><img alt='Profilbild' src='LadeProfilbildServlet?userID="+ student.getUserID() +"'/></a>"
 				+ "</div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-2'>"
 				+ "<ul class='meta-search'>"
-				+ "<li><i class='glyphicon glyphicon-calendar'></i> <span>02/15/2014</span></li>"
-				+ "<li><i class='glyphicon glyphicon-time'></i> <span>4:28 pm</span></li>"
+				+ "<li><i class='glyphicon glyphicon-calendar'></i> <span>"+ sGeburt +"</span></li>"
+				+ "<li><i class='glyphicon glyphicon-off'></i> <span style='color:"+ onlineStatus +"</span</li>"
 				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Nutzer</span></li>"
 				+ "</ul></div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-7 excerpet'>"
 				+ "<h3><a href='ProfilServlet?userID="+ student.getUserID() +"' title=''>"+ student.getVorname() + " "  + student.getNachname() +"</a></h3>"
-				+ "<p>" + student.getUserID() + "</p>"
+				+ sFreundschaft
 				+ "</div>"
 				+ "<span class='clearfix borda'></span>"
 				+ "</article>";
