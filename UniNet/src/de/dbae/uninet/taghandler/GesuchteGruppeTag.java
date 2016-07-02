@@ -38,7 +38,7 @@ public class GesuchteGruppeTag extends TagSupport {
 				page.append(getGruppeJSPCode());
 			}
 		} catch (IOException e) {
-			System.out.println("GesucheterNutzerTag - doStartTag");
+			System.out.println("GesuchteGruppeTag - doStartTag");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;
@@ -52,6 +52,7 @@ public class GesuchteGruppeTag extends TagSupport {
 				+ "<div class='col-xs-12 col-sm-12 col-md-2'>"
 				+ "<ul class='meta-search'>"
 				+ "<li><i class='glyphicon glyphicon-calendar'></i><span>"+ group.getGruendung() +"</span></li>"
+				+ "<li><i class='glyphicon glyphicon-user'></i><span>"+ group.getAdmin() +"</span></li>"				
 				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Gruppe</span></li>"
 				+ "</ul></div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-7 excerpet'>"

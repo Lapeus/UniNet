@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,7 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Gruppe;
-import de.dbae.uninet.javaClasses.Student;
+import de.dbae.uninet.javaClasses.GesuchterNutzer;
+import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.SuchergebnisseSql;
 
 /**
@@ -34,16 +35,14 @@ public class SuchergebnisseServlet extends HttpServlet {
      */
     public SuchergebnisseServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DBConnection dbcon = null;
 		session = request.getSession();
-		SuchergebnisseSql seSql = new SuchergebnisseSql();
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		// Suchparameter auslesen
 		String search = request.getParameter("suchanfrage");
 		if (search == null) {
@@ -52,9 +51,13 @@ public class SuchergebnisseServlet extends HttpServlet {
 				
 		// Attribute setzen
 		request.setAttribute("Suche", search);
-		search = "%" + search + "%";
-		request.setAttribute("Nutzerliste", (List<Student>)getNutzer(search));
-		request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
+		search = search.replaceAll(" ", "");
+		if (!search.equals("") && !search.equals(null)) {
+			request.setAttribute("search", search);
+			request.setAttribute("Nutzerliste", (List<GesuchterNutzer>)getNutzer(search, userID));
+			request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
+			request.setAttribute("Veranstaltungenliste", (List<Veranstaltung>)getVeranstaltungen(search, userID));
+		}
 		request.getRequestDispatcher("Suchergebnisse.jsp").forward(request, response);
 	}
 
@@ -62,36 +65,62 @@ public class SuchergebnisseServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		session = request.getSession();
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+		String sfreundID = request.getParameter("freundID");
+		String search = request.getParameter("search");
+		System.out.println("SUCHE: " + search);
+		int freundID = -1;
+		if (sfreundID != null) {
+			freundID = Integer.parseInt(sfreundID);
+		}
+		if (search == null) {
+			search = "";
+		}
+		sendFriendRequest(userID, freundID);
+		response.sendRedirect("/UniNet/SuchergebnisseServlet?suchanfrage=" + search);;
+	}
+	
+	private void sendFriendRequest(int userID, int freundID) {
 		
 	}
-
 	
-	private List<Student> getNutzer(String search) { 
+	private List<GesuchterNutzer> getNutzer(String search, int userID) { 
 		DBConnection dbcon = null;
 		SuchergebnisseSql seSql = new SuchergebnisseSql();
-		List<Student> nutzer = new ArrayList<>();
+		List<GesuchterNutzer> nutzer = new ArrayList<>();
 		
 		try {
 			dbcon = new DBConnection();
 			Connection con = dbcon.getCon();
 			PreparedStatement pStmt = con.prepareStatement(seSql.getNutzerSql());
-			pStmt.setString(1, search);
+			pStmt.setInt(1, userID);
 			pStmt.setString(2, search);
-			System.out.println("GETNUTZER" + pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
-				int userID      = rs.getInt(1);
-				String vorname  = rs.getString(2);
-				String nachname = rs.getString(3);
+				int gesuchterID   = rs.getInt(1);
+				String vorname    = rs.getString(2);
+				String nachname   = rs.getString(3);
+				Date geburtsdatum = rs.getDate(4);
+				boolean online    = rs.getBoolean(5);
 				
-				nutzer.add(new Student(vorname, nachname, userID));
-			}
-			
-			for (Student student : nutzer) {
-				System.out.println("Vorname: " + student.getVorname());
+				// isFreund?
+				pStmt = con.prepareStatement(seSql.isFreundSql());
+				pStmt.setInt(1, userID);
+				pStmt.setInt(2, gesuchterID);
+				ResultSet rsIsFreund = pStmt.executeQuery();
+				int iFreund = 0;
+				if (rsIsFreund.next()) {
+					System.out.println("JA ES GIBT EINE AUZSWERTUNG");
+					iFreund = rsIsFreund.getInt(1);
+				}
+				boolean isFreund = iFreund == 0 ? false : true;
+				
+				nutzer.add(new GesuchterNutzer(vorname, nachname, gesuchterID, geburtsdatum, online, isFreund));
 			}
 		} catch (Exception e) {
-			System.out.println("SuchergebnisServlet - getNutzer");
+			System.out.println("ERROR - SuchergebnisServlet - getNutzer");
+			e.printStackTrace();
 		} finally {
 			try {
 				if (dbcon != null) {
@@ -115,18 +144,15 @@ public class SuchergebnisseServlet extends HttpServlet {
 			Connection con = dbcon.getCon();
 			PreparedStatement pStmt = con.prepareStatement(seSql.getGruppenSql());
 			pStmt.setString(1, search);
-			pStmt.setString(2, search);
-			System.out.println("GETNUTZER" + pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("DRIEINEINEINIENFIHSIDFHSIDFHSKJDFHJKDSHF");
 				int gruppenID       = rs.getInt(1);
 				String name         = rs.getString(2);
 				String beschreibung = rs.getString(3);
 				String gruendung    = rs.getString(4);
 				int adminID         = rs.getInt(5);
 				
-				// ADMINNAME
+				// ADMINNAME TODO
 				String adminName = "Marvin";
 //				PreparedStatement pStmtName = con.prepareStatement(seSql.getNutzerZuId());
 //				pStmtName.setInt(1, adminID);
@@ -137,12 +163,8 @@ public class SuchergebnisseServlet extends HttpServlet {
 				System.out.println("ADMINNAME: " + adminName);
 				gruppen.add(new Gruppe(gruppenID, name, beschreibung, gruendung, adminName, adminID));
 			}
-			
-			for (Gruppe gruppe : gruppen) {
-				System.out.println("Vorname: " + gruppe.getName());
-			}
 		} catch (Exception e) {
-			System.out.println("SuchergebnisServlet - getNutzer");
+			System.out.println("ERROR - SuchergebnisServlet - getGruppen");
 		} finally {
 			try {
 				if (dbcon != null) {
@@ -154,5 +176,46 @@ public class SuchergebnisseServlet extends HttpServlet {
 		}
 		
 		return gruppen;
+	}
+	
+	private List<Veranstaltung> getVeranstaltungen(String search, int userID) { 
+		DBConnection dbcon = null;
+		SuchergebnisseSql seSql = new SuchergebnisseSql();
+		List<Veranstaltung> events = new ArrayList<>();
+		
+		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
+			PreparedStatement pStmt = con.prepareStatement(seSql.getVeranstaltungenSql());
+			pStmt.setInt(1, userID);
+			pStmt.setString(2, search);
+			System.out.println("GETVeranstaltungen: " + pStmt.toString());
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {
+				int eventID         = rs.getInt(1);
+				String name         = rs.getString(2);
+				String beschreibung = rs.getString(3);
+				String dozent       = rs.getString(4);
+				String semester     = rs.getString(5);
+				
+				events.add(new Veranstaltung(eventID, name, dozent, semester, beschreibung));
+			}
+			
+			for (Veranstaltung event : events) {
+				System.out.println("Veranstaltunsname: " + event.getName());
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR - SuchergebnisServlet - getGruppen");
+		} finally {
+			try {
+				if (dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				ignored.printStackTrace();
+			}
+		}
+		
+		return events;
 	}
 }

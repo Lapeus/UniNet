@@ -108,12 +108,23 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der einen gesuchten Nutzer erstellt -->
+		<!-- Tag, der eine gesuchte Gruppe erstellt -->
 		<name>gesuchtGruppe</name>
 		<tag-class>de.dbae.uninet.taghandler.GesuchteGruppeTag</tag-class>
 		<attribute>
 			<!-- User -->
 			<name>group</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der eine gesuchte Veranstaltung erstellt -->
+		<name>gesuchtVeranstaltung</name>
+		<tag-class>de.dbae.uninet.taghandler.GesuchteVeranstaltungTag</tag-class>
+		<attribute>
+			<!-- Veranstaltung -->
+			<name>veranstaltungen</name> 
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
