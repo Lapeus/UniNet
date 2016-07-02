@@ -8,7 +8,10 @@ public class SuchergebnisseSql {
 	// SQL Methoden
 	
 	public String getNutzerSql() {
-		return "SELECT userid, vorname, nachname FROM nutzer WHERE REPLACE(CONCAT(vorname, nachname), ' ', '') ~* ? ORDER BY nachname;";
+		return "SELECT userid, vorname, nachname, geburtstag, online  "
+				+ "FROM (nutzer JOIN studenten ON (userid = studentid)) "
+				+ "WHERE userid != ? AND REPLACE(CONCAT(vorname, nachname), ' ', '') ~* ? "
+				+ "ORDER BY nachname;";
 	}
 	
 	public String getGruppenSql() {

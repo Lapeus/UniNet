@@ -56,7 +56,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 		request.setAttribute("Suche", search);
 		search = search.replaceAll(" ", "");
 		if (!search.equals("") && !search.equals(null)) {
-			request.setAttribute("Nutzerliste", (List<Student>)getNutzer(search));
+			request.setAttribute("Nutzerliste", (List<Student>)getNutzer(search, userID));
 			request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
 			request.setAttribute("Veranstaltungenliste", (List<Veranstaltung>)getVeranstaltungen(search, userID));
 		}
@@ -71,7 +71,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 	}
 
 	
-	private List<Student> getNutzer(String search) { 
+	private List<Student> getNutzer(String search, int userID) { 
 		DBConnection dbcon = null;
 		SuchergebnisseSql seSql = new SuchergebnisseSql();
 		List<Student> nutzer = new ArrayList<>();
@@ -80,17 +80,19 @@ public class SuchergebnisseServlet extends HttpServlet {
 			dbcon = new DBConnection();
 			Connection con = dbcon.getCon();
 			PreparedStatement pStmt = con.prepareStatement(seSql.getNutzerSql());
-			pStmt.setString(1, search);
+			pStmt.setInt(1, userID);
+			pStmt.setString(2, search);
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
-				int userID      = rs.getInt(1);
+				int gesuchterID = rs.getInt(1);
 				String vorname  = rs.getString(2);
 				String nachname = rs.getString(3);
 				
-				nutzer.add(new Student(vorname, nachname, userID));
+				nutzer.add(new Student(vorname, nachname, gesuchterID));
 			}
 		} catch (Exception e) {
 			System.out.println("ERROR - SuchergebnisServlet - getNutzer");
+			e.printStackTrace();
 		} finally {
 			try {
 				if (dbcon != null) {
@@ -122,7 +124,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 				String gruendung    = rs.getString(4);
 				int adminID         = rs.getInt(5);
 				
-				// ADMINNAME
+				// ADMINNAME TODO
 				String adminName = "Marvin";
 //				PreparedStatement pStmtName = con.prepareStatement(seSql.getNutzerZuId());
 //				pStmtName.setInt(1, adminID);

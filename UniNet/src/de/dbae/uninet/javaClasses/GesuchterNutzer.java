@@ -1,53 +1,62 @@
 package de.dbae.uninet.javaClasses;
 
-/**
- * Diese Klasse verwaltet die Informationen eines allgemeinen Studenten.<br>
- * Verwendet wird diese Klasse immer dann, wenn ein Name als Link auf dessen Profilseite fungieren soll.<br>
- * Dies passiert zum Beispiel im Chat und bei der Mitgliederauflistung in Gruppen und Veranstaltungen.
- * @author Christian Ackermann
- */
-public class Student {
+import java.util.Date;
+
+public class GesuchterNutzer {
 
 	/**
-	 * Der Vorname des Studenten.
+	 * Der Vorname des gesuchten Nutzers.
 	 */
 	private String vorname;
 	
 	/**
-	 * Der Nachname des Studenten.
+	 * Der Nachname des gesuchten Nutzers.
 	 */
 	private String nachname;
 	
 	/**
-	 * Die UserID des Studenten.
+	 * Die UserID des gesuchten Nutzers.
 	 */
 	private int userID;
 	
 	/**
-	 * Der Online-Status des Studenten.<br>
-	 * Dieser ist nur im Chat relevant, weshalb er sonst standardm&auml;&szlig;ig auf <b>false</b> steht.
+	 * Die UserID des gesuchten Nutzers.
+	 */
+	private Date geburtsdatum;
+	
+	/**
+	 * Der Online-Status des gesuchten Nutzers.<br>
+	 * Diese ist im Suchmodus relevant.
+	 * Falls nicht gesetzt immer false.
 	 */
 	private boolean online = false;
 	
 	/**
-	 * Erstellt einen neuen Studenten.<br>
+	 * Wenn Neutzer geuscht wird. Ist er mit dem suchenden Befreundet?<br>
+	 * Dieser ist nur im Suchmodus relevant.
+	 * Falls nicht gesetzt immer false.
+	 */
+	private boolean istFreund = false;
+	
+	/**
+	 * Erstellt einen neuen gesuchten Nutzer.<br>
 	 * Hauptkonstruktor dieser Klasse.
 	 * @param vorname Der Vorname
 	 * @param nachname Der Nachname
 	 * @param userID Die UserID
 	 */
-	public Student(String vorname, String nachname, int userID) {
+	public GesuchterNutzer(String vorname, String nachname, int userID) {
 		this(vorname, nachname, userID, false);
 	}
 	
 	/**
-	 * Erstellt einen Studenten und setzt seinen Online-Status.
+	 * Erstellt einen gesuchten Nutzer und setzt seinen Online-Status.
 	 * @param vorname Der Vorname
 	 * @param nachname Der Nachname
 	 * @param userID Die UserID
 	 * @param online Der Online-Status
 	 */
-	public Student(String vorname, String nachname, int userID, boolean online) {
+	public GesuchterNutzer(String vorname, String nachname, int userID, boolean online) {
 		this.setVorname(vorname);
 		this.setNachname(nachname);
 		this.setUserID(userID);
@@ -101,6 +110,22 @@ public class Student {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
+	
+	/**
+	 * Getter f&uuml;r das Geburtsdatum.
+	 * @return Das Geburtsdatum
+	 */
+	public Date getGeburtsdatum() {
+		return geburtsdatum;
+	}
+	
+	/**
+	 * Getter f&uuml;r das Geburtsdatum.
+	 * @param geburtsdatum Das Geburtsdatum
+	 */
+	public void setGeburtsdatum(Date geburtsdatum) {
+		this.geburtsdatum = geburtsdatum;
+	}
 
 	/**
 	 * Getter f&uuml;r den Online-Status.
@@ -117,4 +142,21 @@ public class Student {
 	public void setOnline(boolean online) {
 		this.online = online;
 	}
+	
+	/** 
+	 * Getter f&uuml;r den Freundschaftstatus.
+	 * @return Der Freundschaftsstatus
+	 */
+	public boolean isFreund() {
+		return istFreund;
+	}
+
+	/** 
+	 * Setter f&uuml;r den Freundschaftstatus.
+	 * @param istFreund Der Freundschaftsstatus
+	 */
+	public void setFreund(boolean istFreund) {
+		this.istFreund = istFreund;
+	}
+	
 }
