@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Gruppe;
+import de.dbae.uninet.javaClasses.ErstelleBenachrichtigung;
 import de.dbae.uninet.javaClasses.GesuchterNutzer;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.SuchergebnisseSql;
@@ -77,11 +78,32 @@ public class SuchergebnisseServlet extends HttpServlet {
 		if (search == null) {
 			search = "";
 		}
-		sendFriendRequest(userID, freundID);
+		sendFriendrequest(userID, freundID);
 		response.sendRedirect("/UniNet/SuchergebnisseServlet?suchanfrage=" + search);;
 	}
 	
-	private void sendFriendRequest(int userID, int freundID) {
+	private void sendFriendrequest(int userID, int freundID) {
+		DBConnection dbcon = null;
+		
+		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
+			ErstelleBenachrichtigung friendRequest = new ErstelleBenachrichtigung(con);
+			System.out.println("USER ID: " + userID + " FREUND ID: " + freundID );
+			friendRequest.freundschaftsanfrage(userID, freundID);
+		} catch (Exception e) {
+			System.out.println("ERROR - SuchergebnisServlet - sendFriendRequest");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				ignored.printStackTrace();
+			}
+		}
+		
 		
 	}
 	
