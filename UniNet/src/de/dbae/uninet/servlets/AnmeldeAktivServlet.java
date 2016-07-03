@@ -252,6 +252,10 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						psTmtStudent.setInt(3, Integer.parseInt(studiengangid));
 						psTmtStudent.setDate(4, new Date(new Semesterrechner().getStudienbeginn(semester)));
 						psTmtStudent.execute();
+						// Default-Profilsichtbarkeiten setzen
+						psTmtStudent = con.prepareStatement(sqlSt.getRegistrierungStudentSql2());
+						psTmtStudent.setInt(1, Integer.parseInt(userid));
+						psTmtStudent.execute();
 						// Freundschaft mit sich selbst eintragen
 						PreparedStatement psTmtFreund = con.prepareStatement("INSERT INTO freunde VALUES (?, ?, 1000, 1000)");
 						psTmtFreund.setInt(1, Integer.parseInt(userid));

@@ -35,6 +35,12 @@ public class AnmeldeSql {
 		String sql = "INSERT INTO studenten (studentid, uniid, studiengangid, studienbeginn, online) VALUES (?,?,?,?,TRUE)";
 		return sql;
 	}
+	
+	public String getRegistrierungStudentSql2 () {
+		String sql = "INSERT INTO profilsichtbarkeiten VALUES (?, FALSE, FALSE, FALSE, FALSE, FALSE)";
+		return sql;
+	}
+	
 	public String getRegistrierungAdminSql () {
 		String sql = "INSERT INTO admins (adminid, uniid) VALUES (?,?)";
 		return sql;

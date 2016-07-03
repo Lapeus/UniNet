@@ -2,8 +2,13 @@ package de.dbae.uninet.taghandler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.servlet.jsp.tagext.TagSupport;
+
+import de.dbae.uninet.dbConnections.DBConnection;
 
 /**
  * Dieser Tag erstellt die Kopfzeile.<br>
@@ -12,7 +17,16 @@ import javax.servlet.jsp.tagext.TagSupport;
  */
 public class KopfzeileTag extends TagSupport {
 
+	/**
+	 * Auto-generated serialVersionUID.
+	 */
 	private static final long serialVersionUID = -5650080610199722432L;
+	
+	private int anzahlUngeleseneNachrichten = 0;
+	
+	private int anzahlUngeleseneBenachrichtigungen = 0;
+	
+	private Connection con;
 	
 	/**
 	 * Aktionen zu Beginn des Tags.<br>
@@ -20,10 +34,12 @@ public class KopfzeileTag extends TagSupport {
 	 */
 	public int doStartTag() {
 		Writer out = pageContext.getOut();
+		DBConnection dbcon = new DBConnection();
+		con = dbcon.getCon();
 		try {
 			out.append(getHtmlCode());
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anhängen!");
+			System.out.println("Fehler beim Anhï¿½ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -50,8 +66,20 @@ public class KopfzeileTag extends TagSupport {
 		kopfzeile += "</form></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='ProfilServlet'><img class='media-object kopfzeile' alt='' src='LadeProfilbildServlet'</img>&nbsp;Profilseite</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='StartseiteServlet'>Startseite</a></li>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='NachrichtenServlet'><b>Chat(1)</b></a></li>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='BenachrichtigungenServlet'><b>Benachrichtigung(2)</b></a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='NachrichtenServlet'>";
+		if (anzahlUngeleseneNachrichten > 0) {
+			kopfzeile += "<b>Chat (" + anzahlUngeleseneNachrichten + ")</b>";
+		} else {
+			kopfzeile += "Chat";
+		}
+		kopfzeile += "</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='BenachrichtigungenServlet'>";
+		if (anzahlUngeleseneBenachrichtigungen > 0) {
+			kopfzeile += "<b>Benachrichtigungen (" + anzahlUngeleseneBenachrichtigungen + ")</b>";
+		} else {
+			kopfzeile += "Benachrichtigungen";
+		}
+		kopfzeile += "</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='FreundeFindenServlet'>Freunde finden</a></li>";
 		kopfzeile += "</ul>";
 		kopfzeile += "<ul class='nav navbar-nav navbar-right'>";
@@ -60,6 +88,24 @@ public class KopfzeileTag extends TagSupport {
 		kopfzeile += "</ul>";
 		kopfzeile += "</div></div></nav>";
 		return kopfzeile;
+	}
+	
+	private void setAnzahlNachrichten() {
+		try {
+			PreparedStatement pStmt = con.prepareStatement("");
+			
+		} catch (SQLException sqlEx) {
+			
+		}
+	}
+	
+	private void setAnzahlBenachrichtigungen() {
+		try {
+			PreparedStatement pStmt = con.prepareStatement("SELECT COUNT(benachrichtigungID) FROM benachrichtigungen WHERE userID = ? AND gelesen = FALSE");
+			
+		} catch (SQLException sqlEx) {
+			
+		}
 	}
 
 }
