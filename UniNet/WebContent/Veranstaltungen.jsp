@@ -13,7 +13,7 @@
 <title>UniNet - Veranstaltungen</title>
 </head>
 <body>
-<page:kopfzeile></page:kopfzeile>
+<page:kopfzeile userID="${userID}"></page:kopfzeile>
 <div class="mainPart">
 	<!-- In der linken Spalte sollen alle besuchten Veranstaltungen angezeigt werden -->
 	<page:linkeSpalte>

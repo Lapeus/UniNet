@@ -13,7 +13,7 @@
 <title>UniNet - Profil bearbeiten</title>
 </head>
 <body>
-<page:seitenAufbau chatfreunde="${chatfreunde}">
+<page:seitenAufbau chatfreunde="${chatfreunde}" userID="${userID}">
 	<form action="LadeProfilbildServlet" method="post" enctype="multipart/form-data">
 		<div class="row">
 			<div class="col-md-3">
