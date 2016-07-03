@@ -130,6 +130,17 @@
 		</attribute>
 	</tag>
 	<tag>
+		<!-- Tag, der eine Freundschaftbenachrichtigung erstellt -->
+		<name>freundschaftsanfrage</name>
+		<tag-class>de.dbae.uninet.taghandler.FreundesanfrageTag</tag-class>
+		<attribute>
+			<!-- Anfrage -->
+			<name>request</name> 
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
 		<!-- Tag, der einen Chat erstellt -->
 		<name>chat</name>
 		<tag-class>de.dbae.uninet.taghandler.ChatTag</tag-class>

@@ -84,13 +84,28 @@ public class SuchergebnisseServlet extends HttpServlet {
 	
 	private void sendFriendrequest(int userID, int freundID) {
 		DBConnection dbcon = null;
+		SuchergebnisseSql seSql = new SuchergebnisseSql();
 		
 		try {
 			dbcon = new DBConnection();
 			Connection con = dbcon.getCon();
-			ErstelleBenachrichtigung friendRequest = new ErstelleBenachrichtigung(con);
-			System.out.println("USER ID: " + userID + " FREUND ID: " + freundID );
-			friendRequest.freundschaftsanfrage(userID, freundID);
+			// ErstelleBenachrichtigung friendRequest = new ErstelleBenachrichtigung(con);
+			// FEHLER IN GETNAME(ID) friendRequest.freundschaftsanfrage(userID, freundID);
+			PreparedStatement pStmt;
+			pStmt = con.prepareStatement(seSql.getNameZuID());
+			pStmt.setInt(1, userID);
+			ResultSet rs = pStmt.executeQuery();
+			String userName = "";
+			if (rs.next()) {
+				userName = rs.getString(1);
+			}
+			String nachricht = "<a class='verfasser' href='ProfilServlet?userID=" + userID + "'>" + userName + "</a> m&ouml;chte mit dir befreundet sein!<br>";
+			pStmt = con.prepareStatement(seSql.erstelleFreundschaftsanfrage());
+			pStmt.setInt(1, freundID);
+			pStmt.setString (2, nachricht);
+			pStmt.setInt(3, 1);
+			pStmt.executeUpdate();
+			
 		} catch (Exception e) {
 			System.out.println("ERROR - SuchergebnisServlet - sendFriendRequest");
 			e.printStackTrace();
@@ -103,8 +118,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				ignored.printStackTrace();
 			}
 		}
-		
-		
 	}
 	
 	private List<GesuchterNutzer> getNutzer(String search, int userID) { 
@@ -187,6 +200,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			System.out.println("ERROR - SuchergebnisServlet - getGruppen");
+			e.printStackTrace();
 		} finally {
 			try {
 				if (dbcon != null) {

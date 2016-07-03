@@ -2,62 +2,70 @@ package de.dbae.uninet.taghandler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import de.dbae.uninet.javaClasses.Gruppe;
+import de.dbae.uninet.javaClasses.Freundschaftsanfrage;
 
-public class GesuchteGruppeTag extends TagSupport {
+
+public class FreundesanfrageTag extends TagSupport {
 	/**
 	 * SERIAL ID
 	 */
 	private static final long serialVersionUID = -4082131407797643462L;
 
-	private Gruppe group = null;
+	private Freundschaftsanfrage anfrage = null;
 
 	// GRUPPE
-	public boolean isGruppe() {
-		return group != null;
+	public boolean isAnfrage() {
+		return anfrage != null;
 	}
 	
-	public Gruppe getGroup() {
-		return group;
+	public Freundschaftsanfrage getRequest() {
+		return anfrage;
 	}
 
-	public void setGroup(Gruppe gruppe) {
-		this.group = gruppe;
+	public void setRequest(Freundschaftsanfrage anfrage) {
+		this.anfrage = anfrage;
 	}
 
 	@Override
 	public int doStartTag() throws JspException {
 		Writer page = pageContext.getOut();
 		try {
-			if (isGruppe()) {
+			if (isAnfrage()) {
 				page.append(getGruppeJSPCode());
 			}
 		} catch (IOException e) {
-			System.out.println("GesuchteGruppeTag - doStartTag");
+			System.out.println("FreundesanfrageTag - doStartTag");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;
 	}
 
 	private String getGruppeJSPCode() {
+		// Datum formatieren
+		String sDatum = "Keine Daten";
+		if (anfrage.getDatum() != null) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			Date datum = anfrage.getDatum();
+			sDatum = dateFormat.format(datum);
+		}
+		
 		String jsp = "<article class='search-result row'>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-3'>"
 				+ "<a href='#' title='Lorem ipsum' class='thumbnail'><img alt='Profilbild'/></a>"
 				+ "</div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-2'>"
 				+ "<ul class='meta-search'>"
-				+ "<li><i class='glyphicon glyphicon-calendar'></i><span>"+ group.getGruendung() +"</span></li>"
-				+ "<li><i class='glyphicon glyphicon-user'></i><span>"+ group.getAdmin() +"</span></li>"				
-				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Gruppe</span></li>"
+				+ "<li><i class='glyphicon glyphicon-calendar'></i><span>"+ sDatum +"</span></li>"				
+				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Freundschaftsanfrage</span></li>"
 				+ "</ul></div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-7 excerpet'>"
-				+ "<h3><a href='GruppenServlet?tab=beitraege&gruppenID="+ group.getId() +"' title=''>"+ group.getName() +"</a></h3>"
-				+ "<p>" + group.getBeschreibung() + "</p>"
-				+ "</div>"
+				+ anfrage.getNachricht()
 				+ "<span class='clearfix borda'></span>"
 				+ "</article>";;
 		return jsp;

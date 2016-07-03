@@ -66,7 +66,7 @@ public class ErstelleBenachrichtigung {
 		String name = "Jemand";
 		if (rs.next()) {
 			// Setze den Namen aus Vorname und Nachname zusammen
-			name = "Marvin" + " " + "";
+			name = rs.getString(1) + " " + rs.getString(2);
 		}
 		return name;
 	}
@@ -176,7 +176,7 @@ public class ErstelleBenachrichtigung {
 		pStmt = con.prepareStatement(sql);
 		// Der moegliche neue Freund soll informiert werden
 		pStmt.setInt(1, freundID);
-		String benachrichtigung = "<a class='verfasser' href='ProfilServlet?userID=" + userID + "'>" + "Marvin" + "</a> m&ouml;chte mit dir befreundet sein!<br>";
+		String benachrichtigung = "<a class='verfasser' href='ProfilServlet?userID=" + userID + "'>" + getName(userID) + "</a> m&ouml;chte mit dir befreundet sein!<br>";
 		pStmt.setString(2, benachrichtigung);
 		// Setze explizit den Hinweis, dass es sich bei dieser Benachrichtigung um eine
 		// Freundschaftsanfrage handelt
