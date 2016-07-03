@@ -21,31 +21,35 @@
 </page:linkeSpalte>
 <page:mittlereSpalte>
 <div class="container">
-    <hgroup class="mb20">
-		<h1>Suchergebnisse</h1>
-		<h2 class="lead"><strong class="text-danger">Personen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
-	</hgroup>
-    <section class="col-xs-12 col-sm-6 col-md-12">
-    	<c:forEach items="${ Nutzerliste }" var="nutzer">
-	    	<page:gesuchtNutzer user="${ nutzer }"></page:gesuchtNutzer>
-		</c:forEach>
-	</section>
-	<hgroup class="mb20">
-		<h2 class="lead"><strong class="text-danger">Gruppen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
-	</hgroup>
-	<section class="col-xs-12 col-sm-6 col-md-12">
-    	<c:forEach items="${ Gruppenliste }" var="gruppe">
-	    	<page:gesuchtGruppe group="${ gruppe }"></page:gesuchtGruppe>
-		</c:forEach>
-	</section>
-	<hgroup class="mb20">
-		<h2 class="lead"><strong class="text-danger">Veranstaltungen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
-	</hgroup>
-	<section class="col-xs-12 col-sm-6 col-md-12">
-    	<c:forEach items="${ Veranstaltungenliste }" var="event">
-	    	<page:gesuchtVeranstaltung veranstaltungen="${ event }"></page:gesuchtVeranstaltung>
-		</c:forEach>
-	</section>
+	<form action='SuchergebnisseServlet' method='post'>
+		<input type='hidden' name='search' value='${ search }'>
+	    <hgroup class="mb20">
+			<h1>Suchergebnisse</h1>
+			<h2 class="lead"><strong class="text-danger">Personen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
+		</hgroup>
+	    <section class="col-xs-12 col-sm-6 col-md-12">
+	    	<c:forEach items="${ Nutzerliste }" var="nutzer">
+		    	<page:gesuchtNutzer user="${ nutzer }"></page:gesuchtNutzer>
+			</c:forEach>
+		</section>
+		<hgroup class="mb20">
+			<h2 class="lead"><strong class="text-danger">Gruppen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
+		</hgroup>
+		<section class="col-xs-12 col-sm-6 col-md-12">
+	    	<c:forEach items="${ Gruppenliste }" var="gruppe">
+		    	<page:gesuchtGruppe group="${ gruppe }"></page:gesuchtGruppe>
+			</c:forEach>
+		</section>
+		<hgroup class="mb20">
+			<h2 class="lead"><strong class="text-danger">Veranstaltungen</strong> für den Suchbegriff <strong class="text-danger">${ Suche }</strong></h2>								
+		</hgroup>
+		<section class="col-xs-12 col-sm-6 col-md-12">
+	    	<c:forEach items="${ Veranstaltungenliste }" var="event">
+		    	<page:gesuchtVeranstaltung veranstaltungen="${ event }"></page:gesuchtVeranstaltung>
+			</c:forEach>
+		</section>
+	</form>
+	<a class='verfasser' href='ProfilServlet?userID=2'>Marvin</a> <span>m&ouml;chte mit dir befreundet sein!</span>
 </div>
 </page:mittlereSpalte>
 </div>

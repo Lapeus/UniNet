@@ -1,42 +1,18 @@
 package de.dbae.uninet.javaClasses;
 
+import java.util.Date;
+
 public class Freundschaftsanfrage {
-	private int userId;
-	private int freundId;
 	private String nachricht;
+	private Date datum;
 	
 	// C'TOR
-	public Freundschaftsanfrage() {
-		
-	}
-	
-	public Freundschaftsanfrage(int userId, int freundId, String nachricht) {
-		this.userId    = userId;
-		this.freundId  = freundId;
+	public Freundschaftsanfrage(String nachricht, Date datum) {
 		this.nachricht = nachricht;
+		this.datum = datum;
 	}
 
 	// GETTER / SETTER
-	public int getUserId() {
-		return userId;
-	}
-
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-
-	public int getFreundId() {
-		return freundId;
-	}
-
-
-	public void setFreundId(int freundId) {
-		this.freundId = freundId;
-	}
-
-
 	public String getNachricht() {
 		return nachricht;
 	}
@@ -45,6 +21,12 @@ public class Freundschaftsanfrage {
 	public void setNachricht(String nachricht) {
 		this.nachricht = nachricht;
 	}
-	
-	
+
+	public Date getDatum() {
+		return datum;
+	}
+
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
 }

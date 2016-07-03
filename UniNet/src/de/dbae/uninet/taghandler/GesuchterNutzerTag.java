@@ -64,10 +64,7 @@ public class GesuchterNutzerTag extends TagSupport {
 		else {
 			sFreundschaft = "<p>Ihr seid noch nicht befreundet</p>"
 					+ "<span>"
-					+ "<form action='SuchergebnisseServlet' method='post'>"
-					+ "<input type='hidden' name='search' value='${ search }'>"
 					+ "<button class='button btn-danger' type='submit' name='freundID' value='"+ student.getUserID() +"'>Freunschaftsanfrage senden</button>"
-					+ "</form>"
 					+ "</span>";
 		}
 		

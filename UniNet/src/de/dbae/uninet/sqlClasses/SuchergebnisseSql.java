@@ -33,6 +33,14 @@ public class SuchergebnisseSql {
 	public String isFreundSql() {
 		return "SELECT COUNT(freund) FROM freundeView WHERE nutzer = ? AND freund = ?";
 	}
+	
+	public String erstelleFreundschaftsanfrage() {
+		return "INSERT INTO Benachrichtigungen (UserID, Benachrichtigung, Art) VALUES (?, ?, ?)";
+	}
+	
+	public String getNameZuID() {
+		return "SELECT Vorname, Nachname FROM Nutzer WHERE UserID = ?";
+	}
 }
 
 
