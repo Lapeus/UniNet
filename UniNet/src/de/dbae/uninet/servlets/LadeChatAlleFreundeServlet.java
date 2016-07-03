@@ -39,6 +39,8 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		request.setAttribute("chatfreundeAlle", getChatfreunde(session));
+		// Setze die UserID als Attribut des Request-Objektes
+		request.setAttribute("userID", Integer.parseInt(session.getAttribute("UserID").toString()));
 	}
 
 	/**

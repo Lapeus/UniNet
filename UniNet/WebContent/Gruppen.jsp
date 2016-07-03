@@ -13,7 +13,7 @@
 <title>UniNet - Gruppen</title>
 </head>
 <body>
-<page:kopfzeile></page:kopfzeile>
+<page:kopfzeile userID="${userID}"></page:kopfzeile>
 <div class="mainPart">
 	<!-- Uebersicht ueber die eigenen Gruppen in der linken Spalte -->
 	<page:linkeSpalte>

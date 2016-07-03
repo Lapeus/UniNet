@@ -13,7 +13,7 @@
 <title>UniNet - Emoticons</title>
 </head>
 <body>
-<page:seitenAufbau chatfreunde="${chatfreunde}">
+<page:seitenAufbau chatfreunde="${chatfreunde}" userID="${userID}">
 	<label class="verfasser">Alle verfügbaren Emoticons</label><br>
 	<page:emoticons firstRow="true" listLinks="${emoticons1}" listRechts="${emoticons2}"></page:emoticons>
 	<page:emoticons listLinks="${emoticons3}" listRechts="${emoticons4}"></page:emoticons>

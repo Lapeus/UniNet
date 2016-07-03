@@ -14,7 +14,7 @@
 <title>UniNet - Startseite</title>
 </head>
 <body>
-<page:seitenAufbau chatfreunde="${chatfreunde}">
+<page:seitenAufbau chatfreunde="${chatfreunde}" userID="${userID}">
 	<!-- Beitrag posten -->
 	<div class="row">
 		<div class="col-md-1"></div>

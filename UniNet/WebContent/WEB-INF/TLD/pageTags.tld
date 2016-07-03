@@ -6,6 +6,11 @@
 		<!-- Tag, der die Kopfzeile erstellt-->
 		<name>kopfzeile</name>
 		<tag-class>de.dbae.uninet.taghandler.KopfzeileTag</tag-class>
+		<attribute>
+			<name>userID</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	<tag>
 	<!-- Tag, der die Admin Kopfzeile erstellt -->
@@ -18,6 +23,11 @@
 		<tag-class>de.dbae.uninet.taghandler.SeitenAufbauTag</tag-class>
 		<attribute>
 			<name>chatfreunde</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>userID</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

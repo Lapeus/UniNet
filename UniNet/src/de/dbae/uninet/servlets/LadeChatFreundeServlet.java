@@ -65,21 +65,26 @@ public class LadeChatFreundeServlet extends HttpServlet{
 		StartseiteSql sqlSt = new StartseiteSql();
 		// Liste der Chatfreunde
 		List<Student> chatfreunde = new ArrayList<Student>();
+		// UserID
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		// Lade das Sql-Statement um die Chatfreunde zu ermitteln
 		String sql = sqlSt.getSqlStatement("Chatfreunde");
 		PreparedStatement pStmt = con.prepareStatement(sql);
-		pStmt.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
+		pStmt.setInt(1, userID);
 		ResultSet rs = pStmt.executeQuery();
 		// Fuer jeden Studenten / Chatfreund
 		while (rs.next()) {
 			String vorname = rs.getString(1);
 			String nachname = rs.getString(2);
-			int userID = rs.getInt(3);
+			int id = rs.getInt(3);
 			// Lege einen neuen Studenten an und fuege ihn der Liste hinzu
-			chatfreunde.add(new Student(vorname, nachname, userID, true));
+			chatfreunde.add(new Student(vorname, nachname, id, true));
 		}
 		// Setze die Liste als Attribut des Request-Objektes
 		request.setAttribute("chatfreunde", chatfreunde);
+		// Setze die UserID als Attribut des Request-Objektes
+		request.setAttribute("userID", userID);
+		System.out.println(userID + " ist die UserID");
 	}
 
 }

@@ -26,26 +26,32 @@ public class SeitenAufbauTag extends TagSupport {
 	private List<Student> chatfreunde;
 	
 	/**
+	 * Die UserID des aktuellen Nutzers.
+	 * @see KopfzeileTag
+	 */
+	private int userID;
+	
+	/**
 	 * Aktionen zu Beginn des Tags.<br>
 	 * F&uuml;gt eine Kopfzeile und eine linke Spalte hinzu, sowie den Aufbau f&uuml;r den mittleren Teil.
 	 */
 	public int doStartTag() {
 		Writer out = pageContext.getOut();
 		String erg = "";
-		erg += new KopfzeileTag().getHtmlCode();
+		erg += new KopfzeileTag().getHtmlCode(userID);
 		erg += "<div class='mainPart'>";
 		erg += new LinkeSpalteTag().getHtmlCode();
 		erg += "<div class='mittlereSpalte'><div class='row'><div class='col-md-1'></div><div class='col-md-10'>";
 		try {
 			out.append(erg);
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anhängen!");
+			System.out.println("Fehler beim Anhï¿½ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
 		return EVAL_BODY_INCLUDE;
 	}
-	
+
 	/**
 	 * Aktionen zum Abschluss des Tags.<br>
 	 * Schlie&szlig;t das Konstrukt der mittleren Spalte und h&auml;ngt die rechte Spalte an die jsp an.
@@ -58,7 +64,7 @@ public class SeitenAufbauTag extends TagSupport {
 		try {
 			out.append(erg);
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anhängen!");
+			System.out.println("Fehler beim Anhï¿½ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -66,7 +72,7 @@ public class SeitenAufbauTag extends TagSupport {
 	}
 
 	/**
-	 * Getter f&uuml;r die Chatfreunde
+	 * Getter f&uuml;r die Chatfreunde.
 	 * @return Die Liste der Chatfreunde
 	 */
 	public List<Student> getChatfreunde() {
@@ -74,10 +80,26 @@ public class SeitenAufbauTag extends TagSupport {
 	}
 
 	/**
-	 * Setter f&uuml;r die Chatfreunde
+	 * Setter f&uuml;r die Chatfreunde.
 	 * @param chatfreunde Die Liste der Chatfreunde
 	 */
 	public void setChatfreunde(List<Student> chatfreunde) {
 		this.chatfreunde = chatfreunde;
+	}
+	
+	/**
+	 * Getter f&uuml;r die UserID.
+	 * @return Die UserID
+	 */
+	public int getUserID() {
+		return userID;
+	}
+
+	/**
+	 * Setter f&uuml;r die UserID.
+	 * @param userID Die UserID
+	 */
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 }
