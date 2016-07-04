@@ -92,20 +92,11 @@ public class SuchergebnisseServlet extends HttpServlet {
 			// ErstelleBenachrichtigung friendRequest = new ErstelleBenachrichtigung(con);
 			// FEHLER IN GETNAME(ID) friendRequest.freundschaftsanfrage(userID, freundID);
 			PreparedStatement pStmt;
-			pStmt = con.prepareStatement(seSql.getNameZuID());
-			pStmt.setInt(1, userID);
-			ResultSet rs = pStmt.executeQuery();
-			String userName = "";
-			if (rs.next()) {
-				userName = rs.getString(1);
-			}
-			String nachricht = "<a class='verfasser' href='ProfilServlet?userID=" + userID + "'>" + userName + "</a> m&ouml;chte mit dir befreundet sein!<br>";
 			pStmt = con.prepareStatement(seSql.erstelleFreundschaftsanfrage());
 			pStmt.setInt(1, freundID);
-			pStmt.setString (2, nachricht);
+			pStmt.setInt(2, userID);
 			pStmt.setInt(3, 1);
 			pStmt.executeUpdate();
-			
 		} catch (Exception e) {
 			System.out.println("ERROR - SuchergebnisServlet - sendFriendRequest");
 			e.printStackTrace();
@@ -186,15 +177,15 @@ public class SuchergebnisseServlet extends HttpServlet {
 				String beschreibung = rs.getString(3);
 				String gruendung    = rs.getString(4);
 				int adminID         = rs.getInt(5);
-				
-				// ADMINNAME TODO
-				String adminName = "Marvin";
-//				PreparedStatement pStmtName = con.prepareStatement(seSql.getNutzerZuId());
-//				pStmtName.setInt(1, adminID);
-//				ResultSet rsName = pStmtName.executeQuery();
-//				if(rs.next()) {
-//					adminName = rsName.getString(1);
-//				}
+				System.out.println("BESCHREIBUNG: " + beschreibung);
+				// ADMINNAME 
+				String adminName = "Kein Admin";
+				PreparedStatement pStmtName = con.prepareStatement(seSql.getNutzerZuId());
+				pStmtName.setInt(1, adminID);
+				ResultSet rsName = pStmtName.executeQuery();
+				if(rsName.next()) {
+					adminName = rsName.getString(1) + " " + rsName.getString(2);
+				}
 				System.out.println("ADMINNAME: " + adminName);
 				gruppen.add(new Gruppe(gruppenID, name, beschreibung, gruendung, adminName, adminID));
 			}

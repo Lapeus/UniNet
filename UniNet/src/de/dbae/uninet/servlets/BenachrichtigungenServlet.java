@@ -51,7 +51,19 @@ public class BenachrichtigungenServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		session = request.getSession();
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+		int freundID;
+		if (request.getParameter("accept") != null) {
+			freundID = Integer.parseInt(request.getParameter("accept"));
+			bestaetigeFreundschaft(userID, freundID);
+			loescheAnfragen(userID, freundID);
+		}
+		else if(request.getParameter("denie") != null) {
+			freundID = Integer.parseInt(request.getParameter("denie"));
+			loescheAnfragen(userID, freundID);
+		}
+		doGet(request, response);
 	}
 	
 	private List<Freundschaftsanfrage> getFreundschaftanfragen(int userID) {
@@ -62,14 +74,22 @@ public class BenachrichtigungenServlet extends HttpServlet {
 		try {
 			dbcon = new DBConnection();
 			Connection con = dbcon.getCon();
-			PreparedStatement pStmt = con.prepareStatement(beSql.getFreundesanfragen());
+			PreparedStatement pStmt = con.prepareStatement(beSql.getFreundesanfragenSql());
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
 			
 			while (rs.next()) {
 				String benachrichtigung = rs.getString(1);
-				Date datum = rs.getDate(2);
-				freundesListe.add(new Freundschaftsanfrage(benachrichtigung, datum));
+				int freundID = rs.getInt(2);
+				Date datum = rs.getDate(3);
+				pStmt = con.prepareStatement(beSql.getNameZuID());
+				pStmt.setInt(1, freundID);
+				ResultSet rsName = pStmt.executeQuery();
+				String freundName = "Kein Name";
+				if (rsName.next()) {
+					freundName = rsName.getString(1) + " " + rsName.getString(2);
+				}
+				freundesListe.add(new Freundschaftsanfrage(benachrichtigung, userID, freundID, freundName, datum));
 			}
 		} catch (Exception e) {
 			System.out.println("ERROR - BenachrichtigungenServlet - getFreundschaftsanfragen");
@@ -85,5 +105,59 @@ public class BenachrichtigungenServlet extends HttpServlet {
 		}
 		return freundesListe;
 	}
-
+	
+	private void bestaetigeFreundschaft(int userID, int freundID) {
+		DBConnection dbcon = null;
+		BenachrichtigungenSql beSql = new BenachrichtigungenSql();
+		
+		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
+			PreparedStatement pStmt = con.prepareStatement(beSql.bestaetigeFreundschaftSql());
+			pStmt.setInt(1, freundID);
+			pStmt.setInt(2, userID);
+			pStmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("ERROR - BenachrichtigungenServlet - bestaetigeFreundschaft - catch");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				System.out.println("ERROR - BenachrichtigungenServlet - bestaetigeFreundschaft - finally");
+				ignored.printStackTrace();
+			}
+		}
+	}
+	
+	private void loescheAnfragen(int userID, int freundID) {
+		DBConnection dbcon = null;
+		BenachrichtigungenSql beSql = new BenachrichtigungenSql();
+		
+		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
+			PreparedStatement pStmt = con.prepareStatement(beSql.lehneFreunschaftAbSql());
+			pStmt.setInt(1, userID);
+			pStmt.setInt(2, freundID);
+			pStmt.setInt(3, freundID);
+			pStmt.setInt(4, userID);
+			System.out.println(pStmt.toString());
+			pStmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("ERROR - BenachrichtigungenServlet - lehneFreundschaftAb - catch");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				System.out.println("ERROR - BenachrichtigungenServlet - lehneFreundschaftAb - finally");
+				ignored.printStackTrace();
+			}
+		}
+	}
 }

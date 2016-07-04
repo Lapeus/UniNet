@@ -15,7 +15,9 @@ public class SuchergebnisseSql {
 	}
 	
 	public String getGruppenSql() {
-		return "SELECT gruppenid, name, beschreibung, gruendung, adminid FROM gruppen WHERE REPLACE(CONCAT(name, beschreibung), ' ', '') ~* ? ORDER BY name;";
+		return "SELECT gruppenid, name, beschreibung, gruendung, adminid "
+				+ "FROM gruppen "
+				+ "WHERE REPLACE(CONCAT(name, beschreibung), ' ', '') ~* ? ORDER BY name;";
 	}
 	
 	public String getVeranstaltungenSql() {
@@ -35,7 +37,7 @@ public class SuchergebnisseSql {
 	}
 	
 	public String erstelleFreundschaftsanfrage() {
-		return "INSERT INTO Benachrichtigungen (UserID, Benachrichtigung, Art) VALUES (?, ?, ?)";
+		return "INSERT INTO Benachrichtigungen (UserID, FreundID, Art) VALUES (?, ?, ?)";
 	}
 	
 	public String getNameZuID() {

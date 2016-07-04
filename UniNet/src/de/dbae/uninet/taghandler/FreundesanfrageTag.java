@@ -54,10 +54,10 @@ public class FreundesanfrageTag extends TagSupport {
 			Date datum = anfrage.getDatum();
 			sDatum = dateFormat.format(datum);
 		}
-		
+		System.out.println("FREUND ID: " + anfrage.getFreundID());
 		String jsp = "<article class='search-result row'>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-3'>"
-				+ "<a href='#' title='Lorem ipsum' class='thumbnail'><img alt='Profilbild'/></a>"
+				+ "<a href='ProfilServlet?userID=" + anfrage.getFreundID() + "' title='Lorem ipsum' class='thumbnail'><img class='img-responsive' alt='Profilbild' src='LadeProfilbildServlet?userID="+ anfrage.getFreundID() +"'/></a>"
 				+ "</div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-2'>"
 				+ "<ul class='meta-search'>"
@@ -65,9 +65,16 @@ public class FreundesanfrageTag extends TagSupport {
 				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Freundschaftsanfrage</span></li>"
 				+ "</ul></div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-7 excerpet'>"
-				+ anfrage.getNachricht()
+				+ "<a class='verfasser' href='ProfilServlet?userID=" + anfrage.getFreundID() + "'>"+ anfrage.getFreundName() +"</a> m&ouml;chte mit dir befreundet sein!<br>"
+				+ "<span>"
+				+ "<button class='button btn-success' type='submit' name='accept' value='"+ anfrage.getFreundID() +"'>Freunschaftsanfrage bestätigen</button>"
+				+ "</span>"
+				+ "<span>"
+				+ "<button class='button btn-danger' type='submit' name='denie' value='"+ anfrage.getFreundID() +"'>Freunschaftsanfrage ablehnen</button>"
+				+ "</span>"
 				+ "<span class='clearfix borda'></span>"
-				+ "</article>";;
+				+ "</article>";
+		System.out.println(jsp);
 		return jsp;
 	}
 }

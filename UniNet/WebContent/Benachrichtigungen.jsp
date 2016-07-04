@@ -21,20 +21,22 @@
 </page:linkeSpalte>
 <page:mittlereSpalte>
 <div class="container">
-	<hgroup class="mb20">
-		<h1>Benachrichtigungen</h1>
-		<h2 class="lead">Deine <strong class="text-danger">Freunschaftsanfragen</strong></h2>								
-	</hgroup>
-	<section class="col-xs-12 col-sm-6 col-md-12">
-		<c:forEach items="${ Freunschaftsanfragen }" var="anfrage">
-			<page:freundschaftsanfrage request="${ anfrage }"></page:freundschaftsanfrage>
-		</c:forEach>
-	</section>
-	<hgroup class="mb20">
-		<h2 class="lead">Deine <strong class="text-danger">Beitragsbenachrichtigungen</strong></h2>								
-	</hgroup>
-	<section class="col-xs-12 col-sm-6 col-md-12">
-	</section>
+	<form action='BenachrichtigungenServlet' method='post'>
+		<hgroup class="mb20">
+			<h1>Benachrichtigungen</h1>
+			<h2 class="lead">Deine <strong class="text-danger">Freunschaftsanfragen</strong></h2>								
+		</hgroup>
+		<section class="col-xs-12 col-sm-6 col-md-12">
+			<c:forEach items="${ Freunschaftsanfragen }" var="anfrage">
+				<page:freundschaftsanfrage request="${ anfrage }"></page:freundschaftsanfrage>
+			</c:forEach>
+		</section>
+		<hgroup class="mb20">
+			<h2 class="lead">Deine <strong class="text-danger">Beitragsbenachrichtigungen</strong></h2>								
+		</hgroup>
+		<section class="col-xs-12 col-sm-6 col-md-12">
+		</section>
+	</form>
 </div>
 </page:mittlereSpalte>
 <page:rechteSpalte chatfreunde="${ chatfreundeAlle }"></page:rechteSpalte>

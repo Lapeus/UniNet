@@ -15,7 +15,7 @@
 </head>
 <body>
 <jsp:include page="/LadeChatAlleFreundeServlet"></jsp:include>
-<page:kopfzeile></page:kopfzeile>
+<page:kopfzeile userID="${userID}"></page:kopfzeile>
 <div class="mainPart">
 <page:linkeSpalte>
 </page:linkeSpalte>
@@ -49,7 +49,6 @@
 			</c:forEach>
 		</section>
 	</form>
-	<a class='verfasser' href='ProfilServlet?userID=2'>Marvin</a> <span>m&ouml;chte mit dir befreundet sein!</span>
 </div>
 </page:mittlereSpalte>
 </div>
