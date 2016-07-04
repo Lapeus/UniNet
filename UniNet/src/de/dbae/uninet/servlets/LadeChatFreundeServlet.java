@@ -84,7 +84,6 @@ public class LadeChatFreundeServlet extends HttpServlet{
 		request.setAttribute("chatfreunde", chatfreunde);
 		// Setze die UserID als Attribut des Request-Objektes
 		request.setAttribute("userID", userID);
-		System.out.println(userID + " ist die UserID");
 	}
 
 }

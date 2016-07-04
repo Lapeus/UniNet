@@ -128,7 +128,6 @@ public class KopfzeileTag extends TagSupport {
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
 			if (rs.next()) {
-				System.out.println(rs.getInt(1));
 				anzahlUngeleseneBenachrichtigungen = rs.getInt(1);
 			}
 		} catch (SQLException sqlEx) {
