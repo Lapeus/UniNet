@@ -8,7 +8,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * Dieser Tag erstellt die Kopfzeile.<br>
  * Er wird direkt oder indirekt auf jeder jsp verwendet.
- * @author Christian Ackermann
+ * @author Leon Schaffert
  */
 public class AdminKopfzeileTag extends TagSupport {
 
@@ -23,7 +23,7 @@ public class AdminKopfzeileTag extends TagSupport {
 		try {
 			out.append(getHtmlCode());
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anhängen!");
+			System.out.println("Fehler beim Anhï¿½ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -43,7 +43,7 @@ public class AdminKopfzeileTag extends TagSupport {
 		kopfzeile += "<li><label class='platzhalter'></label></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile logo'><b>UNINET</b></a></li></ul>";
 		kopfzeile += "<ul class='nav navbar-nav navbar-right'>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='UnisVerwaltenServlet'>Universitäten Verwalten</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='UnisVerwaltenServlet'>Universit&auml;ten Verwalten</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminAnlegenServlet'>Administrator anlegen</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminServlet'>Administratoren verwalten</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='LogoutServlet'>Logout</a></li>";

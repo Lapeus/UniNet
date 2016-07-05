@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Admin;
-import de.dbae.uninet.javaClasses.Beitrag;
-import de.dbae.uninet.javaClasses.StartseitenBeitrag;
 import de.dbae.uninet.sqlClasses.AdminSql;
 
 /**
@@ -42,19 +38,12 @@ public class AdminServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String ipAddress = request.getHeader("X-FORWARDED-FOR");
-		if (ipAddress == null) {
-			ipAddress = request.getRemoteAddr();
-		}
-		System.out.println(ipAddress);
 		// Oeffne eine neue DB-Verbindung
 		DBConnection dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		try {
 			// Setze alle LocalAdmins als Attribut
 			request.setAttribute("adminList", getAdmins(request, con));
-			// Weiterleitung
-			request.getRequestDispatcher("AdminVerwaltung.jsp").forward(request, response);
 		} catch (NullPointerException npex) {
 			response.sendRedirect("FehlerServlet?fehler=Session");
 		} catch (SQLException sqlex) {
@@ -63,6 +52,33 @@ public class AdminServlet extends HttpServlet {
 			// Verbindung schliessen
 			dbcon.close();
 		}
+		if (request.getParameter("loeschen") != null) {
+			AdminSql sqlSt = new AdminSql();
+			String sql = sqlSt.getAdminLoeschen1Sql();
+			int userid = Integer.parseInt(request.getParameter("loeschen"));
+			System.out.println(userid);
+			try {
+				if (con.isClosed()) {
+					dbcon = new DBConnection();
+					con = dbcon.getCon();
+				}
+				PreparedStatement pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, userid);
+				pStmt.executeUpdate();
+				sql = sqlSt.getAdminLoeschen2Sql();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1,  userid);
+				pStmt.executeUpdate();
+				request.setAttribute("adminList", getAdmins(request, con));
+			} catch (SQLException sqlex) {
+				System.err.println("SQL-Fehler!");
+				sqlex.printStackTrace();
+			} finally {
+				//Verbindung schliessen
+				dbcon.close();
+			}
+		}
+		request.getRequestDispatcher("AdminVerwaltung.jsp").forward(request, response);
 	}
 
 	/**
@@ -81,7 +97,7 @@ public class AdminServlet extends HttpServlet {
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
 		while (rs.next()) {
-			admins.add(new Admin(rs.getString(1), rs.getString(2),2 , rs.getString(3)));
+			admins.add(new Admin(rs.getString(1), rs.getString(2),2 , rs.getString(3), rs.getInt(4)));
 		}
 		return admins;
 	}

@@ -15,9 +15,21 @@
 </head>
 <body>
 	<page:adminKopfzeile></page:adminKopfzeile>
-	<br><br>
-	<c:forEach var="admin" items="${ adminList }">
-		<page:admin admin="${ admin }" ></page:admin>
-	</c:forEach>
+	<br><br><br><br>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Admin ID</th>
+				<th>Vorname</th>
+				<th>Nachname</th>
+				<th>Universität</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="admin" items="${ adminList }">
+				<page:admin admin="${ admin }"></page:admin>
+			</c:forEach>
+		</tbody>
+	</table>
 </body>
 </html>

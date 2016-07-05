@@ -29,7 +29,6 @@ import de.dbae.uninet.javaClasses.KommentarZuUnterkommentar;
 import de.dbae.uninet.javaClasses.StartseitenBeitrag;
 import de.dbae.uninet.javaClasses.Unterkommentar;
 import de.dbae.uninet.sqlClasses.BeitragSql;
-import de.dbae.uninet.sqlClasses.BenachrichtigungErstellenSql;
 import de.dbae.uninet.sqlClasses.GruppenSql;
 import de.dbae.uninet.sqlClasses.ProfilSql;
 import de.dbae.uninet.sqlClasses.StartseiteSql;

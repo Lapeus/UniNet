@@ -84,7 +84,17 @@
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-		
+	</tag>
+	<tag>
+		<!--  Tag, der die Unis Tabellarisch darstellt -->
+		<name>uni</name>
+		<tag-class>de.dbae.uninet.taghandler.UniAnzeigeTag</tag-class>
+		<attribute>
+		<!-- UniObjekt -->
+		<name>uni</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	<tag>
 		<name>kommentar</name>

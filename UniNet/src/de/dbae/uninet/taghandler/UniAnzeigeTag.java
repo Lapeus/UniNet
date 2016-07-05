@@ -5,13 +5,14 @@ import java.io.Writer;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import de.dbae.uninet.javaClasses.Admin;
+import de.dbae.uninet.javaClasses.Uni;
 
 /**
- * Dieser Tag zeigt die Informationen aus dem Admin-Objekt auf der jsp an.
+ * Dieser Tag zeigt die Informationen aus dem Uni-Objekt auf der jsp an.
  * Er wird auf den Admin-Seiten des Projekts verwendet.
  * @author Leon Schaffert
  */
-public class AdminAnzeigeTag extends TagSupport {
+public class UniAnzeigeTag extends TagSupport {
 
 	private static final long serialVersionUID = 4129407379981290381L;
 	
@@ -19,7 +20,7 @@ public class AdminAnzeigeTag extends TagSupport {
 	 * Der Admin mit allen wichtigen Eigenschaften.
 	 * @see Admin
 	 */
-	private Admin admin;
+	private Uni uni;
 
 
 	/**
@@ -39,36 +40,35 @@ public class AdminAnzeigeTag extends TagSupport {
 	}
 	
 	/**
-	 * Generiert den auf der jsp angezeigten Code f&uuml;r den Admin.<br>
+	 * Generiert den auf der jsp angezeigten Code f&uuml;r die Uni.<br>
 	 * @return Den entsprechenden Html-Code
 	 */
 	private String getHtmlCode() {
 		String code = "";
-		code += "<tr><td>" + admin.getAdminID() + "</td>";
-		code +=	"<td>" + admin.getAdminVorname() + "</td>";
-		code += "<td>" + admin.getAdminNachname() + "</td>";
-		code += "<td>" + admin.getZugehoerigeUni() + "<a class='pull-right' ";
-		code += "href='AdminServlet?loeschen="+ admin.getAdminID() + "' title='Admin l&ouml;schen'><span ";
+		code += "<tr><td>" + uni.getUniID() + "</td>";
+		code += "<td>" + uni.getUniName() + "</td>";
+		code += "<td>" + uni.getUniStandort() + "<a class='pull-right' ";
+		code += "href='UnisVerwaltenServlet?loeschen="+ uni.getUniID() + "' title='Uni l&ouml;schen'><span ";
 		code += "class='glyphicon glyphicon glyphicon-trash' style='color: #3b5998;'></span></a>";
 		code += "</td></tr>";
 		return code;
 	}
 	
 	/**
-	 * Getter f&uuml;r den Admin.
-	 * @return Das Adminobjekt
-	 * @see Admin
+	 * Getter f&uuml;r die Uni.
+	 * @return Das Uniobjekt
+	 * @see Uni
 	 */
-	public Admin getAdmin() {
-		return admin;
+	public Uni getUni() {
+		return uni;
 	}
 
 	/**
-	 * Setter f&uuml;r den Admin.
-	 * @param admin Der Admin
-	 * @see Admin
+	 * Setter f&uuml;r die Uni.
+	 * @param uni Die Uni.
+	 * @see Uni
 	 */
-	public void setAdmin(Admin admin) {
-		this.admin = admin;
+	public void setUni(Uni uni) {
+		this.uni = uni;
 	}
 }
