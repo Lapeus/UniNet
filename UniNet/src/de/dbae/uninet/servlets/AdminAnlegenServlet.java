@@ -14,9 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.ws.RespectBinding;
-
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
@@ -27,52 +24,57 @@ import de.dbae.uninet.sqlClasses.AnmeldeSql;
 public class AdminAnlegenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DBConnection dbcon;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AdminAnlegenServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public AdminAnlegenServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.getRequestDispatcher("AdminAnlegen.jsp").forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		String meldung = "";
+		boolean forwarded = false;
 		if (request.getParameter("registrieren") != null) {
 			// REGISTRIERUNG
-			
+
 			// Alle eingaben abfragen
 			String anrede = request.getParameter("anrede");
 			boolean bAnrede = anrede.equals("Herr") ? true : false;
 			String vorname = request.getParameter("vorname");
 			String nachname = request.getParameter("nachname");
-			String email = request.getParameter("email");	
+			String email = request.getParameter("email");
 			String uni = request.getParameter("uni");
 			String password1 = request.getParameter("password1");
 			String password2 = request.getParameter("password2");
-			
+
 			// Felder bei reload befuellen
 			felderFuellen(request);
-			
+
 			if (!vorname.equals("") && !nachname.equals("") && !email.equals("") && !uni.equals("")
 					&& !password1.equals("") && !password2.equals("")) {
 				// ALLE DATEN VORHANDEN
-				
+
 				try {
 					if (password1.equals(password2)) {
-						// PASSWÖRTER GLEICH
+						// PASSWÃ–RTER GLEICH
 						// Passwort hashen
 						String hash = "";
 						String salt = "";
@@ -99,11 +101,11 @@ public class AdminAnlegenServlet extends HttpServlet {
 						pStmtNutzer.setString(6, salt);
 						pStmtNutzer.setInt(7, 2);
 						pStmtNutzer.execute();
-						// Statement für userid
+						// Statement fÃ¼r userid
 						String stUserid = sqlSt.getNutzerId();
 						PreparedStatement eins = con.prepareStatement(stUserid);
 						eins.setString(1, email);
-						// Statement für uniid
+						// Statement fÃ¼r uniid
 						String stUniid = sqlSt.getUniId();
 						PreparedStatement zwei = con.prepareStatement(stUniid);
 						zwei.setString(1, uni);
@@ -115,18 +117,16 @@ public class AdminAnlegenServlet extends HttpServlet {
 						ResultSet rsUniid = zwei.executeQuery();
 						rsUniid.next();
 						String uniid = rsUniid.getString(1);
-						// Studentendaten aus Nutzerregistrierung in Tablle
-						// speichern
+						// Administratorendaten aus Nutzerregistrierung in Tablle speichern
 						PreparedStatement pStmtAdmin = con.prepareStatement(sqlSt.getRegistrierungAdminSql());
 						pStmtAdmin.setInt(1, Integer.parseInt(userid));
 						pStmtAdmin.setInt(2, Integer.parseInt(uniid));
 						pStmtAdmin.execute();
-						HttpSession userSession = request.getSession();
-						userSession.setAttribute("UserID", userid);
 						meldung = "Lokaler Administrator wurde angelegt";
-						request.getRequestDispatcher("AdminVerwaltung.jsp").forward(request, response);
+						request.getRequestDispatcher("AdminServlet").forward(request, response);
+						forwarded = true;
 					} else {
-						// PASSWÖRTER UNGLEICH
+						// PASSWï¿½RTER UNGLEICH
 
 						// Meldung bei ungleichem Passwort
 						meldung = "Keine &Uuml;bereinstimmung - Geben das Passwort erneut ein";
@@ -134,7 +134,6 @@ public class AdminAnlegenServlet extends HttpServlet {
 					}
 				} catch (Exception e) {
 					// EMAIL SCHON REGISTRIERT
-					
 					e.printStackTrace();
 					// Meldung bei gleicher E-Mail
 					meldung = "E-Mail wird schon verwendet.";
@@ -143,9 +142,9 @@ public class AdminAnlegenServlet extends HttpServlet {
 					killConnection(con);
 				}
 			} else {
-				// DATEN UNVOLLSTÄNDIG
-				
-				// Meldung bei unvollständiger Registrierung
+				// DATEN UNVOLLSTï¿½NDIG
+
+				// Meldung bei unvollstÃ¤ndiger Registrierung
 				meldung = "Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus";
 				request.setAttribute("meldung", meldung);
 			}
@@ -153,10 +152,13 @@ public class AdminAnlegenServlet extends HttpServlet {
 			// Felder bei reloead befuellen
 			felderFuellen(request);
 		}
-		request.getRequestDispatcher("AdminAnlegen.jsp").forward(request, response);
-
+		if (!forwarded) {
+			request.getRequestDispatcher("AdminAnlegen.jsp").forward(request, response);
+		}
+		killConnection(con);
 	}
-	private void killConnection(Connection con){
+
+	private void killConnection(Connection con) {
 		try {
 			if (con != null) {
 				dbcon.close();
@@ -165,9 +167,9 @@ public class AdminAnlegenServlet extends HttpServlet {
 			ignored.printStackTrace();
 		}
 	}
-	
+
 	private void felderFuellen(HttpServletRequest request) {
-		// die Felder füllen wenn neu geladen wird
+		// die Felder fÃ¼llen wenn neu geladen wird
 		String anrede = request.getParameter("anrede");
 		boolean bAnrede = anrede.equals("Herr") ? true : false;
 		String vorname = request.getParameter("vorname");
@@ -182,6 +184,5 @@ public class AdminAnlegenServlet extends HttpServlet {
 		request.setAttribute("nachname", nachname);
 		request.setAttribute("email", email);
 	}
-
 
 }

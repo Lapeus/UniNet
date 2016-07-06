@@ -155,7 +155,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						if (nutzertyp == 1) {
 							response.sendRedirect("AdminServlet");
 						} else if (nutzertyp == 2) {
-							response.sendRedirect("LocalAdminServlet");
+							response.sendRedirect("AdminBeitraegeServlet");
 						} else {
 							// Wenn es kein Admin ist, leite an Startseite weiter
 							// Freundesbewertung fuer diesen Nutzer aktualisieren

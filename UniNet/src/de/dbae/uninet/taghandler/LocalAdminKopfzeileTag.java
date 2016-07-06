@@ -6,11 +6,11 @@ import java.io.Writer;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- * Dieser Tag erstellt die AdminKopfzeile.<br>
- * Er wird auf jeder Admin jsp verwendet.
+ * Dieser Tag erstellt die LocalAdmin Kopfzeile.<br>
+ * Er wird auf allen LocalAdmin Seiten verwendet.
  * @author Leon Schaffert
  */
-public class AdminKopfzeileTag extends TagSupport {
+public class LocalAdminKopfzeileTag extends TagSupport {
 
 	private static final long serialVersionUID = -5650080610199722432L;
 	
@@ -23,7 +23,7 @@ public class AdminKopfzeileTag extends TagSupport {
 		try {
 			out.append(getHtmlCode());
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anh�ngen!");
+			System.out.println("Fehler beim Anhängen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -43,9 +43,10 @@ public class AdminKopfzeileTag extends TagSupport {
 		kopfzeile += "<li><label class='platzhalter'></label></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile logo'><b>UNINET</b></a></li></ul>";
 		kopfzeile += "<ul class='nav navbar-nav navbar-right'>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='UnisVerwaltenServlet'>Universit&auml;ten Verwalten</a></li>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminAnlegenServlet'>Administrator anlegen</a></li>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminServlet'>Administratoren verwalten</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminVeranstaltungAnlegenServlet'>Veranstaltung anlegen</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminVeranstaltungenVerwaltenServlet'>Veranstaltungen verwalten</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminBeitraegeServlet'>Beiträge verwalten</a></li>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminStudiengaengeServlet'>Studiengänge verwalten</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='LogoutServlet'>Logout</a></li>";
 		kopfzeile += "</ul></div></div></nav>";
 		return kopfzeile;

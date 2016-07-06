@@ -11,11 +11,10 @@
 <link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="author" content="Leon Schaffert">
-<title>UniNet - Universitäten Verwalten</title>
+<title>UniNet - Beitr&auml;ge verwalten </title>
 </head>
 <body>
-	<page:adminKopfzeile></page:adminKopfzeile>
-	<br><br>
-	hi
+<page:localAdminKopfzeile></page:localAdminKopfzeile>
+
 </body>
 </html>

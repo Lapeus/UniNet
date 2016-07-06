@@ -6,6 +6,10 @@ package de.dbae.uninet.javaClasses;
  */
 public class Admin {
 	/**
+	 * Die userid des Admins
+	 */
+	private int adminID;
+	/**
 	 * Der Vorname des Admins
 	 */
 	private String adminVorname;
@@ -16,8 +20,8 @@ public class Admin {
 	/**
 	 * Die verschiedenen Typen von Administratoren:
 	 * 1: Systemadministrator - Verwaltet die LocalAdmins
-	 * 2: LocalAdmins - Fügen ihrer zugewiesenen Uni neue Veranstaltungen, Gruppen und Studiengaenge hinzu.
-	 *	  Kümmern sich um gemeldete Beiträge/User und entfernen sie ggfs. aus dem  Netzwerk.
+	 * 2: LocalAdmins - Fï¿½gen ihrer zugewiesenen Uni neue Veranstaltungen, Gruppen und Studiengaenge hinzu.
+	 *	  Kï¿½mmern sich um gemeldete Beitrï¿½ge/User und entfernen sie ggfs. aus dem  Netzwerk.
 	 */
 	private int adminTyp;
 	/**
@@ -27,7 +31,8 @@ public class Admin {
 	/**
 	 * 
 	 */
-	public Admin(String adminVorname, String adminNachname,int adminTyp,String zugehoerigeUni) {
+	public Admin(String adminVorname, String adminNachname,int adminTyp,String zugehoerigeUni, int adminID) {
+		this.adminID = adminID;
 		this.adminVorname = adminVorname;
 		this.adminNachname = adminNachname;
 		this.zugehoerigeUni = zugehoerigeUni;
@@ -45,7 +50,7 @@ public class Admin {
 		return adminVorname;
 	}
 	/**
-	 * Setzt einen neuen Namen für den Administrator.
+	 * Setzt einen neuen Namen fï¿½r den Administrator.
 	 * @param adminName Der gewuenschte neue Name
 	 */
 	public void setAdminVorname(String adminVorname) {
@@ -78,6 +83,13 @@ public class Admin {
 	 */
 	public String getZugehoerigeUni() {
 		return zugehoerigeUni;
+	}
+	/**
+	 * Gibt die UserID des Admins zur&uuml;ck.
+	 * @return die UserID
+	 */
+	public int getAdminID() {
+		return adminID;
 	}
 
 }

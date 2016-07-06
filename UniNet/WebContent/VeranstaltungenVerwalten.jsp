@@ -11,23 +11,26 @@
 <link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="author" content="Leon Schaffert">
-<title>UniNet - Adminverwaltung</title>
+<title>UniNet - Veranstaltungen Verwalten</title>
 </head>
 <body>
-	<page:adminKopfzeile></page:adminKopfzeile>
-	<br><br><br><br>
+	<page:localAdminKopfzeile></page:localAdminKopfzeile>
+	<br>
+	<br>
+	<br>
+	<br> Veranstaltungen der ${ universitaet }:
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Admin ID</th>
-				<th>Vorname</th>
-				<th>Nachname</th>
-				<th>Universität</th>
+				<th>Veranstaltungs ID</th>
+				<th>Name</th>
+				<th>Dozent</th>
+				<th>Semester</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="admin" items="${ adminList }">
-				<page:admin admin="${ admin }"></page:admin>
+			<c:forEach var="veranstaltung" items="${ veranstaltungList }">
+				<page:veranstaltung veranstaltung="${ veranstaltung }"></page:veranstaltung>
 			</c:forEach>
 		</tbody>
 	</table>
