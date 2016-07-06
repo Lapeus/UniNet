@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -363,12 +364,16 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		try {
 			PreparedStatement pStmt = con.prepareStatement(sql);
 			ResultSet rs = pStmt.executeQuery();
+			// Lade die DefaultProfilbilder
+			List<File> files = new ArrayList<File>();
+			files = Arrays.asList(new File(getServletContext().getRealPath("Pictures")).listFiles());
 			// Fuer alle Nutzer
 			while (rs.next()) {
 				// Wenn kein Profilbild gesetzt wurde
 				if (rs.getBytes(1) == null) {
-					// Lade das Default-Bild
-					BufferedImage img = ImageIO.read(new File(getServletContext().getRealPath("/Testbild.jpg")));
+					// Lade eines der DefaulProfilBilder
+					int rand = (int)(Math.random() * files.size());
+					BufferedImage img = ImageIO.read(files.get(rand));
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					ImageIO.write(img, "jpg", baos);
 					// Und schreibe es in die DB
