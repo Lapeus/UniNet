@@ -375,6 +375,8 @@ public class GruppenServlet extends HttpServlet {
 					pStmt.setInt(1, neueAdminID);
 					pStmt.setInt(2, id);
 					pStmt.executeUpdate();
+					// Und informiere ihn darueber
+					new ErstelleBenachrichtigung(con).gruppenAdmin(neueAdminID, id);
 				}
 			}
 		}
@@ -521,6 +523,10 @@ public class GruppenServlet extends HttpServlet {
 		pStmt.setInt(1, gruppenID);
 		pStmt.setInt(2, userID);
 		pStmt.executeUpdate();
+		if (zufuegen) {
+			// Benachrichtige den Benutzer
+			new ErstelleBenachrichtigung(con).gruppeneinladung(Integer.parseInt(request.getSession().getAttribute("UserID").toString()), gruppenID, userID);
+		}
 		// Weiterleitung
 		response.sendRedirect("GruppenServlet?gruppenID=" + gruppenID + "&tab=bearbeiten");
 	}

@@ -126,7 +126,7 @@ public class ErstelleBenachrichtigung {
 		} else {
 			sql = sqlSt.getSqlStatement("Veranstaltungsname");
 		}
-		PreparedStatement pStmt = con.prepareStatement(sql);
+		pStmt = con.prepareStatement(sql);
 		// Setze die ID
 		pStmt.setInt(1, id);
 		rs = pStmt.executeQuery();
@@ -162,6 +162,58 @@ public class ErstelleBenachrichtigung {
 				pStmt2.executeUpdate();
 			}
 		}
+	}
+	
+	/**
+	 * Erstellt eine Benachrichtigung, wenn der Nutzer einer Gruppe hinzugef&uuml;gt wird.
+	 * @param einladerID Die ID des Administrators
+	 * @param gruppenID
+	 * @param eingeladenerID
+	 * @throws SQLException
+	 */
+	public void gruppeneinladung(int einladerID, int gruppenID, int eingeladenerID) throws SQLException {
+		// Lade das entsprechende Sql-Statement
+		sql = sqlSt.getSqlStatement("Gruppenname");
+		PreparedStatement pStmt = con.prepareStatement(sql);
+		// Setze die ID
+		pStmt.setInt(1, gruppenID);
+		rs = pStmt.executeQuery();
+		String gruppenName = "";
+		if (rs.next()) {
+			// Lies den Gruppennamen aus
+			gruppenName = rs.getString(1);
+		}
+		// Erstelle eine neue Benachrichtigung
+		sql = sqlSt.getSqlStatement("BenachrichtigungAnlegen");
+		PreparedStatement pStmt2 = con.prepareStatement(sql);
+		// An den Eingeladenen
+		pStmt2.setInt(1, eingeladenerID);
+		String einladerName = getName(einladerID);
+		String benachrichtigung = einladerName + " hat dich der Gruppe " + gruppenName + " hinzugefügt.<br><a class='blau' href='GruppenServlet?tab=beitraege&gruppenID=" + gruppenID + "'>Ansehen</a>";
+		pStmt2.setString(2, benachrichtigung);
+		pStmt2.executeUpdate();
+	}
+	
+	public void gruppenAdmin(int userID, int gruppenID) throws SQLException {
+		// Lade das entsprechende Sql-Statement
+		sql = sqlSt.getSqlStatement("Gruppenname");
+		pStmt = con.prepareStatement(sql);
+		// Setze die ID
+		pStmt.setInt(1, gruppenID);
+		rs = pStmt.executeQuery();
+		String gruppenName = "";
+		if (rs.next()) {
+			// Lies den Gruppennamen aus
+			gruppenName = rs.getString(1);
+		}
+		// Erstelle eine neue Benachrichtigung
+		sql = sqlSt.getSqlStatement("BenachrichtigungAnlegen");
+		PreparedStatement pStmt2 = con.prepareStatement(sql);
+		// An den neuen Admin
+		pStmt2.setInt(1, userID);
+		String benachrichtigung = "Du bist jetzt Administrator der Gruppe <a class='blau' href='GruppenServlet?tab=beitraege&gruppenID=" + gruppenID + "'>" + gruppenName + "</a>";
+		pStmt2.setString(2, benachrichtigung);
+		pStmt2.executeUpdate();
 	}
 	
 	/**
