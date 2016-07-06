@@ -56,7 +56,6 @@ public class UnisVerwaltenServlet extends HttpServlet {
 			AdminSql sqlSt = new AdminSql();
 			String sql = sqlSt.getUniLoeschenSql();
 			int uniid = Integer.parseInt(request.getParameter("loeschen"));
-			System.out.println(uniid);
 			try {
 				if (con.isClosed()) {
 					dbcon = new DBConnection();
@@ -88,7 +87,6 @@ public class UnisVerwaltenServlet extends HttpServlet {
 		String meldung = "";
 		AdminSql aSql = new AdminSql();
 		boolean forwarded = false;
-		System.out.println(request.getParameter("erstellen"));
 		if (request.getParameter("registrieren") != null) {
 			// Alle eingaben abfragen
 			String name = request.getParameter("uniname");
@@ -114,15 +112,15 @@ public class UnisVerwaltenServlet extends HttpServlet {
 						pStmt.setString(2, standort);
 						pStmt.executeUpdate();
 						meldung = "Neue Uni wurde angelegt";
+						request.setAttribute("meldung", meldung);
 						request.getRequestDispatcher("UnisVerwaltenServlet").forward(request, response);
 						forwarded = true;
-					} else {
-						meldung = "Name ist bereits vergeben";
-						request.setAttribute("meldung", meldung);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
-				}	
+					meldung = "Name ist bereits vergeben";
+					request.setAttribute("meldung", meldung);
+				}
 			} else {
 				// DATEN UNVOLLSTÄNDIG
 				// Meldung bei unvollständiger Registrierung
@@ -131,7 +129,7 @@ public class UnisVerwaltenServlet extends HttpServlet {
 			}
 		}
 		try {
-			request.setAttribute("uniList", getUnis(request,con));
+			request.setAttribute("uniList", getUnis(request, con));
 		} catch (SQLException sqlExc) {
 			sqlExc.printStackTrace();
 		}

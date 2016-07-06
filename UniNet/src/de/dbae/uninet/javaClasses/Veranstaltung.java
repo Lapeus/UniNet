@@ -79,7 +79,19 @@ public class Veranstaltung {
 		this.setSemester(semester);
 		this.setBeschreibung(beschreibung);
 	}
-
+	/**
+	 * Erstellt eine Veranstaltung f&uuml;r die LocalAdmin Uebersicht mit allen Informationen.
+	 * @param id Die VeranstaltungsID
+	 * @param name Der Veranstaltungsname
+	 * @param dozent Der Name des Dozenten
+	 * @param semester Das empfohlene Semester
+	 */
+	public Veranstaltung(int id, String name, String dozent, String semester) {
+		this.setId(id);
+		this.setName(name);
+		this.setDozent(dozent);
+		this.setSemester(semester);
+	}
 	
 	/**
 	 * Getter f&uuml;r die VeranstaltungsID.
