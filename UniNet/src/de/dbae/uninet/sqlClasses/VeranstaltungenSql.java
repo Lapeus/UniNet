@@ -40,9 +40,8 @@ public class VeranstaltungenSql {
 			break;
 		// Gibt alle Veranstaltungen zurueck, in denen man nicht eingetragen ist (fuer die Uebersicht)
 		case "AlleVeranstaltungen":
-			sql = "SELECT DISTINCT veranstaltungsID, Name "
-					+ "FROM veranstaltungsmitglieder INNER JOIN veranstaltungen USING (veranstaltungsID) INNER JOIN studenten USING (uniID) "
-					+ "WHERE studenten.studentID = ? ORDER BY Name";
+			sql = "SELECT veranstaltungsID, Name From veranstaltungen INNER JOIN veranstaltungenstudiengaenge USING(veranstaltungsID) "
+					+ "INNER JOIN studenten USING (studiengangID) WHERE studentID = ? ORDER BY Name";
 			break;
 		// Schreibt den Studenten in die entsprechende Veranstaltung ein
 		case "Einschreiben":

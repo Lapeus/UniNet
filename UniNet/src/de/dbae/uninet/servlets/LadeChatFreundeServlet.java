@@ -83,7 +83,7 @@ public class LadeChatFreundeServlet extends HttpServlet{
 		// Setze die Liste als Attribut des Request-Objektes
 		request.setAttribute("chatfreunde", chatfreunde);
 		// Setze die UserID als Attribut des Request-Objektes
-		request.setAttribute("userID", userID);
+		request.setAttribute("id", userID);
 	}
 
 }

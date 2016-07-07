@@ -14,7 +14,7 @@
 <title>UniNet - Beitrag von ${beitrag.name}</title>
 </head>
 <body>
-<page:seitenAufbau chatfreunde="${chatfreunde}" userID="${userID}">
+<page:seitenAufbau chatfreunde="${chatfreunde}" userID="${id}">
 	<div class="row">
 		<div class="col-md-1"><!-- Leere Linke Spalte --></div>
 		<div class="col-md-10 beitrag"> <!-- Mittelblock -->

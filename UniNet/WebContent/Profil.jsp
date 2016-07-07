@@ -15,7 +15,7 @@
 <title>UniNet - Profilseite</title>
 </head>
 <body>
-<page:kopfzeile userID="${userID}"></page:kopfzeile>
+<page:kopfzeile userID="${id}"></page:kopfzeile>
 <div class="mainPart">
 	<!-- In der linken Spalte sollen das Bild und die persoenlichen Informationen angezeigt werden -->
 	<page:linkeSpalte>

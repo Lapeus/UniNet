@@ -14,7 +14,7 @@
 <title>UniNet - ${hashtag}</title>
 </head>
 <body>
-<page:seitenAufbau chatfreunde="${chatfreunde}" userID="${userID}">
+<page:seitenAufbau chatfreunde="${chatfreunde}" userID="${id}">
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-11">

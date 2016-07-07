@@ -15,7 +15,7 @@
 </head>
 <body>
 <jsp:include page="/LadeChatAlleFreundeServlet"></jsp:include>
-<page:kopfzeile userID="${userID}"></page:kopfzeile>
+<page:kopfzeile userID="${id}"></page:kopfzeile>
 <div class="mainPart">
 <page:linkeSpalte>
 </page:linkeSpalte>

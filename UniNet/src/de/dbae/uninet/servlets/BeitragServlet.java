@@ -929,5 +929,36 @@ public class BeitragServlet extends HttpServlet {
 		}
 		return beitrag;
 	}
+	
+	public List<Beitrag> getGemeldeteBeitraege(Connection con) throws SQLException {
+		List<Beitrag> beitraege = new ArrayList<Beitrag>();
+		String sql = sqlSt.getSqlStatement("GemeldeteBeitraege");
+		PreparedStatement pStmt = con.prepareStatement(sql);
+		ResultSet rs = pStmt.executeQuery();
+		while (rs.next()) {
+			// VerfasserID
+			int id = rs.getInt(1);
+			// Verfassername
+			String name = rs.getString(2) + " " + rs.getString(3);
+			// Beitrag
+			String nachricht = rs.getString(4);
+			int anzahlLikes = rs.getInt(5);
+			int anzahlKommentare = rs.getInt(6);
+			int beitragsID = rs.getInt(7);
+			// Formatierung des Zeitstempels
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+			String timeStamp = sdf.format(new Date(rs.getDate(8).getTime())) + " " + rs.getTime(9).toString();
+			// Sichtbarkeit
+			if (rs.getBoolean(10)) {
+				timeStamp += " <span class='glyphicon glyphicon-globe'></span>";
+			} else {
+				timeStamp += " <span class='glyphicon glyphicon-user'></span>";
+			}
+			// Bearbeitet
+			boolean bearbeitet = rs.getBoolean(11);
+			beitraege.add(new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, false, true, bearbeitet));
+		}
+		return beitraege;
+	}
 
 }
