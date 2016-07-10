@@ -19,8 +19,8 @@ import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.AdminSql;
 
 /**
- * @author Leon Schaffert Servlet implementation class
- *         AdminVeranstaltungBearbeitenServlet
+ * @author Leon Schaffert
+ * Servlet implementation class AdminVeranstaltungBearbeiten
  */
 @WebServlet("/AdminVeranstaltungBearbeitenServlet")
 public class AdminVeranstaltungBearbeitenServlet extends HttpServlet {

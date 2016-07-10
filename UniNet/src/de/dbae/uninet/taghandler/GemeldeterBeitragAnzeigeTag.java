@@ -76,7 +76,7 @@ public class GemeldeterBeitragAnzeigeTag extends TagSupport {
 		erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag l&ouml;schen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
 		erg += "<div class='col-md-2'>";
 		erg += "<a class='pull-right' href='AdminBeitraegeServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=Beitragok&page=" + page + "' title='Beitrag ist Richtlinienkonform'><span class='glyphicon glyphicon-ok' style='color:#3b5998;'></span></a>";
-		erg += "</div><div class='col-md-1'></div></div></div>";
+		erg += "</div><div class='col-md-4'><span class='label label-default' ></span></div></div></div>";
 		erg += "</div><label class='beitrag'><br>" + beitrag.getNachricht() + "</label><br><br>";
 		erg += "<div><ul class='nav nav-pills border'>";
 		erg += "<li class='blau'><label class='anzahlLikes'><p><p>Interessiert mich nicht besonders</label></li>";

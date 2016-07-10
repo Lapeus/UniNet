@@ -19,6 +19,7 @@ import de.dbae.uninet.sqlClasses.AdminSql;
 
 /**
  * Servlet implementation class UnisVerwaltenServlet
+ * @author Leon Schaffert
  */
 @WebServlet("/UnisVerwaltenServlet")
 public class UnisVerwaltenServlet extends HttpServlet {

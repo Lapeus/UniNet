@@ -22,6 +22,7 @@ import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
  * Servlet implementation class AdminVeranstaltungAnlegenServlet
+ * @author Leon Schaffert
  */
 @WebServlet("/AdminVeranstaltungAnlegenServlet")
 public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
