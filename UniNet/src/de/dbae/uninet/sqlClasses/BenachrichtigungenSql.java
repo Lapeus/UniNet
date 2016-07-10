@@ -15,10 +15,18 @@ public class BenachrichtigungenSql {
 	}
 	
 	public String lehneFreunschaftAbSql() {
-		return "DELETE FROM benachrichtigungen WHERE (userid = ? AND freundID = ?) OR (userID = ? AND freundID = ?);";
+		return "DELETE FROM benachrichtigungen WHERE (userid = ? AND freundID = ?) OR (userID = ? AND freundID = ?)  AND art = 1;";
 	}
 	
 	public String getNameZuID() {
 		return "SELECT Vorname, Nachname FROM Nutzer WHERE UserID = ?";
+	}
+	
+	public String  getBenachrichtigungSql() {
+		return "SELECT benachrichtigung, datum FROM Benachrichtigungen WHERE art=0 AND userid=? ORDER BY benachrichtigungid;";
+	}
+	
+	public String loescheBenachrictigungSql() {
+		return "UPDATE benachrichtigungen SET gelesen = true WHERE art = 0 AND userid = ?;";
 	}
 }

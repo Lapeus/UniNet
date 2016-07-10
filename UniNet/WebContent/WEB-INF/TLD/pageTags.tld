@@ -153,7 +153,7 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der eine Nachricht erstellt -->
+		<!-- Tag, der eine Nachricht darstellt -->
 		<name>nachricht</name>
 		<tag-class>de.dbae.uninet.taghandler.NachrichtenTag</tag-class>
 		<attribute>
@@ -164,7 +164,7 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der einen gesuchten Nutzer erstellt -->
+		<!-- Tag, der einen gesuchten Nutzer darstellt -->
 		<name>gesuchtNutzer</name>
 		<tag-class>de.dbae.uninet.taghandler.GesuchterNutzerTag</tag-class>
 		<attribute>
@@ -175,7 +175,7 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der eine gesuchte Gruppe erstellt -->
+		<!-- Tag, der eine gesuchte Gruppe darstellt -->
 		<name>gesuchtGruppe</name>
 		<tag-class>de.dbae.uninet.taghandler.GesuchteGruppeTag</tag-class>
 		<attribute>
@@ -186,7 +186,7 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der eine gesuchte Veranstaltung erstellt -->
+		<!-- Tag, der eine gesuchte Veranstaltung darstellt -->
 		<name>gesuchtVeranstaltung</name>
 		<tag-class>de.dbae.uninet.taghandler.GesuchteVeranstaltungTag
 		</tag-class>
@@ -198,12 +198,23 @@
 		</attribute>
 	</tag>
 	<tag>
-		<!-- Tag, der eine Freundschaftbenachrichtigung erstellt -->
+		<!-- Tag, der eine Freundschaftbenachrichtigung darstellt -->
 		<name>freundschaftsanfrage</name>
 		<tag-class>de.dbae.uninet.taghandler.FreundesanfrageTag</tag-class>
 		<attribute>
 			<!-- Anfrage -->
 			<name>request</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der eine Benachrichtigung darstellt -->
+		<name>benachrichtigung</name>
+		<tag-class>de.dbae.uninet.taghandler.BenachrichtigungTag</tag-class>
+		<attribute>
+			<!-- Anfrage -->
+			<name>not</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
