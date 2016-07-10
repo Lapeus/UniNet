@@ -48,6 +48,19 @@ public class AdminBeitraegeServlet extends HttpServlet {
 		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
+		if (request.getParameter("name") != null) {
+			int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
+			AdminSql aSql = new AdminSql();
+			String sql = aSql.getBeitragBearbeitetSql();
+			PreparedStatement pStmt;
+			try {
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, beitragsID);
+				pStmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		try {
 			request.setAttribute("beitragList", getBeitraege(request, con, userID));
 		} catch (SQLException e) {
