@@ -20,6 +20,7 @@ import de.dbae.uninet.sqlClasses.AdminSql;
 
 /**
  * Servlet implementation class AdminServlet
+ * @author Leon Schaffert
  */
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {

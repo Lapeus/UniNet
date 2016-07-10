@@ -19,6 +19,7 @@ import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
  * Servlet implementation class AdminAnlegenServlet
+ * @author Leon Schaffert
  */
 @WebServlet("/AdminAnlegenServlet")
 public class AdminAnlegenServlet extends HttpServlet {
