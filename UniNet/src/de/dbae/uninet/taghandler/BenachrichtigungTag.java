@@ -60,7 +60,7 @@ public class BenachrichtigungTag extends TagSupport {
 				+ "<div class='col-xs-12 col-sm-12 col-md-2'>"
 				+ "<ul class='meta-search'>"
 				+ "<li><i class='glyphicon glyphicon-calendar'></i><span>"+ sDatum +"</span></li>"				
-				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Freundschaftsanfrage</span></li>"
+				+ "<li><i class='glyphicon glyphicon-tags'></i> <span>Benachrichtigung</span></li>"
 				+ "</ul></div>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-7 excerpet'>"
 				+ "<span>"

@@ -59,7 +59,6 @@ public class NachrichtenTag extends TagSupport {
 				zeitpunkt = f_Time.format(messageDate);
 			}
 		}
-		System.out.println("SENDER ID: " + nachricht.getSenderId());
 		String jsp = "";
 		jsp += "<div class='media msg'>";
 		jsp += "<a class='pull-left' href='#'>";
