@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import de.dbae.uninet.dbConnections.DBConnection;
-import jdk.internal.org.objectweb.asm.commons.AnalyzerAdapter;
 
 /**
  * Dieser Tag erstellt die Kopfzeile.<br>

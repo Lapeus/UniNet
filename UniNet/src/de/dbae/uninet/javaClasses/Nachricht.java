@@ -2,6 +2,10 @@ package de.dbae.uninet.javaClasses;
 
 import java.util.Date;
 
+/**
+ * Diese Klasse stellt alle wichtigen Informationen einer Nachricht zur Verf&&uuml;gung.<br>
+ * @author Marvin Wolf
+ */
 public class Nachricht {
 	private int senderId;
 	private String name;

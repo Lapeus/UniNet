@@ -4,7 +4,6 @@ import java.io.Writer;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
-import de.dbae.uninet.javaClasses.Studiengang;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 
 /**

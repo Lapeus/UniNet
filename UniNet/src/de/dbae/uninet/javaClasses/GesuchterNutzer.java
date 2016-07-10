@@ -2,6 +2,10 @@ package de.dbae.uninet.javaClasses;
 
 import java.util.Date;
 
+/**
+ * Diese Klasse stellt alle wichtigen Informationen einem gesuchten Nutzer zur Verf&&uuml;gung.<br>
+ * @author Marvin Wolf
+ */
 public class GesuchterNutzer {
 
 	/**

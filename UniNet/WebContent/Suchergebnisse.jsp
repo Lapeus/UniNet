@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/UniNet/CSS/suchergebnisse.css">
 <link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="author" content="Marvin Wolf">
 <title>UniNet - Suchergebnisse</title>
 </head>
 <body>

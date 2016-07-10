@@ -31,7 +31,8 @@ import de.dbae.uninet.javaClasses.Semesterrechner;
 import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
- * Servlet implementation class StudiengaengeServlet
+ * Servlet bedient die aktiven Anfragen der Anmeldeseite.
+ * @author Marvin Wolf
  */
 @WebServlet("/AnmeldeAktivServlet")
 public class AnmeldeAktivServlet extends HttpServlet {
@@ -46,8 +47,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * Updated die Studiengänge, wenn die Person eine Uni ausgewählt hat.
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -60,8 +60,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * Verarbeitet den Anmeldevorgang und Leitet an die Startseite weiter.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

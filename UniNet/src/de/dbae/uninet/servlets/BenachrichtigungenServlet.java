@@ -21,7 +21,8 @@ import de.dbae.uninet.javaClasses.Freundschaftsanfrage;
 import de.dbae.uninet.sqlClasses.BenachrichtigungenSql;
 
 /**
- * Servlet implementation class BenachrichtigungenServlet
+ * Servlet stellt die Daten fuer die Benachrichtigungsseite zur Verfuegung.
+ * @author Marvin Wolf
  */
 @WebServlet("/BenachrichtigungenServlet")
 public class BenachrichtigungenServlet extends HttpServlet {
@@ -38,7 +39,7 @@ public class BenachrichtigungenServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Stellt die Freundschaftsanfragen und Benachrichtigungen bereit
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
@@ -50,7 +51,7 @@ public class BenachrichtigungenServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Verarbeitet das Annehmen und Ablehnen von Freundschaftanfragen
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();

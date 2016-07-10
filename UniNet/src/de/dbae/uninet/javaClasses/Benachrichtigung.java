@@ -1,7 +1,10 @@
 package de.dbae.uninet.javaClasses;
 
 import java.util.Date;
-
+/**
+ * Diese Klasse stellt alle wichtigen Informationen einer Benachrichtigung zur Verf&&uuml;gung.<br>
+ * @author Marvin Wolf
+ */
 public class Benachrichtigung {
 	private String html;
 	private Date date;

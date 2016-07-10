@@ -8,6 +8,11 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import de.dbae.uninet.javaClasses.Veranstaltung;
 
+/**
+ * Dieser Tag dient der Darstellung einer gesuchten Veranstaltung.
+ * Er wird auf der Suchergebnisse.jsp verwendet.
+ * @author Marvin Wolf
+ */
 public class GesuchteVeranstaltungTag extends TagSupport {
 	/**
 	 * SERIAL ID

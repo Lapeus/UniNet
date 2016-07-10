@@ -11,6 +11,11 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import de.dbae.uninet.javaClasses.Gruppe;
 
+/**
+ * Dieser Tag dient der Darstellung einer gesuchten Gruppe.
+ * Er wird auf der Suchergebnisse.jsp verwendet.
+ * @author Marvin Wolf
+ */
 public class GesuchteGruppeTag extends TagSupport {
 	/**
 	 * SERIAL ID

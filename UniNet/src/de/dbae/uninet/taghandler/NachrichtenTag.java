@@ -11,6 +11,11 @@ import java.util.Date;
 
 import de.dbae.uninet.javaClasses.Nachricht;
 
+/**
+ * Dieser Tag dient der Darstellung einer Nachricht.
+ * Er wird auf der Nachrichten.jsp verwendet.
+ * @author Marvin Wolf
+ */
 public class NachrichtenTag extends TagSupport {
 
 	/**

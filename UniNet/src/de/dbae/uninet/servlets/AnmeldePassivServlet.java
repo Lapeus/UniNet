@@ -19,7 +19,8 @@ import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
- * Servlet implementation class AnmeldePassivServlet
+ * Servlet stellt die passiven Daten fuer die Anmeldeseite zur Verfuegung.
+ * @author Marvin Wolf
  */
 @WebServlet("/AnmeldePassivServlet")
 public class AnmeldePassivServlet extends HttpServlet {
@@ -35,7 +36,7 @@ public class AnmeldePassivServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Stellt die Unis fuer die Auswahl der Unis bereit
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		dbcon = new DBConnection();

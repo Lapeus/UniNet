@@ -1,5 +1,9 @@
 package de.dbae.uninet.sqlClasses;
 
+/**
+ * Diese Klasse stellt alle SQL-Statements in Verbindung mit Nachrichten zur Verf&uuml;gung.<br>
+ * @author Marvin Wolf
+ */
 public class NachrichtenSql {
 	public NachrichtenSql () {
 		

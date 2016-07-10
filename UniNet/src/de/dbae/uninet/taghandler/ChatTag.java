@@ -11,14 +11,18 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.sqlClasses.NachrichtenSql;
-
+/**
+ * Dieser Tag dient der Darstellung eines Chats.
+ * Er wird auf der Nachrichten.jsp verwendet.
+ * @author Marvin Wolf
+ */
 public class ChatTag extends TagSupport {
 	private String idUser;
 	private String idFreund;
 	
 	
 	/**
-	 * 
+	 * Serial ID
 	 */
 	private static final long serialVersionUID = -419600882859325849L;
 

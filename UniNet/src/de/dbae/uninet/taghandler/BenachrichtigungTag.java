@@ -10,6 +10,11 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import de.dbae.uninet.javaClasses.Benachrichtigung;
 
+/**
+ * Dieser Tag dient der Darstellung einer Benachrichtigung.
+ * Er wird auf der Benachrichtigung.jsp verwendet.
+ * @author Marvin Wolf
+ */
 public class BenachrichtigungTag extends TagSupport {
 	/**
 	 * SERIAL ID
