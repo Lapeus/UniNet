@@ -3,7 +3,7 @@
 	<jsp-version>2.0</jsp-version>
 	<short-name>pageTLD</short-name>
 	<tag>
-		<!-- Tag, der die Kopfzeile erstellt-->
+		<!-- Tag, der die Kopfzeile erstellt -->
 		<name>kopfzeile</name>
 		<tag-class>de.dbae.uninet.taghandler.KopfzeileTag</tag-class>
 		<attribute>
@@ -13,14 +13,15 @@
 		</attribute>
 	</tag>
 	<tag>
-	<!-- Tag, der die Admin Kopfzeile erstellt -->
-	<name>adminKopfzeile</name>
-	<tag-class>de.dbae.uninet.taghandler.AdminKopfzeileTag</tag-class>
+		<!-- Tag, der die Admin Kopfzeile erstellt -->
+		<name>adminKopfzeile</name>
+		<tag-class>de.dbae.uninet.taghandler.AdminKopfzeileTag</tag-class>
 	</tag>
 	<tag>
-	<!-- Tag, der die LocalAdmin Kopfzeile erstellt -->
-	<name>localAdminKopfzeile</name>
-	<tag-class>de.dbae.uninet.taghandler.LocalAdminKopfzeileTag</tag-class>
+		<!-- Tag, der die LocalAdmin Kopfzeile erstellt -->
+		<name>localAdminKopfzeile</name>
+		<tag-class>de.dbae.uninet.taghandler.LocalAdminKopfzeileTag
+		</tag-class>
 	</tag>
 	<tag>
 		<!-- Tag, der die komplette Seite aufbaut und den Mittelblock im Body hat -->
@@ -36,7 +37,7 @@
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-	</tag>	
+	</tag>
 	<tag>
 		<!-- Tag fuer die linke Spalte -->
 		<name>linkeSpalte</name>
@@ -68,14 +69,32 @@
 		<tag-class>de.dbae.uninet.taghandler.BeitragTag</tag-class>
 		<attribute>
 			<!-- BeitragsObjekt -->
-			<name>beitrag</name> 
+			<name>beitrag</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
 			<!-- Aktuelle Seite -->
-			<name>page</name> 
+			<name>page</name>
 			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der einen gemeldeten Beitrag erstellt -->
+		<name>gemeldeterBeitrag</name>
+		<tag-class>de.dbae.uninet.taghandler.GemeldeterBeitragAnzeigeTag
+		</tag-class>
+		<attribute>
+			<!-- Beitragsobjekt -->
+			<name>gemeldeterBeitrag</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<!-- Aktuelle Seite -->
+			<name>page</name>
+			<requiered>true</requiered>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
@@ -91,37 +110,38 @@
 		</attribute>
 	</tag>
 	<tag>
-	<!-- Tag, der Veranstaltungen Tabellarisch darstellt -->
-	<name>veranstaltung</name>
-	<tag-class>de.dbae.uninet.taghandler.VeranstaltungAnzeigeTag</tag-class>
-	<attribute>
-	<!-- VeranstaltungObjekt -->
+		<!-- Tag, der Veranstaltungen Tabellarisch darstellt -->
 		<name>veranstaltung</name>
-		<required>true</required>
-		<rtexprvalue>true</rtexprvalue>
-	</attribute>
-	</tag>
-	<tag>
-		<!--  Tag, der die Unis Tabellarisch darstellt -->
-		<name>uni</name>
-		<tag-class>de.dbae.uninet.taghandler.UniAnzeigeTag</tag-class>
+		<tag-class>de.dbae.uninet.taghandler.VeranstaltungAnzeigeTag
+		</tag-class>
 		<attribute>
-		<!-- UniObjekt -->
-		<name>uni</name>
-		<required>true</required>
-		<rtexprvalue>true</rtexprvalue>
+			<!-- VeranstaltungObjekt -->
+			<name>veranstaltung</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	<tag>
-	<!--  Tag, der die Studiengaenge Tabellarisch darstellt -->
-	<name>studiengang</name>
-	<tag-class>de.dbae.uninet.taghandler.StudiengangAnzeigeTag</tag-class>
-	<attribute>
-	<!-- StudiengangsObjekt -->
-	<name>studiengang</name>
-	<required>true</required>
-	<rtexprvalue>true</rtexprvalue>
-	</attribute>
+		<!-- Tag, der die Unis Tabellarisch darstellt -->
+		<name>uni</name>
+		<tag-class>de.dbae.uninet.taghandler.UniAnzeigeTag</tag-class>
+		<attribute>
+			<!-- UniObjekt -->
+			<name>uni</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- Tag, der die Studiengaenge Tabellarisch darstellt -->
+		<name>studiengang</name>
+		<tag-class>de.dbae.uninet.taghandler.StudiengangAnzeigeTag</tag-class>
+		<attribute>
+			<!-- StudiengangsObjekt -->
+			<name>studiengang</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	<tag>
 		<name>kommentar</name>
@@ -138,7 +158,7 @@
 		<tag-class>de.dbae.uninet.taghandler.NachrichtenTag</tag-class>
 		<attribute>
 			<!-- NachrichtObjekt -->
-			<name>nachricht</name> 
+			<name>nachricht</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -149,7 +169,7 @@
 		<tag-class>de.dbae.uninet.taghandler.GesuchterNutzerTag</tag-class>
 		<attribute>
 			<!-- User -->
-			<name>user</name> 
+			<name>user</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -160,7 +180,7 @@
 		<tag-class>de.dbae.uninet.taghandler.GesuchteGruppeTag</tag-class>
 		<attribute>
 			<!-- User -->
-			<name>group</name> 
+			<name>group</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -168,10 +188,11 @@
 	<tag>
 		<!-- Tag, der eine gesuchte Veranstaltung erstellt -->
 		<name>gesuchtVeranstaltung</name>
-		<tag-class>de.dbae.uninet.taghandler.GesuchteVeranstaltungTag</tag-class>
+		<tag-class>de.dbae.uninet.taghandler.GesuchteVeranstaltungTag
+		</tag-class>
 		<attribute>
 			<!-- Veranstaltung -->
-			<name>veranstaltungen</name> 
+			<name>veranstaltungen</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -182,7 +203,7 @@
 		<tag-class>de.dbae.uninet.taghandler.FreundesanfrageTag</tag-class>
 		<attribute>
 			<!-- Anfrage -->
-			<name>request</name> 
+			<name>request</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -193,12 +214,12 @@
 		<tag-class>de.dbae.uninet.taghandler.ChatTag</tag-class>
 		<attribute>
 			<!-- Chat -->
-			<name>idUser</name> 
+			<name>idUser</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-		<name>idFreund</name> 
+			<name>idFreund</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

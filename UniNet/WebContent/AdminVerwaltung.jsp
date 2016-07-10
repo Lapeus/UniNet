@@ -19,10 +19,10 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Admin ID</th>
-				<th>Vorname</th>
-				<th>Nachname</th>
-				<th>Universität</th>
+				<th><a href='AdminServlet?sort=id'>Admin ID</a></th>
+				<th><a href='AdminServlet?sort=vorname'>Vorname</a></th>
+				<th><a href='AdminServlet?sort=nachname'>Nachname</a></th>
+				<th><a href='AdminServlet?sort=uni'>Universität</a></th>
 			</tr>
 		</thead>
 		<tbody>

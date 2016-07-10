@@ -118,6 +118,9 @@ public class BeitragServlet extends HttpServlet {
 					// Lade den Beitrag komplett mit Textfeld statt Nachricht
 					kompletterLoad(request, response, session, true);
 					break;
+				case "GemeldetenBeitragBearbeiten" :
+					bearbeiteGemeldetenBeitrag(request, response, session, true);
+					break;
 				case "AntwortAufKommentar":
 					// Zeige das Antwort-Textfeld an (auf Kommentar)
 					antwortVorbereiten(request, response, "kommentar");
@@ -303,6 +306,98 @@ public class BeitragServlet extends HttpServlet {
 				}
 				// Weiterleitung
 				request.getRequestDispatcher("Beitrag.jsp").forward(request, response);
+			}
+		}
+	}
+	public void bearbeiteGemeldetenBeitrag(HttpServletRequest request, HttpServletResponse response, HttpSession session, boolean... optionalParam) throws SQLException, ServletException, IOException {
+		// Die ID des aktuellen Nutzers
+		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+		// Die BeitragsID
+		int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
+		// Lade den Beitrag
+		String sql = sqlSt.getSqlStatement("Beitrag");
+		PreparedStatement pStmt = con.prepareStatement(sql);
+		pStmt.setInt(1, beitragsID);
+		ResultSet rs = pStmt.executeQuery();
+		Beitrag beitrag;
+		if (rs.next()) {
+			// BeitragsID
+			int id = rs.getInt(1);
+			// Verfasser-Name
+			String name = rs.getString(2) + " " + rs.getString(3);
+			// Der Beitrag
+			String nachricht = rs.getString(4);
+			int anzahlLikes = rs.getInt(5);
+			int anzahlKommentare = rs.getInt(6);
+			// Formatierung des Zeitstempels
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+			String timeStamp = sdf.format(new Date(rs.getDate(7).getTime())) + " " + rs.getTime(8).toString();
+			// Sichtbarkeit
+			if (rs.getBoolean(9)) {
+				// Oeffentlich
+				timeStamp += " <span class='glyphicon glyphicon-globe'></span>";
+			} else {
+				// Privat
+				timeStamp += " <span class='glyphicon glyphicon-user'></span>";
+			}
+			// Bearbeitet
+			boolean bearbeitet = rs.getBoolean(10);
+			// Hat man den Beitrag selbst mit 'interessiert mich nicht besonders' markiert?
+			sql = sqlSt.getSqlStatement("Like");
+			pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, beitragsID);
+			pStmt.setInt(2, userID);
+			ResultSet rs2 = pStmt.executeQuery();
+			if (rs2.next()) {
+				boolean like = rs2.getInt(1) == 0 ? false : true;
+				// Man darf den Beitrag loeschen, wenn es der eigene Beitrag ist
+				boolean loeschenErlaubt = userID == id;
+				// Neues Beitragsobjekt
+				beitrag = new Beitrag(id, name, timeStamp, nachricht, anzahlLikes, anzahlKommentare, beitragsID, like, loeschenErlaubt, bearbeitet);
+				// Kommentare laden
+				beitrag.setKommentarList(getKommentare(beitragsID, userID));
+				// Schaue, ob der Beitrag in einer Gruppe gepostet wurde
+				sql = sqlSt.getSqlStatement("GruppenID");
+				pStmt = con.prepareStatement(sql);
+				pStmt.setInt(1, beitragsID);
+				ResultSet rs3 = pStmt.executeQuery();
+				// Wenn er aus einer Gruppe kommt
+				if (rs3.next()) {
+					beitrag.setOrtLink("GruppenServlet?tab=beitraege&gruppenID=" + rs3.getInt(1));
+					beitrag.setOrtName(rs3.getString(2));
+				} else {
+					// Schaue, ob der Beitrag in einer Veranstaltung gepostet wurde
+					sql = sqlSt.getSqlStatement("VeranstaltungsID");
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, beitragsID);
+					rs3 = pStmt.executeQuery();
+					// Wenn er aus einer Veranstaltung kommt
+					if (rs3.next()) {
+						beitrag.setOrtLink("VeranstaltungenServlet?tab=beitraege&veranstaltungsID=" + rs3.getInt(1));
+						beitrag.setOrtName(rs3.getString(2));
+					}
+					// Wenn er aus der Chronik kommt, muessen wir nichts tun
+				}
+				// Grammatikalische Unterscheidung fuer den Sonderfall Anzahl = 1
+				request.setAttribute("beitragLikesPersonen", beitrag.getLikes() == 1 ? "Eine Person" : beitrag.getLikes() + " Personen");
+				request.setAttribute("beitragKommentare", beitrag.getKommentare() == 1 ? "1 Kommentar" : beitrag.getKommentare() + " Kommentare");
+				request.setAttribute("beitrag", beitrag);
+				// Wenn der Beitrag bearbeitet werden soll
+				if (optionalParam.length > 0) {
+					// Setze das entsprechende Attribut
+					request.setAttribute("beitragBearbeiten", optionalParam[0]);
+					// Aendere die Darstellung der Emoticons und Hashtags
+					beitrag.setNachricht(inverseFilter(beitrag.getNachricht()));
+				}
+				// Wenn man den Beitrag selbst markiert hat
+				if (like) {
+					// Wird das angezeigt
+					request.setAttribute("liClass", "geliket");
+				} else {
+					request.setAttribute("liClass", "");
+				}
+				// Weiterleitung
+				request.getRequestDispatcher("BeitragBearbeiten.jsp").forward(request, response);
 			}
 		}
 	}
