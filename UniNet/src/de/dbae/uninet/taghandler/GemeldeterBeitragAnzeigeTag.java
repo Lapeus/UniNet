@@ -70,10 +70,12 @@ public class GemeldeterBeitragAnzeigeTag extends TagSupport {
 			//erg += "<span title='Bearbeitet' class='glyphicon glyphicon-pencil'></span>";
 		erg += "</label></div>";
 		erg += "<div class='col-md-2'><div class='row'>";
-		erg += "<div class='col-md-8'>";
+		erg += "<div class='col-md-9'>";
 		erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=GemeldetenBeitragBearbeiten' title='Beitrag bearbeiten'><span class='glyphicon glyphicon-pencil' style='color:#3b5998;'></span></a>";
-		erg += "</div><div class='col-md-3'>";
+		erg += "</div>";
 		erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag l&ouml;schen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
+		erg += "<div class='col-md-2'>";
+		erg += "<a class='pull-right' href='AdminBeitraegeServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=Beitragok&page=" + page + "' title='Beitrag ist Richtlinienkonform'><span class='glyphicon glyphicon-ok' style='color:#3b5998;'></span></a>";
 		erg += "</div><div class='col-md-1'></div></div></div>";
 		erg += "</div><label class='beitrag'><br>" + beitrag.getNachricht() + "</label><br><br>";
 		erg += "<div><ul class='nav nav-pills border'>";
