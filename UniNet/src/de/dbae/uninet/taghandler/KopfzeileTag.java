@@ -23,10 +23,19 @@ public class KopfzeileTag extends TagSupport {
 	 */
 	private static final long serialVersionUID = -5650080610199722432L;
 	
+	/**
+	 * Die Anzahl der ungelesenen Nachrichten / Chats.
+	 */
 	private int anzahlUngeleseneNachrichten = 0;
 	
+	/**
+	 * Die Anzahl der ungelesenen Benachrichtigungen.
+	 */
 	private int anzahlUngeleseneBenachrichtigungen = 0;
 	
+	/**
+	 * Die Datenbankverbindung.
+	 */
 	private Connection con;
 	
 	/**
@@ -48,7 +57,7 @@ public class KopfzeileTag extends TagSupport {
 		try {
 			out.append(getHtmlCode(userID));
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anh�ngen!");
+			System.out.println("Fehler beim Anh&auml;ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -60,13 +69,20 @@ public class KopfzeileTag extends TagSupport {
 	 * @return Den entsprechenden Html-Code
 	 */
 	public String getHtmlCode(int userID) {
+		// UserID setzen
 		this.userID = userID;
+		// Eine neue DBConnection erzeugen
 		DBConnection dbcon = new DBConnection();
+		// Die Verbindung setzen
 		con = dbcon.getCon();
+		// Anzahl Benachrichtigungen und Nachrichten setzen
 		setAnzahlBenachrichtigungen();
 		setAnzahlNachrichten();
+		// Vornamen des aktuellen Benutzers setzen
 		setVorname();
+		// Die DB-Verbindung schliessen, da sie nicht mehr gebraucht wird
 		dbcon.close();
+		// Den Html-Code erzeugen
 		String kopfzeile = "";
 		kopfzeile += "<nav class='navbar navbar-default navbar-fixed-top'>";
 	    kopfzeile += "<div class='container-fluid kopfzeile'>";
@@ -84,20 +100,23 @@ public class KopfzeileTag extends TagSupport {
 				 + vorname + "</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='StartseiteServlet'>Startseite</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='NachrichtenServlet'>";
+		// Wenn es ungelesene Nachrichten gibt
 		if (anzahlUngeleseneNachrichten > 0) {
+			// Wird die Anzahl fett angezeigt
 			kopfzeile += "<b>Chat (" + anzahlUngeleseneNachrichten + ")</b>";
 		} else {
 			kopfzeile += "Chat";
 		}
 		kopfzeile += "</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='BenachrichtigungenServlet'>";
+		// Wenn es ungelesene Benachrichtigungen gibt
 		if (anzahlUngeleseneBenachrichtigungen > 0) {
+			// Wird die Anzahl fett angezeigt
 			kopfzeile += "<b>Benachrichtigungen (" + anzahlUngeleseneBenachrichtigungen + ")</b>";
 		} else {
 			kopfzeile += "Benachrichtigungen";
 		}
 		kopfzeile += "</a></li>";
-		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='FreundeFindenServlet'>Freunde finden</a></li>";
 		kopfzeile += "</ul>";
 		kopfzeile += "<ul class='nav navbar-nav navbar-right'>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='EmoticonServlet'>Hilfe</a></li>";
@@ -107,8 +126,12 @@ public class KopfzeileTag extends TagSupport {
 		return kopfzeile;
 	}
 	
+	/**
+	 * Setzt die Anzahl der ungelesenen Nachrichten / Chats.
+	 */
 	private void setAnzahlNachrichten() {
 		try {
+			// Lies die Anzahl aus der DB
 			PreparedStatement pStmt = con.prepareStatement("SELECT COUNT(empfaengerID) FROM "
 					+ "(SELECT DISTINCT senderID, empfaengerID FROM nachrichten WHERE empfaengerID = ? AND gelesen = false) AS temp;");
 			pStmt.setInt(1, userID);
@@ -121,8 +144,12 @@ public class KopfzeileTag extends TagSupport {
 		}
 	}
 	
+	/**
+	 * Setzt die Anzahl der ungelesenen Benachrichtigungen.
+	 */
 	private void setAnzahlBenachrichtigungen() {
 		try {
+			// Lies die Anzahl aus der DB
 			PreparedStatement pStmt = con.prepareStatement("SELECT COUNT(benachrichtigungID) FROM benachrichtigungen WHERE userID = ? AND gelesen = FALSE");
 			pStmt.setInt(1, userID);
 			ResultSet rs = pStmt.executeQuery();
@@ -134,6 +161,9 @@ public class KopfzeileTag extends TagSupport {
 		}
 	}
 	
+	/**
+	 * Setzt den Vornamen des aktuellen Nutzers, damit dieser neben dem Profilbild angezeigt werden kann.
+	 */
 	private void setVorname() {
 		try {
 			PreparedStatement pStmt = con.prepareStatement("SELECT vorname FROM Nutzer WHERE userID = ?");
