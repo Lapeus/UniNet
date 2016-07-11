@@ -138,7 +138,6 @@ public class NachrichtenServlet extends HttpServlet {
 			pStmtNachrichten.setInt(2, userIDFreund);
 			pStmtNachrichten.setInt(3, userIDFreund);
 			pStmtNachrichten.setInt(4, userId);
-			System.out.println("LISTE: " + pStmtNachrichten.toString());
 			ResultSet result = pStmtNachrichten.executeQuery();
 			while (result.next()) {
 				int senderId = result.getInt(1);
@@ -147,8 +146,9 @@ public class NachrichtenServlet extends HttpServlet {
 				java.sql.Date date = result.getDate(5);
 				java.sql.Time time = result.getTime(6);
 				Date finalTime = null;
-				if (time != null) {
-					finalTime = new Date(date.getTime() + time.getTime());
+				if (time != null && date!=null) {
+					// TODO Wuut is dis ?? Beim adden von Datetime und Timetime geht ne Stunde verloren
+					finalTime = new Date(date.getTime() + time.getTime() + 3600000);
 				}
 				nachrichten.add(new Nachricht(senderId, name, nachricht, finalTime));
 			}
