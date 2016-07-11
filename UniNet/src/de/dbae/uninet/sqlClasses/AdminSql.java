@@ -9,7 +9,7 @@ public class AdminSql {
 	}
 	//Methods
 	public String getAdminsSql() {
-		String sql = "SELECT vorname, nachname, uniname, userid FROM nutzer FULL OUTER JOIN admins ON (nutzer.userid = admins.adminid) FULL OUTER JOIN universitaeten ON (admins.uniid = universitaeten.uniid)WHERE Nutzertyp = 2;";
+		String sql = "SELECT vorname, nachname, uniname, userid FROM nutzer FULL OUTER JOIN admins ON (nutzer.userid = admins.adminid) FULL OUTER JOIN universitaeten ON (admins.uniid = universitaeten.uniid)WHERE Nutzertyp = 2";
 		return sql;
 	}
 	public String getAdminLoeschen1Sql() {
@@ -25,7 +25,7 @@ public class AdminSql {
 	return sql;
 	}
 	public String getUniAnzeigeSql() {
-		String sql = "SELECT uniid, uniname, unistandort FROM universitaeten;";
+		String sql = "SELECT uniid, uniname, unistandort FROM universitaeten";
 		return sql;
 	}
 	public String getUniLoeschenSql() {
@@ -37,7 +37,7 @@ public class AdminSql {
 	return sql;
 	}
 	public String getStudiengangAnzeigeSql() {
-		String sql = "SELECT studiengangid, studiengangname FROM studiengaenge WHERE uniid =?;";
+		String sql = "SELECT studiengangid, studiengangname FROM studiengaenge WHERE uniid =?";
 		return sql;
 	}
 	public String getStudiengangLoeschenSql() {
@@ -61,7 +61,7 @@ public class AdminSql {
 		return sql;
 	}
 	public String getVeranstaltungUebersichtSql() {
-		String sql = "SELECT veranstaltungsid, name, dozent, semester FROM veranstaltungen WHERE uniid =? ORDER BY veranstaltungsid ASC;";
+		String sql = "SELECT veranstaltungsid, name, dozent, semester FROM veranstaltungen WHERE uniid =?";
 		return sql;
 	}
 	public String getVeranstaltungSql() {
@@ -86,6 +86,22 @@ public class AdminSql {
 	}
 	public String getVeranstaltungPruefenSql() {
 		String sql ="SELECT name, uniid FROM veranstaltungen;";
+		return sql;
+	}
+	public String getVeranstaltungenStudiengaengeSql() {
+		String sql ="INSERT INTO veranstaltungenstudiengaenge (veranstaltungsid, studiengangid) VALUES (?,?);";
+		return sql;
+	}
+	public String getVeranstaltungsIDSql() {
+		String sql ="SELECT veranstaltungsid FROM veranstaltungen WHERE name =?;";
+		return sql;
+	}
+	public String getStudiengangsIDSql() {
+		String sql="SELECT studiengangid FROM studiengaenge WHERE studiengangname =?;";
+		return sql;
+	}
+	public String getBeitragBearbeitetSql() {
+		String sql ="UPDATE beitragmeldungen SET adminbearbeitet = true WHERE beitragsid = ?;";
 		return sql;
 	}
 }

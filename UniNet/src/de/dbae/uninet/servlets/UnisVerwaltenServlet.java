@@ -19,6 +19,7 @@ import de.dbae.uninet.sqlClasses.AdminSql;
 
 /**
  * Servlet implementation class UnisVerwaltenServlet
+ * @author Leon Schaffert
  */
 @WebServlet("/UnisVerwaltenServlet")
 public class UnisVerwaltenServlet extends HttpServlet {
@@ -43,7 +44,7 @@ public class UnisVerwaltenServlet extends HttpServlet {
 		Connection con = dbcon.getCon();
 		try {
 			// Setze alle Unis als Attribut
-			request.setAttribute("uniList", getUnis(request, con));
+			request.setAttribute("uniList", getUnis(request, con, ""));
 		} catch (NullPointerException npex) {
 			response.sendRedirect("FehlerServlet?fehler=Session");
 		} catch (SQLException sqlex) {
@@ -51,6 +52,27 @@ public class UnisVerwaltenServlet extends HttpServlet {
 		} finally {
 			// Verbindung schliessen
 			dbcon.close();
+		}
+		if (request.getParameter("sort") != null) {
+			try {
+				if (con.isClosed()) {
+					dbcon = new DBConnection();
+					con = dbcon.getCon();
+				}
+				String sqlExt = "";
+				if (request.getParameter("sort").equals("id")) {
+					sqlExt = " ORDER BY uniid";
+				} else if (request.getParameter("sort").equals("name")) {
+					sqlExt = " ORDER BY uniname";
+				} else if (request.getParameter("sort").equals("standort")) {
+					sqlExt = " ORDER BY unistandort";
+				}
+
+				request.setAttribute("uniList", getUnis(request, con, sqlExt));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			killConnection(con);
 		}
 		if (request.getParameter("loeschen") != null) {
 			AdminSql sqlSt = new AdminSql();
@@ -64,7 +86,7 @@ public class UnisVerwaltenServlet extends HttpServlet {
 				PreparedStatement pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, uniid);
 				pStmt.execute();
-				request.setAttribute("uniList", getUnis(request, con));
+				request.setAttribute("uniList", getUnis(request, con, ""));
 			} catch (SQLException sqlex) {
 				System.err.println("SQL-Fehler!");
 				sqlex.printStackTrace();
@@ -129,7 +151,7 @@ public class UnisVerwaltenServlet extends HttpServlet {
 			}
 		}
 		try {
-			request.setAttribute("uniList", getUnis(request, con));
+			request.setAttribute("uniList", getUnis(request, con, ""));
 		} catch (SQLException sqlExc) {
 			sqlExc.printStackTrace();
 		}
@@ -149,10 +171,12 @@ public class UnisVerwaltenServlet extends HttpServlet {
 		}
 	}
 
-	private List<Uni> getUnis(HttpServletRequest request, Connection con) throws SQLException {
+	private List<Uni> getUnis(HttpServletRequest request, Connection con, String sqlExt) throws SQLException {
 		List<Uni> unis = new ArrayList<Uni>();
 		AdminSql sqlSt = new AdminSql();
 		String sql = sqlSt.getUniAnzeigeSql();
+		sql += sqlExt;
+		sql += ";";
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
 		while (rs.next()) {

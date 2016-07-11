@@ -20,11 +20,15 @@ import de.dbae.uninet.sqlClasses.AdminSql;
 
 /**
  * Servlet implementation class AdminServlet
+ * @author Leon Schaffert
  */
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * Die DBConnection
+	 */
+	private DBConnection dbcon;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -39,18 +43,41 @@ public class AdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Oeffne eine neue DB-Verbindung
-		DBConnection dbcon = new DBConnection();
+		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		try {
 			// Setze alle LocalAdmins als Attribut
-			request.setAttribute("adminList", getAdmins(request, con));
+			request.setAttribute("adminList", getAdmins(request, con, ""));
 		} catch (NullPointerException npex) {
 			response.sendRedirect("FehlerServlet?fehler=Session");
 		} catch (SQLException sqlex) {
 			response.sendRedirect("FehlerServlet?fehler=DBCon");
 		} finally {
 			// Verbindung schliessen
-			dbcon.close();
+			killConnection(con);
+		}
+		if (request.getParameter("sort") != null) {
+			try {
+				if (con.isClosed()) {
+					dbcon = new DBConnection();
+					con = dbcon.getCon();
+				}
+				String sqlExt = "";
+				if (request.getParameter("sort").equals("id")) {
+					sqlExt = " ORDER BY userid";
+				} else if (request.getParameter("sort").equals("vorname")) {
+					sqlExt = " ORDER BY vorname";
+				} else if (request.getParameter("sort").equals("nachname")) {
+					sqlExt = " ORDER BY nachname";
+				} else if (request.getParameter("sort").equals("uni")) {
+					sqlExt = " ORDER BY uniname";
+				}
+
+				request.setAttribute("adminList", getAdmins(request, con, sqlExt));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			killConnection(con);
 		}
 		if (request.getParameter("loeschen") != null) {
 			AdminSql sqlSt = new AdminSql();
@@ -69,13 +96,13 @@ public class AdminServlet extends HttpServlet {
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1,  userid);
 				pStmt.executeUpdate();
-				request.setAttribute("adminList", getAdmins(request, con));
+				request.setAttribute("adminList", getAdmins(request, con, ""));
 			} catch (SQLException sqlex) {
 				System.err.println("SQL-Fehler!");
 				sqlex.printStackTrace();
 			} finally {
 				//Verbindung schliessen
-				dbcon.close();
+				killConnection(con);
 			}
 		}
 		request.getRequestDispatcher("AdminVerwaltung.jsp").forward(request, response);
@@ -89,11 +116,25 @@ public class AdminServlet extends HttpServlet {
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-
-	private List<Admin> getAdmins(HttpServletRequest request, Connection con) throws SQLException {
+	/**
+	 * 
+	 * @param con
+	 */
+	private void killConnection(Connection con) {
+		try {
+			if (con != null) {
+				dbcon.close();
+			}
+		} catch (Exception ignored) {
+			ignored.printStackTrace();
+		}
+	}
+	private List<Admin> getAdmins(HttpServletRequest request, Connection con, String sqlExt) throws SQLException {
 		List<Admin> admins = new ArrayList<Admin>();
 		AdminSql sqlSt = new AdminSql();
 		String sql = sqlSt.getAdminsSql();
+		sql += sqlExt;
+		sql += ";";
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
 		while (rs.next()) {

@@ -38,8 +38,8 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Studiengangs ID</th>
-				<th>Studiengangsname</th>
+				<th><a href='AdminStudiengaengeServlet?sort=id'>Studiengangs ID</a></th>
+				<th><a href='AdminStudiengaengeServlet?sort=name'>Studiengangsname</a></th>
 			</tr>
 		</thead>
 		<tbody>

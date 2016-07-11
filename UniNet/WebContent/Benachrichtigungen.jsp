@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/UniNet/CSS/suchergebnisse.css">
 <link rel="icon" href="UniNet_Logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="author" content="Marvin Wolf">
 <title>UniNet - Benachrichtungen</title>
 </head>
 <body>
@@ -32,9 +33,12 @@
 			</c:forEach>
 		</section>
 		<hgroup class="mb20">
-			<h2 class="lead">Deine <strong class="text-danger">Beitragsbenachrichtigungen</strong></h2>								
+			<h2 class="lead">Deine <strong class="text-danger">Benachrichtigungen</strong></h2>								
 		</hgroup>
 		<section class="col-xs-12 col-sm-6 col-md-12">
+			<c:forEach items="${ Benachrichtigungen }" var="benachrichtigung">
+				<page:benachrichtigung not="${ benachrichtigung }"></page:benachrichtigung>
+			</c:forEach>
 		</section>
 	</form>
 </div>

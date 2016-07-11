@@ -44,7 +44,7 @@ public class DBConnection {
 	 * Der DB-Name.
 	 */
 	static final String DB_NAME = "postgres";
-	
+
 	/**
 	 * Das DB-Passwort.
 	 */

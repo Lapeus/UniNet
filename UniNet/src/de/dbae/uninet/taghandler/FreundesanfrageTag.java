@@ -10,7 +10,11 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import de.dbae.uninet.javaClasses.Freundschaftsanfrage;
 
-
+/**
+ * Dieser Tag dient der Darstellung einer Freundesanfrage.
+ * Er wird auf der Benachrichtigung.jsp verwendet.
+ * @author Marvin Wolf
+ */
 public class FreundesanfrageTag extends TagSupport {
 	/**
 	 * SERIAL ID
@@ -54,7 +58,6 @@ public class FreundesanfrageTag extends TagSupport {
 			Date datum = anfrage.getDatum();
 			sDatum = dateFormat.format(datum);
 		}
-		System.out.println("FREUND ID: " + anfrage.getFreundID());
 		String jsp = "<article class='search-result row'>"
 				+ "<div class='col-xs-12 col-sm-12 col-md-3'>"
 				+ "<a href='ProfilServlet?userID=" + anfrage.getFreundID() + "' title='Lorem ipsum' class='thumbnail'><img class='img-responsive' alt='Profilbild' src='LadeProfilbildServlet?userID="+ anfrage.getFreundID() +"'/></a>"

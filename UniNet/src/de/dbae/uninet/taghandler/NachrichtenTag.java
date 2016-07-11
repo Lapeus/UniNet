@@ -11,6 +11,11 @@ import java.util.Date;
 
 import de.dbae.uninet.javaClasses.Nachricht;
 
+/**
+ * Dieser Tag dient der Darstellung einer Nachricht.
+ * Er wird auf der Nachrichten.jsp verwendet.
+ * @author Marvin Wolf
+ */
 public class NachrichtenTag extends TagSupport {
 
 	/**
@@ -59,7 +64,6 @@ public class NachrichtenTag extends TagSupport {
 				zeitpunkt = f_Time.format(messageDate);
 			}
 		}
-		System.out.println("SENDER ID: " + nachricht.getSenderId());
 		String jsp = "";
 		jsp += "<div class='media msg'>";
 		jsp += "<a class='pull-left' href='#'>";

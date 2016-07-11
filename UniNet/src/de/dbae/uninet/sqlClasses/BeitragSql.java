@@ -118,8 +118,8 @@ public class BeitragSql {
 			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentareZuUnterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
 			break;
 		case "GemeldeteBeitraege":
-			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet "
-					+ "FROM Beitragmeldungen INNER JOIN beitragsview USING (beitragsID)";
+			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet "
+					+ "FROM Beitragmeldungen INNER JOIN beitragsview USING (beitragsID) WHERE adminbearbeitet = false";
 			break;
 		default:
 			System.err.println("FEHLER IM BEITRAGSQL " + action);

@@ -45,9 +45,9 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Uni ID</th>
-				<th>Universit&auml;t</th>
-				<th>Standort</th>
+				<th><a href='UnisVerwaltenServlet?sort=id'>Uni ID</a></th>
+				<th><a href='UnisVerwaltenServlet?sort=name'>Universit&auml;t</a></th>
+				<th><a href='UnisVerwaltenServlet?sort=standort'>Standort</a></th>
 			</tr>
 		</thead>
 		<tbody>

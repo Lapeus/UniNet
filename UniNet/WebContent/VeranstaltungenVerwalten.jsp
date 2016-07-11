@@ -22,10 +22,10 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Veranstaltungs ID</th>
-				<th>Name</th>
-				<th>Dozent</th>
-				<th>Semester</th>
+				<th><a href='AdminVeranstaltungenVerwaltenServlet?sort=id'>Veranstaltungs ID</a></th>
+				<th><a href='AdminVeranstaltungenVerwaltenServlet?sort=name'>Name</a></th>
+				<th><a href='AdminVeranstaltungenVerwaltenServlet?sort=dozent'>Dozent</a></th>
+				<th><a href='AdminVeranstaltungenVerwaltenServlet?sort=semester'>Semester</a></th>
 			</tr>
 		</thead>
 		<tbody>

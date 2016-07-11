@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.AdminSql;
+import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
  * Servlet implementation class AdminVeranstaltungAnlegenServlet
+ * @author Leon Schaffert
  */
 @WebServlet("/AdminVeranstaltungAnlegenServlet")
 public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
@@ -59,6 +62,36 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 		} finally {
 			killConnection(con);
 		}*/
+		AnmeldeSql sqlSt = new AnmeldeSql();
+		dbcon = new DBConnection();
+		Connection con = dbcon.getCon();
+		AdminSql aSql = new AdminSql();
+		int userid = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
+		String sql = aSql.getUniidFromAdminsSql();
+		PreparedStatement pStmt;
+		ResultSet rs;
+		try {
+			pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, userid);
+			rs = pStmt.executeQuery();
+			rs.next();
+			uniid = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sql = aSql.getUninameFromUniidSql();
+		try {
+			pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, uniid);
+			rs = pStmt.executeQuery();
+			rs.next();
+			String uni = rs.getString(1);
+			updateStudiengaenge(request, response, con, sqlSt, uni);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 		request.getRequestDispatcher("VeranstaltungAnlegen.jsp").forward(request, response);
 	}
 
@@ -89,7 +122,8 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 			String semester = request.getParameter("semester");
 			String beschreibung = request.getParameter("beschreibung");
 			String sonstiges = request.getParameter("sonstiges");
-			if (!name.equals("") && !dozent.equals("") && !semester.equals("") && !beschreibung.equals("") && !sonstiges.equals("")) {
+			String studiengang = request.getParameter("studiengang");
+			if (!name.equals("") && !dozent.equals("") && !semester.equals("") && !beschreibung.equals("") && !sonstiges.equals("") && !studiengang.equals("")) {
 				try {
 					// ALLE DATEN VORHANDEN
 					boolean nameDoppelt = false;
@@ -113,7 +147,23 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 						pStmt.setString(5, beschreibung);
 						pStmt.setString(6, sonstiges);
 						pStmt.execute();
-						System.out.println("Tolelr Text");
+						sql = aSql.getStudiengangsIDSql();
+						pStmt = con.prepareStatement(sql);
+						pStmt.setString(1, studiengang);
+						rs = pStmt.executeQuery();
+						rs.next();
+						int studiengangid = rs.getInt(1);
+						sql = aSql.getVeranstaltungsIDSql();
+						pStmt = con.prepareStatement(sql);
+						pStmt.setString(1, name);
+						rs = pStmt.executeQuery();
+						rs.next();
+						int veranstaltungsid = rs.getInt(1);
+						sql = aSql.getVeranstaltungenStudiengaengeSql();
+						pStmt = con.prepareStatement(sql);
+						pStmt.setInt(1, veranstaltungsid);
+						pStmt.setInt(2, studiengangid);
+						pStmt.execute();
 						meldung = "Neue Veranstaltung wurde angelegt";
 						request.setAttribute("meldung", meldung);
 						request.getRequestDispatcher("AdminVeranstaltungenVerwaltenServlet").forward(request, response);
@@ -181,6 +231,29 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 			vs.add(new Veranstaltung(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
 		}
 		return vs;
+	}
+	private void updateStudiengaenge(HttpServletRequest request, HttpServletResponse response, Connection con,
+			AnmeldeSql sqlSt, String uni) throws ServletException, IOException {
+		List<String> studiengaenge = new ArrayList<String>();
+		try {
+			PreparedStatement pStmt = con.prepareStatement(sqlSt.getStudiengaenge());
+			pStmt.setString(1, uni);
+			ResultSet result = pStmt.executeQuery();
+			ResultSetMetaData rsMetaData = result.getMetaData();
+			while (result.next()) {
+				for (int i = 1; i <= rsMetaData.getColumnCount(); i++) {
+					studiengaenge.add(result.getString(i));
+				}
+			}
+			request.setAttribute("studiengaenge", studiengaenge);
+			request.getRequestDispatcher("VeranstaltungAnlegen.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("SQL Fehler - AnmeldeSQL.getStudiengaenge()");
+			request.getRequestDispatcher("VeranstaltungenVerwalten.jsp").forward(request, response);
+		} finally {
+			killConnection(con);
+		}
 	}
 
 }

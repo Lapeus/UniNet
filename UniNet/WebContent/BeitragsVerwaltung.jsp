@@ -15,6 +15,9 @@
 </head>
 <body>
 <page:localAdminKopfzeile></page:localAdminKopfzeile>
-
+<br><br><br><br>
+<c:forEach var="beitrag" items="${ beitragList }">
+		<page:gemeldeterBeitrag gemeldeterBeitrag="${ beitrag }" page="AdminBeitraegeServlet"></page:gemeldeterBeitrag>
+	</c:forEach>
 </body>
 </html>

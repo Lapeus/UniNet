@@ -1,5 +1,8 @@
 package de.dbae.uninet.sqlClasses;
-
+/**
+ * Diese Klasse stellt alle SQL-Statements in Verbindung mit Suchergebnissen zur Verf&uuml;gung.<br>
+ * @author Marvin Wolf
+ */
 public class SuchergebnisseSql {
 	public SuchergebnisseSql() {
 		

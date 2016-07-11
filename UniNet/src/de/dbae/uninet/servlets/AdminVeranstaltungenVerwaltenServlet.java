@@ -58,7 +58,7 @@ public class AdminVeranstaltungenVerwaltenServlet extends HttpServlet {
 			uniid = rs.getInt(1);
 			try {
 				// Setze alle Veranstaltungen als Attribut
-				request.setAttribute("veranstaltungList", getVeranstaltungen(request, con));
+				request.setAttribute("veranstaltungList", getVeranstaltungen(request, con, ""));
 			} catch (NullPointerException npex) {
 				response.sendRedirect("FehlerServlet?fehler=Session");
 			} catch (SQLException sqlex) {
@@ -87,8 +87,30 @@ public class AdminVeranstaltungenVerwaltenServlet extends HttpServlet {
 		} finally {
 			killConnection(con);
 		}
+		if (request.getParameter("sort") != null) {
+			try {
+				if (con.isClosed()) {
+					dbcon = new DBConnection();
+					con = dbcon.getCon();
+				}
+				String sqlExt = "";
+				if (request.getParameter("sort").equals("id")) {
+					sqlExt = " ORDER BY veranstaltungsid";
+				} else if (request.getParameter("sort").equals("name")) {
+					sqlExt = " ORDER BY name";
+				} else if (request.getParameter("sort").equals("dozent")) {
+					sqlExt = " ORDER BY dozent";
+				} else if (request.getParameter("sort").equals("semester")) {
+					sqlExt = " ORDER BY semester";
+				}
 
-		
+				request.setAttribute("veranstaltungList", getVeranstaltungen(request, con, sqlExt));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			killConnection(con);
+
+		}
 		if (request.getParameter("loeschen") != null) {
 			
 			sql = sqlSt.getVeranstaltungLoeschenSql();
@@ -101,7 +123,7 @@ public class AdminVeranstaltungenVerwaltenServlet extends HttpServlet {
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, veranstaltungsid);
 				pStmt.execute();
-				request.setAttribute("veranstaltungList", getVeranstaltungen(request, con));
+				request.setAttribute("veranstaltungList", getVeranstaltungen(request, con, ""));
 			} catch (SQLException sqlex) {
 				System.err.println("SQL-Fehler!");
 				sqlex.printStackTrace();
@@ -129,10 +151,12 @@ public class AdminVeranstaltungenVerwaltenServlet extends HttpServlet {
 		}
 	}
 
-	private List<Veranstaltung> getVeranstaltungen(HttpServletRequest request, Connection con) throws SQLException {
+	private List<Veranstaltung> getVeranstaltungen(HttpServletRequest request, Connection con, String sqlExt) throws SQLException {
 		List<Veranstaltung> vs = new ArrayList<Veranstaltung>();
 		AdminSql sqlSt = new AdminSql();
 		String sql = sqlSt.getVeranstaltungUebersichtSql();
+		sql += sqlExt;
+		sql += ";";
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, uniid);
 		ResultSet rs = pStmt.executeQuery();

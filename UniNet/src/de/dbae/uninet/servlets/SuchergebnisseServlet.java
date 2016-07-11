@@ -23,7 +23,8 @@ import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.SuchergebnisseSql;
 
 /**
- * Servlet implementation class SuchergebnisseServlet
+ * Servlet verabeitet die Suchanfragen.
+ * @author Marvin Wolf 
  */
 @WebServlet("/SuchergebnisseServlet")
 public class SuchergebnisseServlet extends HttpServlet {
@@ -39,7 +40,7 @@ public class SuchergebnisseServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Holt die geuschtenNutzer / gesuchtenGruppen / gesuchten Veranstaltungen aus der DB
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
@@ -63,7 +64,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Verarbeitet das schicken von Freundschaftsanfragen
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();

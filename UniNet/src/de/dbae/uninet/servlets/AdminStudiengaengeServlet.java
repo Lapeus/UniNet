@@ -20,6 +20,7 @@ import de.dbae.uninet.sqlClasses.AdminSql;
 
 /**
  * Servlet implementation class AdminStudiengaengeServlet
+ * 
  * @author Leon Schaffert
  */
 @WebServlet("/AdminStudiengaengeServlet")
@@ -29,21 +30,24 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 	 * Die DB-Verbindung.
 	 */
 	private DBConnection dbcon;
-    /**
-     * 
-     */
+	/**
+	 * 
+	 */
 	private int uniid;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AdminStudiengaengeServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public AdminStudiengaengeServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		int userid = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
@@ -58,7 +62,7 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 			uniid = rs.getInt(1);
 			try {
 				// Setze alle Studiengaenge als Attribut
-				request.setAttribute("studiengangsList", getStudiengaenge(request, con, uniid));
+				request.setAttribute("studiengangsList", getStudiengaenge(request, con, uniid, ""));
 			} catch (NullPointerException npex) {
 				response.sendRedirect("FehlerServlet?fehler=Session");
 			} catch (SQLException sqlex) {
@@ -87,10 +91,29 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 		} finally {
 			dbcon.close();
 		}
+		if (request.getParameter("sort") != null) {
+			try {
+				if (con.isClosed()) {
+					dbcon = new DBConnection();
+					con = dbcon.getCon();
+				}
+				String sqlExt = "";
+				if (request.getParameter("sort").equals("id")) {
+					sqlExt = " ORDER BY studiengangid";
+				} else if (request.getParameter("sort").equals("name")) {
+					sqlExt = " ORDER BY studiengangname";
+				}
 
-		
+				request.setAttribute("studiengangsList", getStudiengaenge(request, con, uniid, sqlExt));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			killConnection(con);
+
+		}
+
 		if (request.getParameter("loeschen") != null) {
-			
+
 			sql = sqlSt.getStudiengangLoeschenSql();
 			int studiengangid = Integer.parseInt(request.getParameter("loeschen"));
 			try {
@@ -101,7 +124,7 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, studiengangid);
 				pStmt.execute();
-				request.setAttribute("studiengangsList", getStudiengaenge(request, con, uniid));
+				request.setAttribute("studiengangsList", getStudiengaenge(request, con, uniid, ""));
 			} catch (SQLException sqlex) {
 				System.err.println("SQL-Fehler!");
 				sqlex.printStackTrace();
@@ -114,9 +137,11 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		String meldung = "";
@@ -176,7 +201,7 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 			request.setAttribute("meldung", meldung);
 		}
 		try {
-			request.setAttribute("studiengangsList", getStudiengaenge(request, con, uniid));
+			request.setAttribute("studiengangsList", getStudiengaenge(request, con, uniid, ""));
 		} catch (SQLException sqlExc) {
 			sqlExc.printStackTrace();
 		}
@@ -195,7 +220,7 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 				String uniname = rs.getString(1);
 				request.setAttribute("universitaet", uniname);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -215,10 +240,14 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 			ignored.printStackTrace();
 		}
 	}
-	private List<Studiengang> getStudiengaenge(HttpServletRequest request, Connection con, int uniid) throws SQLException {
+
+	private List<Studiengang> getStudiengaenge(HttpServletRequest request, Connection con, int uniid, String sqlExt)
+			throws SQLException {
 		List<Studiengang> studiengaenge = new ArrayList<Studiengang>();
 		AdminSql sqlSt = new AdminSql();
 		String sql = sqlSt.getStudiengangAnzeigeSql();
+		sql += sqlExt;
+		sql += ";";
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, uniid);
 		ResultSet rs = pStmt.executeQuery();

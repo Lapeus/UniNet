@@ -21,7 +21,8 @@ import de.dbae.uninet.javaClasses.Nachricht;
 import de.dbae.uninet.sqlClasses.NachrichtenSql;
 
 /**
- * Servlet implementation class NachrichtenServlet
+ * Servlet stellt die Daten fuer den Chat zur Verfuegung.
+ * @author Marvin Wolf
  */
 @WebServlet("/NachrichtenServlet")
 public class NachrichtenServlet extends HttpServlet {
@@ -39,7 +40,7 @@ public class NachrichtenServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Stellt die Nachrichten zur Verfuegung / Name Freund / ID Freund
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DBConnection dbcon = null;
@@ -82,7 +83,7 @@ public class NachrichtenServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Verarbeitet das Senden von Nachrichten.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();

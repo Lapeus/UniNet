@@ -48,6 +48,20 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="studiengang" class="col-sm-2 control-label">Studiengang</label>
+			<div class="col-sm-8">
+				<div class="row">
+					<div class="col-sm-3">
+						<select class="form-control" name="studiengang">
+							<c:forEach var="uni" items="${ studiengaenge }">
+								<option>${ uni }</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>	
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="beschreibung" class="col-sm-2 control-label">Beschreibung:</label>
 			<div class="col-sm-6">
 				<textarea class="form-control" rows="5" id="beschreibung"
