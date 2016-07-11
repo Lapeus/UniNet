@@ -22,46 +22,39 @@ import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
  * Servlet implementation class AdminVeranstaltungAnlegenServlet
+ * 
  * @author Leon Schaffert
  */
 @WebServlet("/AdminVeranstaltungAnlegenServlet")
 public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    /**
-     * Die DBConnection
-     */
+	/**
+	 * Die DBConnection
+	 */
 	private DBConnection dbcon;
 	/**
 	 * Die ID der aktuellen Universit&auml;t
 	 */
 	private int uniid;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AdminVeranstaltungAnlegenServlet() {
-        super();
-    }
+	/**
+	 * 
+	 */
+	private boolean forwarded;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*dbcon = new DBConnection();
-		Connection con = dbcon.getCon();
-		try {
-			AdminSql sqlSt = new AdminSql();
-			String sql = sqlSt.getUninameFromUniidSql();
-			PreparedStatement pStmt = con.prepareStatement(sql);
-			pStmt.setInt(1, uniid);
-			ResultSet rs = pStmt.executeQuery();
-			rs.next();
-			String uniname = rs.getString(1);
-			request.setAttribute("universitaet", uniname);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			killConnection(con);
-		}*/
+	public AdminVeranstaltungAnlegenServlet() {
+		super();
+		forwarded = false;
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
@@ -90,15 +83,20 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
-		request.getRequestDispatcher("VeranstaltungAnlegen.jsp").forward(request, response);
+
+		if (!forwarded) {
+			request.getRequestDispatcher("VeranstaltungAnlegen.jsp").forward(request, response);
+			forwarded = true;
+		}
+		forwarded = false;
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		String meldung = "";
@@ -115,71 +113,71 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		boolean forwarded = false;
-			// Alle eingaben abfragen
-			String name = request.getParameter("name");
-			String dozent = request.getParameter("dozent");
-			String semester = request.getParameter("semester");
-			String beschreibung = request.getParameter("beschreibung");
-			String sonstiges = request.getParameter("sonstiges");
-			String studiengang = request.getParameter("studiengang");
-			if (!name.equals("") && !dozent.equals("") && !semester.equals("") && !beschreibung.equals("") && !sonstiges.equals("") && !studiengang.equals("")) {
-				try {
-					// ALLE DATEN VORHANDEN
-					boolean nameDoppelt = false;
-					sql = aSql.getVeranstaltungSql();
+		// Alle eingaben abfragen
+		String name = request.getParameter("name");
+		String dozent = request.getParameter("dozent");
+		String semester = request.getParameter("semester");
+		String beschreibung = request.getParameter("beschreibung");
+		String sonstiges = request.getParameter("sonstiges");
+		String studiengang = request.getParameter("studiengang");
+		if (!name.equals("") && !dozent.equals("") && !semester.equals("") && !beschreibung.equals("")
+				&& !sonstiges.equals("") && !studiengang.equals("")) {
+			try {
+				// ALLE DATEN VORHANDEN
+				boolean nameDoppelt = false;
+				sql = aSql.getVeranstaltungSql();
+				pStmt = con.prepareStatement(sql);
+				pStmt.setString(1, name);
+				ResultSet rs = pStmt.executeQuery();
+				while (rs.next()) {
+					if ((rs.getString(1).equals(name)) && (rs.getInt(2) == uniid)) {
+						nameDoppelt = true;
+					}
+				}
+				if (!nameDoppelt) {
+					// Neue Veranstaltung in Tabelle speichern
+					sql = aSql.getVeranstaltungAnlegenSql();
 					pStmt = con.prepareStatement(sql);
 					pStmt.setString(1, name);
-					ResultSet rs = pStmt.executeQuery();
-					while (rs.next()) {
-						if ((rs.getString(1).equals(name)) && (rs.getInt(2) == uniid)) {
-							nameDoppelt = true;
-						}
-					}
-					if (!nameDoppelt) {
-						// Neue Veranstaltung in Tabelle speichern
-						sql = aSql.getVeranstaltungAnlegenSql();
-						pStmt = con.prepareStatement(sql);
-						pStmt.setString(1, name);
-						pStmt.setInt(2, uniid);
-						pStmt.setString(3, semester);
-						pStmt.setString(4, dozent);
-						pStmt.setString(5, beschreibung);
-						pStmt.setString(6, sonstiges);
-						pStmt.execute();
-						sql = aSql.getStudiengangsIDSql();
-						pStmt = con.prepareStatement(sql);
-						pStmt.setString(1, studiengang);
-						rs = pStmt.executeQuery();
-						rs.next();
-						int studiengangid = rs.getInt(1);
-						sql = aSql.getVeranstaltungsIDSql();
-						pStmt = con.prepareStatement(sql);
-						pStmt.setString(1, name);
-						rs = pStmt.executeQuery();
-						rs.next();
-						int veranstaltungsid = rs.getInt(1);
-						sql = aSql.getVeranstaltungenStudiengaengeSql();
-						pStmt = con.prepareStatement(sql);
-						pStmt.setInt(1, veranstaltungsid);
-						pStmt.setInt(2, studiengangid);
-						pStmt.execute();
-						meldung = "Neue Veranstaltung wurde angelegt";
-						request.setAttribute("meldung", meldung);
-						request.getRequestDispatcher("AdminVeranstaltungenVerwaltenServlet").forward(request, response);
-						forwarded = true;
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-					meldung = "Name ist bereits vergeben";
+					pStmt.setInt(2, uniid);
+					pStmt.setString(3, semester);
+					pStmt.setString(4, dozent);
+					pStmt.setString(5, beschreibung);
+					pStmt.setString(6, sonstiges);
+					pStmt.execute();
+					sql = aSql.getStudiengangsIDSql();
+					pStmt = con.prepareStatement(sql);
+					pStmt.setString(1, studiengang);
+					rs = pStmt.executeQuery();
+					rs.next();
+					int studiengangid = rs.getInt(1);
+					sql = aSql.getVeranstaltungsIDSql();
+					pStmt = con.prepareStatement(sql);
+					pStmt.setString(1, name);
+					rs = pStmt.executeQuery();
+					rs.next();
+					int veranstaltungsid = rs.getInt(1);
+					sql = aSql.getVeranstaltungenStudiengaengeSql();
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, veranstaltungsid);
+					pStmt.setInt(2, studiengangid);
+					pStmt.execute();
+					meldung = "Neue Veranstaltung wurde angelegt";
 					request.setAttribute("meldung", meldung);
+					request.getRequestDispatcher("AdminVeranstaltungenVerwaltenServlet").forward(request, response);
+					forwarded = true;
 				}
-			}  else {
-				// DATEN UNVOLLSTÄNDIG
-				// Meldung bei unvollständiger Registrierung
-				meldung = "Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus";
+			} catch (SQLException e) {
+				e.printStackTrace();
+				meldung = "Name ist bereits vergeben";
 				request.setAttribute("meldung", meldung);
 			}
+		} else {
+			// DATEN UNVOLLSTÄNDIG
+			// Meldung bei unvollständiger Registrierung
+			meldung = "Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus";
+			request.setAttribute("meldung", meldung);
+		}
 		try {
 			request.setAttribute("studiengangsList", getVeranstaltungen(request, con));
 		} catch (SQLException sqlExc) {
@@ -200,7 +198,7 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 				String uniname = rs.getString(1);
 				request.setAttribute("universitaet", uniname);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -208,7 +206,9 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 		}
 		if (!forwarded) {
 			request.getRequestDispatcher("AdminVeranstaltungenVerwaltenServlet").forward(request, response);
+			forwarded = true;
 		}
+		forwarded = false;
 	}
 
 	private void killConnection(Connection con) {
@@ -220,6 +220,7 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 			ignored.printStackTrace();
 		}
 	}
+
 	private List<Veranstaltung> getVeranstaltungen(HttpServletRequest request, Connection con) throws SQLException {
 		List<Veranstaltung> vs = new ArrayList<Veranstaltung>();
 		AdminSql sqlSt = new AdminSql();
@@ -232,6 +233,7 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 		}
 		return vs;
 	}
+
 	private void updateStudiengaenge(HttpServletRequest request, HttpServletResponse response, Connection con,
 			AnmeldeSql sqlSt, String uni) throws ServletException, IOException {
 		List<String> studiengaenge = new ArrayList<String>();
@@ -246,11 +248,13 @@ public class AdminVeranstaltungAnlegenServlet extends HttpServlet {
 				}
 			}
 			request.setAttribute("studiengaenge", studiengaenge);
-			request.getRequestDispatcher("VeranstaltungAnlegen.jsp").forward(request, response);
+			if (!forwarded) {
+				request.getRequestDispatcher("VeranstaltungAnlegen.jsp").forward(request, response);
+				forwarded = true;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("SQL Fehler - AnmeldeSQL.getStudiengaenge()");
-			request.getRequestDispatcher("VeranstaltungenVerwalten.jsp").forward(request, response);
 		} finally {
 			killConnection(con);
 		}
