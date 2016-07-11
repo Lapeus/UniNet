@@ -9,7 +9,8 @@ import de.dbae.uninet.javaClasses.Beitrag;
 /**
  * Dieser Tag zeigt die Informationen aus dem Beitrags-Objekt auf der jsp an.
  * Er wird auf den meisten Seiten des Projekts verwendet.
- * @author Leon Schaffert
+ * @author Christian Ackermann, Leon Schaffert (&Auml;nderungen)
+ * @see BeitragTag
  */
 public class GemeldeterBeitragAnzeigeTag extends TagSupport {
 
