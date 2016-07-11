@@ -707,11 +707,16 @@ public class BeitragServlet extends HttpServlet {
 			page += "?tab=beitraege";
 			page += "&gruppenID=" + request.getParameter("gruppenID");
 		}
-		String sql = sqlSt.getSqlStatement("BeitragMelden");
-		PreparedStatement pStmt = con.prepareStatement(sql);
-		pStmt.setInt(1, beitragsID);
-		pStmt.setInt(2, userID);
-		pStmt.executeUpdate();
+		try {
+			String sql = sqlSt.getSqlStatement("BeitragMelden");
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, beitragsID);
+			pStmt.setInt(2, userID);
+			pStmt.executeUpdate();
+		} catch (SQLException sqlEx) {
+			// Wenn ein User einen Beitrag mehrfach meldet, tritt ein Fehler auf
+			// Das zu verhindern ist zu aufwendig, darum wird dieser Fehler einfach abgefangen und ignoriert
+		}
 		// Weiterleitung an die entsprechende Seite
 		response.sendRedirect(page);
 	}
