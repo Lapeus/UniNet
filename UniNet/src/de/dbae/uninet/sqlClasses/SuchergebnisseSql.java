@@ -13,13 +13,16 @@ public class SuchergebnisseSql {
 	public String getNutzerSql() {
 		return "SELECT userid, vorname, nachname, geburtstag, online  "
 				+ "FROM (nutzer JOIN studenten ON (userid = studentid)) "
-				+ "WHERE userid != ? AND REPLACE(CONCAT(vorname, nachname), ' ', '') ~* ? "
+				+ "WHERE userid != ? "
+				+ "AND uniid = ? "
+				+ "AND REPLACE(CONCAT(vorname, nachname), ' ', '') ~* ? "
 				+ "ORDER BY nachname;";
 	}
 	
 	public String getGruppenSql() {
 		return "SELECT gruppenid, name, beschreibung, gruendung, adminid "
 				+ "FROM gruppen "
+				+ "JOIN (SELECT studentid, uniid FROM studenten WHERE uniid = ?) as temp ON (adminid = studentid) "
 				+ "WHERE REPLACE(CONCAT(name, beschreibung), ' ', '') ~* ? ORDER BY name;";
 	}
 	
@@ -43,8 +46,16 @@ public class SuchergebnisseSql {
 		return "INSERT INTO Benachrichtigungen (UserID, FreundID, Art) VALUES (?, ?, ?)";
 	}
 	
+	public String loescheFreundschaft() {
+		return "DELETE FROM freunde WHERE (freund1 = ? AND freund2 = ?) OR (freund2 = ? AND freund2 = ?);";
+	}
+	
 	public String getNameZuID() {
 		return "SELECT Vorname, Nachname FROM Nutzer WHERE UserID = ?";
+	}
+	
+	public String getUniZuUser() {
+		return "SELECT uniid FROM studenten WHERE studentid = ?";
 	}
 }
 

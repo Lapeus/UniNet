@@ -64,7 +64,10 @@ public class GesuchterNutzerTag extends TagSupport {
 		// Freunschaftsanfrage
 		String sFreundschaft = "FILLER";
 		if (student.isFreund()) {
-			sFreundschaft = "Ihr seid befreundet";
+			sFreundschaft = "<p>Ihr seid befreundet<p>"
+					+ "<span>"
+					+ "<button class='button btn-danger' type='submit' name='freundIDloeschen' value='"+ student.getUserID() +"'>Freundschaft beenden</button>"
+					+ "</span>";
 		}
 		else {
 			sFreundschaft = "<p>Ihr seid noch nicht befreundet</p>"

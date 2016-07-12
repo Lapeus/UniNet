@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -72,12 +74,11 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		
 		if (request.getParameter("anmelden") != null) {
 			// ANMELDEN
-
 			try {
 				String password = request.getParameter("password");
 				String email = request.getParameter("email");
 
-				// Statement f�r userid
+				// Statement für userid
 				String stUserid = sqlSt.getNutzerId();
 				PreparedStatement eins = con.prepareStatement(stUserid);
 				eins.setString(1, email);
@@ -88,7 +89,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					userid = rsUserid.getString(1);
 				}
 
-				// Statement f�r email und PW kontrolle
+				// Statement für email und PW kontrolle
 				String sql = sqlSt.ueberpruefeAnmeldedaten();
 				PreparedStatement pStmt = con.prepareStatement(sql);
 				pStmt.setString(1, email);
@@ -96,13 +97,11 @@ public class AnmeldeAktivServlet extends HttpServlet {
 
 				if (!rs.next()) {
 					// Wenn die Anmeldedaten nicht in der DB sind
-
 					meldung1 = "Ihre E-Mail-Adresse konnte nicht zugeordnet werden";
 					request.setAttribute("meldung", meldung1);
 					request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 				} else {
 					// Wenn die Anmeldedaten in der DB sind
-					
 					// Teste, ob Passwort passt
 					String hash = "";
 					String password1 = password + rs.getString(2);
@@ -114,13 +113,13 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						System.out.println("Passwort Hash Fehler");
 						e.printStackTrace();
 					}
-					// Teste ob die Passw�rter �bereinstimmen
+					// Teste ob die Passwörter übereinstimmen
 					if (!hash.equals(rs.getString(1))) {
 						meldung1 = "Es wurde ein falsches Passwort eingegeben!";
 						request.setAttribute("meldung", meldung1);
 						request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 					} else {
-						// Setze den User auf Online (#christian)
+						// Setze den User auf Online
 						sql = sqlSt.getOnlineUpdate();
 						pStmt = con.prepareStatement(sql);
 						pStmt.setInt(1, Integer.parseInt(userid));
@@ -130,7 +129,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						userSession.setAttribute("UserID", userid);
 						// Setzt fuer den Fall, dass kein Profilbild eingestellt wurde, das Default-Profilbild
 						defaultProfilbildSetzen(userid, con);
-						// Teste ob es sich um einen Studenten oder LocalAdmin handelt (#christian)
+						// Teste ob es sich um einen Studenten oder LocalAdmin handelt
 						sql = sqlSt.getStudentenIDs();
 						pStmt = con.prepareStatement(sql);
 						rs = pStmt.executeQuery();
@@ -187,13 +186,13 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			// Felder bei reloead befuellen
 			felderFuellen(request);
 			
-			if (!vorname.equals("") && !nachname.equals("") && !email.equals("") && !uni.equals("")
+			if (!vorname.equals("") && !nachname.equals("") && isCorrectEmail(email) && !uni.equals("")
 					&& !password1.equals("") && !password2.equals("")) {
 				// ALLE DATEN VORHANDEN
-				
 				try {
 					if (password1.equals(password2)) {
-						// PASSW�RTER GLEICH
+						// PASSWÖRTER GLEICH
+						
 						// Passwort hashen
 						String hash = "";
 						String salt = "";
@@ -207,7 +206,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 							hash = new BigInteger(1, digest.digest()).toString();
 							salt = salt2.toString();
 						} catch (NoSuchAlgorithmException e) {
-							// TODO Auto-generated catch block
+							System.out.println("ERROR - AnmeldeAktivServlet - Passwort hashen");
 							e.printStackTrace();
 						}
 						// Nutzer Registrierung in Tabelle speichern
@@ -220,15 +219,15 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						pStmtNutzer.setString(6, salt);
 						pStmtNutzer.setInt(7, 3);
 						pStmtNutzer.execute();
-						// Statement f�r userid
+						// Statement für userid
 						String stUserid = sqlSt.getNutzerId();
 						PreparedStatement eins = con.prepareStatement(stUserid);
 						eins.setString(1, email);
-						// Statement f�r uniid
+						// Statement für uniid
 						String stUniid = sqlSt.getUniId();
 						PreparedStatement zwei = con.prepareStatement(stUniid);
 						zwei.setString(1, uni);
-						// Statement f�r studiengangid
+						// Statement für studiengangid
 						String stStudiengangid = sqlSt.getStudiengangId();
 						PreparedStatement drei = con.prepareStatement(stStudiengangid);
 						drei.setString(1, studiengang);
@@ -244,8 +243,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						ResultSet rsStudiengangid = drei.executeQuery();
 						rsStudiengangid.next();
 						String studiengangid = rsStudiengangid.getString(1);
-						// Studentendaten aus Nutzerregistrierung in Tablle
-						// speichern
+						// Studentendaten aus Nutzerregistrierung in Tablle speichern
 						PreparedStatement psTmtStudent = con.prepareStatement(sqlSt.getRegistrierungStudentSql());
 						psTmtStudent.setInt(1, Integer.parseInt(userid));
 						psTmtStudent.setInt(2, Integer.parseInt(uniid));
@@ -268,8 +266,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						userSession.setAttribute("UserID", userid);
 						response.sendRedirect("StartseiteServlet");
 					} else {
-						// PASSW�RTER UNGLEICH
-
+						// PASSWÖRTER UNGLEICH
+						
 						// Meldung bei ungleichem Passwort
 						meldung = "Keine &Uuml;bereinstimmung - Geben das Passwort erneut ein";
 						request.setAttribute("meldung", meldung);
@@ -289,10 +287,16 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					killConnection(con);
 				}
 			} else {
-				// DATEN UNVOLLST�NDIG
+				// DATEN UNVOLLSTÄNDIG
 				
-				// Meldung bei unvollst�ndiger Registrierung
-				meldung = "Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus";
+				// E-Mail ist ungültig
+				if (!isCorrectEmail(email)) {
+					meldung = "Bitte geben Sie eine gültige E-Mail-Adresse an!";
+				}
+				// Meldung bei unvollständiger Registrierung
+				else {
+					meldung = "Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus";
+				}
 				request.setAttribute("meldung", meldung);
 				// Studiengaenge updaten
 				updateStudiengaenge(request, response, con, sqlSt, uni);
@@ -304,7 +308,24 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			updateStudiengaenge(request, response, con, sqlSt, uni);
 		}
 	}
-
+	
+	/**
+	 * Prüft den übergebenen String auf ein gültiges E-Mail-Format
+	 */
+	private boolean isCorrectEmail(String email) {
+		boolean isCorrect = false;
+		// Email abfrage mit Regex
+		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		Matcher matcher = pattern.matcher(email);
+		if (matcher.matches()) {
+			isCorrect = true;
+		}
+		return isCorrect;
+	}
+	
+	/**
+	 * Beendet die übergebene Connection
+	 */
 	private void killConnection(Connection con){
 		try {
 			if (con != null) {
@@ -315,8 +336,11 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		}
 	}
 	
+	/**
+	 * Füllt die schon angegebenen Felder nach einem Update
+	 */
 	private void felderFuellen(HttpServletRequest request) {
-		// und in die Felder f�llen wenn neu geladen
+		// und in die Felder füllen wenn neu geladen
 		String anrede = request.getParameter("anrede");
 		boolean bAnrede = anrede.equals("Herr") ? true : false;
 		String vorname = request.getParameter("vorname");
@@ -331,15 +355,20 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		request.setAttribute("nachname", nachname);
 		request.setAttribute("email", email);
 	}
-
+	
+	/**
+	 * Updated die Studiengänge, wenn die Person eine Uni ausgewählt hat.
+	 */
 	private void updateStudiengaenge(HttpServletRequest request, HttpServletResponse response, Connection con,
 			AnmeldeSql sqlSt, String uni) throws ServletException, IOException {
 		List<String> studiengaenge = new ArrayList<String>();
 		try {
 			PreparedStatement pStmt = con.prepareStatement(sqlSt.getStudiengaenge());
+			// Ausgewählte Uni setzen
 			pStmt.setString(1, uni);
 			ResultSet result = pStmt.executeQuery();
 			ResultSetMetaData rsMetaData = result.getMetaData();
+			// Alle Studiengänge in Liste schreiben
 			while (result.next()) {
 				for (int i = 1; i <= rsMetaData.getColumnCount(); i++) {
 					studiengaenge.add(result.getString(i));
@@ -349,15 +378,19 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("SQL Fehler - AnmeldeSQL.getStudiengaenge()");
+			System.out.println("SQL Fehler - updateStudiengaenge()");
+			// Wieder auf die Anmeldeseite verweisen
 			request.getRequestDispatcher("Anmeldung.jsp").forward(request, response);
 		} finally {
 			killConnection(con);
 		}
 	}
 	
+	/**
+	 * Setzt für den neue angelegten Nutzer das Standard-Profilbild
+	 */
 	private void defaultProfilbildSetzen(String userid, Connection con) {
-		// Profilbild-Default setzen *Christian*
+		// Profilbild-Default setzen
 		// Select-Statement fuer alle Nutzer
 		String sql = "SELECT profilbild, userID FROM nutzer";
 		try {
@@ -384,8 +417,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
+			System.out.println("ERROR - AnmeldeAktivServelet - defaultProfilbilderSetzen");
 			e.printStackTrace();
-			// TODO Fehler
 		}
 	}
 

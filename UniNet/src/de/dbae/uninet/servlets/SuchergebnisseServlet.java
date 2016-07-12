@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Gruppe;
-import de.dbae.uninet.javaClasses.ErstelleBenachrichtigung;
 import de.dbae.uninet.javaClasses.GesuchterNutzer;
 import de.dbae.uninet.javaClasses.Veranstaltung;
 import de.dbae.uninet.sqlClasses.SuchergebnisseSql;
@@ -57,7 +56,7 @@ public class SuchergebnisseServlet extends HttpServlet {
 		if (!search.equals("") && !search.equals(null)) {
 			request.setAttribute("search", search);
 			request.setAttribute("Nutzerliste", (List<GesuchterNutzer>)getNutzer(search, userID));
-			request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search));
+			request.setAttribute("Gruppenliste", (List<Gruppe>)getGruppen(search, userID));
 			request.setAttribute("Veranstaltungenliste", (List<Veranstaltung>)getVeranstaltungen(search, userID));
 		}
 		request.getRequestDispatcher("Suchergebnisse.jsp").forward(request, response);
@@ -70,19 +69,28 @@ public class SuchergebnisseServlet extends HttpServlet {
 		session = request.getSession();
 		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
 		String sfreundID = request.getParameter("freundID");
+		String sfreundIDloeschen = request.getParameter("freundIDloeschen");
 		String search = request.getParameter("search");
-		System.out.println("SUCHE: " + search);
 		int freundID = -1;
 		if (sfreundID != null) {
 			freundID = Integer.parseInt(sfreundID);
+			sendFriendrequest(userID, freundID);
 		}
+		else if (sfreundIDloeschen != null) {
+			freundID = Integer.parseInt(sfreundIDloeschen);
+			loescheFreundschaft(userID, freundID);
+		}
+		
 		if (search == null) {
 			search = "";
 		}
-		sendFriendrequest(userID, freundID);
+		
 		response.sendRedirect("/UniNet/SuchergebnisseServlet?suchanfrage=" + search);;
 	}
 	
+	/**
+	 * Sendet eine Freundschaftsanfrage von user zu freund
+	 */
 	private void sendFriendrequest(int userID, int freundID) {
 		DBConnection dbcon = null;
 		SuchergebnisseSql seSql = new SuchergebnisseSql();
@@ -90,8 +98,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 		try {
 			dbcon = new DBConnection();
 			Connection con = dbcon.getCon();
-			// ErstelleBenachrichtigung friendRequest = new ErstelleBenachrichtigung(con);
-			// FEHLER IN GETNAME(ID) friendRequest.freundschaftsanfrage(userID, freundID);
 			PreparedStatement pStmt;
 			pStmt = con.prepareStatement(seSql.erstelleFreundschaftsanfrage());
 			pStmt.setInt(1, freundID);
@@ -112,6 +118,38 @@ public class SuchergebnisseServlet extends HttpServlet {
 		}
 	}
 	
+	private void loescheFreundschaft(int userID, int freundID) {
+		DBConnection dbcon = null;
+		SuchergebnisseSql seSql = new SuchergebnisseSql();
+		
+		try {
+			dbcon = new DBConnection();
+			Connection con = dbcon.getCon();
+			PreparedStatement pStmt;
+			pStmt = con.prepareStatement(seSql.loescheFreundschaft());
+			pStmt.setInt(1, freundID);
+			pStmt.setInt(2, userID);
+			pStmt.setInt(4, freundID);
+			pStmt.setInt(3, userID);
+			pStmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("ERROR - SuchergebnisServlet - loscheFreundschaft");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (dbcon != null) {
+					dbcon.close();
+				}
+			} catch (Exception ignored) {
+				ignored.printStackTrace();
+			}
+		}
+	}
+	
+	
+	/**
+	 * Gibt eine Liste aller Nutzer zurück die den Suchbegriff im Namen enthalten
+	 */
 	private List<GesuchterNutzer> getNutzer(String search, int userID) { 
 		DBConnection dbcon = null;
 		SuchergebnisseSql seSql = new SuchergebnisseSql();
@@ -120,9 +158,17 @@ public class SuchergebnisseServlet extends HttpServlet {
 		try {
 			dbcon = new DBConnection();
 			Connection con = dbcon.getCon();
-			PreparedStatement pStmt = con.prepareStatement(seSql.getNutzerSql());
+			PreparedStatement pStmt = con.prepareStatement(seSql.getUniZuUser());
 			pStmt.setInt(1, userID);
-			pStmt.setString(2, search);
+			ResultSet uniRs = pStmt.executeQuery();
+			int uniID = 0;
+			if (uniRs.next()) {
+				uniID = uniRs.getInt(1);
+			}
+			pStmt = con.prepareStatement(seSql.getNutzerSql());
+			pStmt.setInt(1, userID);
+			pStmt.setInt(2, uniID);
+			pStmt.setString(3, search);
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				int gesuchterID   = rs.getInt(1);
@@ -138,7 +184,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				ResultSet rsIsFreund = pStmt.executeQuery();
 				int iFreund = 0;
 				if (rsIsFreund.next()) {
-					System.out.println("JA ES GIBT EINE AUZSWERTUNG");
 					iFreund = rsIsFreund.getInt(1);
 				}
 				boolean isFreund = iFreund == 0 ? false : true;
@@ -161,7 +206,10 @@ public class SuchergebnisseServlet extends HttpServlet {
 		return nutzer;
 	}
 	
-	private List<Gruppe> getGruppen(String search) { 
+	/**
+	 * Gibt eine Liste von Gruppen zurück, die den Suchbegriff im Namen oder in der Beschreibung enthalten
+	 */
+	private List<Gruppe> getGruppen(String search, int userID) { 
 		DBConnection dbcon = null;
 		SuchergebnisseSql seSql = new SuchergebnisseSql();
 		List<Gruppe> gruppen = new ArrayList<>();
@@ -169,8 +217,16 @@ public class SuchergebnisseServlet extends HttpServlet {
 		try {
 			dbcon = new DBConnection();
 			Connection con = dbcon.getCon();
-			PreparedStatement pStmt = con.prepareStatement(seSql.getGruppenSql());
-			pStmt.setString(1, search);
+			PreparedStatement pStmt = con.prepareStatement(seSql.getUniZuUser());
+			pStmt.setInt(1, userID);
+			ResultSet uniRs = pStmt.executeQuery();
+			int uniID = 0;
+			if (uniRs.next()) {
+				uniID = uniRs.getInt(1);
+			}
+			pStmt = con.prepareStatement(seSql.getGruppenSql());
+			pStmt.setInt(1, uniID);
+			pStmt.setString(2, search);
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				int gruppenID       = rs.getInt(1);
@@ -178,7 +234,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				String beschreibung = rs.getString(3);
 				String gruendung    = rs.getString(4);
 				int adminID         = rs.getInt(5);
-				System.out.println("BESCHREIBUNG: " + beschreibung);
 				// ADMINNAME 
 				String adminName = "Kein Admin";
 				PreparedStatement pStmtName = con.prepareStatement(seSql.getNutzerZuId());
@@ -187,7 +242,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				if(rsName.next()) {
 					adminName = rsName.getString(1) + " " + rsName.getString(2);
 				}
-				System.out.println("ADMINNAME: " + adminName);
 				gruppen.add(new Gruppe(gruppenID, name, beschreibung, gruendung, adminName, adminID));
 			}
 		} catch (Exception e) {
@@ -206,6 +260,9 @@ public class SuchergebnisseServlet extends HttpServlet {
 		return gruppen;
 	}
 	
+	/**
+	 * Gibt eine Liste von Veranstaltungen zurück, die den Suchbegriff im Namen oder in der Beschreibung enthalten
+	 */
 	private List<Veranstaltung> getVeranstaltungen(String search, int userID) { 
 		DBConnection dbcon = null;
 		SuchergebnisseSql seSql = new SuchergebnisseSql();
@@ -217,7 +274,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 			PreparedStatement pStmt = con.prepareStatement(seSql.getVeranstaltungenSql());
 			pStmt.setInt(1, userID);
 			pStmt.setString(2, search);
-			System.out.println("GETVeranstaltungen: " + pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				int eventID         = rs.getInt(1);
@@ -227,10 +283,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				String semester     = rs.getString(5);
 				
 				events.add(new Veranstaltung(eventID, name, dozent, semester, beschreibung));
-			}
-			
-			for (Veranstaltung event : events) {
-				System.out.println("Veranstaltunsname: " + event.getName());
 			}
 		} catch (Exception e) {
 			System.out.println("ERROR - SuchergebnisServlet - getGruppen");
@@ -243,7 +295,6 @@ public class SuchergebnisseServlet extends HttpServlet {
 				ignored.printStackTrace();
 			}
 		}
-		
 		return events;
 	}
 }

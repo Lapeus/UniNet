@@ -29,7 +29,7 @@ public class NachrichtenServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private HttpSession session;
-	private int userIDFreund;
+	private int userIDFreund = -1;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -158,11 +158,6 @@ public class NachrichtenServlet extends HttpServlet {
 			pStmtUpdate.setInt(1, userId);
 			pStmtUpdate.executeUpdate();
 			
-			// TESTING
-			for (Nachricht nachricht : nachrichten) {
-				nachricht.getName();
-				nachricht.getNachrichtenText();
-			}
 		} catch (Exception e) {
 			System.out.println("Fehler - getNachrichten");
 			e.printStackTrace();
