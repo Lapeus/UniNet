@@ -24,6 +24,11 @@ public class Student {
 	private int userID;
 	
 	/**
+	 * Die email des Studenten.
+	 */
+	private String email;
+	
+	/**
 	 * Der Online-Status des Studenten.<br>
 	 * Dieser ist nur im Chat relevant, weshalb er sonst standardm&auml;&szlig;ig auf <b>false</b> steht.
 	 */
@@ -63,7 +68,19 @@ public class Student {
 		this.setOnline(online);
 		this.setAnzahlUngeleseneNachrichten(anzahlUngeleseneNachrichten);
 	}
-
+	
+	/**
+	 * Erstellt einen Studenten inklusive E-Mail.
+	 * @param vorname Der Vorname
+	 * @param nachname Der Nachname
+	 * @param userID Die UserID 
+	 * @param email Die Email
+	 */
+	public Student (String vorname, String nachname, int userID, String email) {
+		this(vorname, nachname, userID, false, 0);
+		this.email = email;
+	}
+	
 	/**
 	 * Getter f&uuml;r den Vornamen.
 	 * @return Der Vorname
@@ -142,5 +159,21 @@ public class Student {
 	 */
 	public void setAnzahlUngeleseneNachrichten(int anzahlUngeleseneNachrichten) {
 		this.anzahlUngeleseneNachrichten = anzahlUngeleseneNachrichten;
+	}
+
+	/**
+	 * Getter f&uuml;r die E-Mail.
+	 * @return Die E-Mail
+	 */
+	public String getEmail() {
+		return email;
+	}
+	
+	/**
+	 * Setter f&uuml;r die E-Mail.
+	 * @param email Die E-Mail
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

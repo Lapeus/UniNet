@@ -48,23 +48,29 @@ public class AdminBeitraegeServlet extends HttpServlet {
 		dbcon = new DBConnection();
 		Connection con = dbcon.getCon();
 		int userID = Integer.parseInt(request.getSession().getAttribute("UserID").toString());
-		if (request.getParameter("name") != null) {
-			int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
-			AdminSql aSql = new AdminSql();
-			String sql = aSql.getBeitragBearbeitetSql();
-			PreparedStatement pStmt;
-			try {
-				pStmt = con.prepareStatement(sql);
-				pStmt.setInt(1, beitragsID);
-				pStmt.execute();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 		try {
+			if (request.getParameter("name") != null) {
+				int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
+				if (request.getParameter("name").equals("BeitragLoeschen")) {
+					// new
+					// ErstelleBenachrichtigung(con).adminBeitragGeloescht(beitragsID);
+					BeitragSql sqlSt = new BeitragSql();
+					String sql = sqlSt.getSqlStatement("BeitragLoeschen");
+					PreparedStatement pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, beitragsID);
+					pStmt.executeUpdate();
+				} else if (request.getParameter("name").equals("Beitragok")) {
+
+					AdminSql aSql = new AdminSql();
+					String sql = aSql.getBeitragBearbeitetSql();
+					PreparedStatement pStmt;
+					pStmt = con.prepareStatement(sql);
+					pStmt.setInt(1, beitragsID);
+					pStmt.execute();
+				}
+			}
 			request.setAttribute("beitragList", getBeitraege(request, con, userID));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		dbcon.close();
@@ -105,6 +111,8 @@ public class AdminBeitraegeServlet extends HttpServlet {
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				pStmt.executeUpdate();
+				// new
+				// ErstelleBenachrichtigung(con).adminBeitragGeaendert(beitragsID);
 			}
 		} catch (
 

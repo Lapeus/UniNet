@@ -74,7 +74,7 @@ public class GemeldeterBeitragAnzeigeTag extends TagSupport {
 		erg += "<div class='col-md-9'>";
 		erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=GemeldetenBeitragBearbeiten' title='Beitrag bearbeiten'><span class='glyphicon glyphicon-pencil' style='color:#3b5998;'></span></a>";
 		erg += "</div>";
-		erg += "<a class='pull-right' href='BeitragServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen&page=" + page + "' title='Beitrag l&ouml;schen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
+		erg += "<a class='pull-right' href='AdminBeitraegeServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=BeitragLoeschen' title='Beitrag l&ouml;schen'><span class='glyphicon glyphicon-remove-sign' style='color:#3b5998;'></span></a>";
 		erg += "<div class='col-md-2'>";
 		erg += "<a class='pull-right' href='AdminBeitraegeServlet?beitragsID=" + beitrag.getBeitragsID() + "&name=Beitragok&page=" + page + "' title='Beitrag ist Richtlinienkonform'><span class='glyphicon glyphicon-ok' style='color:#3b5998;'></span></a>";
 		erg += "</div><div class='col-md-4'><span class='label label-default' ></span></div></div></div>";
