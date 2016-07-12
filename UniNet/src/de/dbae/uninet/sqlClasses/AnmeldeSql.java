@@ -80,4 +80,8 @@ public class AnmeldeSql {
 		return sql;
 	}
 	
+	public String isVorhandenOrGespert() {
+		return "SELECT nutzer.email, gesperrtenutzer.email FROM nutzer FULL JOIN gesperrtenutzer ON (nutzer.email = gesperrtenutzer.email) WHERE nutzer.email LIKE ? OR gesperrtenutzer.email LIKE ?;";
+	}
+	
 }

@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +35,7 @@ import de.dbae.uninet.sqlClasses.AnmeldeSql;
 
 /**
  * Servlet bedient die aktiven Anfragen der Anmeldeseite.
+ * 
  * @author Marvin Wolf
  */
 @WebServlet("/AnmeldeAktivServlet")
@@ -71,7 +73,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		AnmeldeSql sqlSt = new AnmeldeSql();
 		String meldung = "";
 		String meldung1 = "";
-		
+
 		if (request.getParameter("anmelden") != null) {
 			// ANMELDEN
 			try {
@@ -127,9 +129,11 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						// Setze die UserID fuer das SessionTracking
 						HttpSession userSession = request.getSession();
 						userSession.setAttribute("UserID", userid);
-						// Setzt fuer den Fall, dass kein Profilbild eingestellt wurde, das Default-Profilbild
+						// Setzt fuer den Fall, dass kein Profilbild eingestellt
+						// wurde, das Default-Profilbild
 						defaultProfilbildSetzen(userid, con);
-						// Teste ob es sich um einen Studenten oder LocalAdmin handelt
+						// Teste ob es sich um einen Studenten oder LocalAdmin
+						// handelt
 						sql = sqlSt.getStudentenIDs();
 						pStmt = con.prepareStatement(sql);
 						rs = pStmt.executeQuery();
@@ -146,18 +150,23 @@ public class AnmeldeAktivServlet extends HttpServlet {
 							nutzertyp = rs.getInt(1);
 						}
 						// Wenn es ein Student ist, leite an Startseite weiter
-						/*if (studentenIDs.contains(userid)) {
-							// Freundesbewertung fuer diesen Nutzer aktualisieren
-							new Beziehungsrechner().setBeziehung(Integer.parseInt(userid));
-							response.sendRedirect("StartseiteServlet");
-						// Sonst an die Admin Verwaltung*/
+						/*
+						 * if (studentenIDs.contains(userid)) { //
+						 * Freundesbewertung fuer diesen Nutzer aktualisieren
+						 * new
+						 * Beziehungsrechner().setBeziehung(Integer.parseInt(
+						 * userid)); response.sendRedirect("StartseiteServlet");
+						 * // Sonst an die Admin Verwaltung
+						 */
 						if (nutzertyp == 1) {
 							response.sendRedirect("AdminServlet");
 						} else if (nutzertyp == 2) {
 							response.sendRedirect("AdminBeitraegeServlet");
 						} else {
-							// Wenn es kein Admin ist, leite an Startseite weiter
-							// Freundesbewertung fuer diesen Nutzer aktualisieren
+							// Wenn es kein Admin ist, leite an Startseite
+							// weiter
+							// Freundesbewertung fuer diesen Nutzer
+							// aktualisieren
 							new Beziehungsrechner().setBeziehung(Integer.parseInt(userid));
 							response.sendRedirect("StartseiteServlet");
 						}
@@ -170,29 +179,29 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			}
 		} else if (request.getParameter("registrieren") != null) {
 			// REGISTRIERUNG
-			
+
 			// Alle eingaben abfragen
 			String anrede = request.getParameter("anrede");
 			boolean bAnrede = anrede.equals("Herr") ? true : false;
 			String vorname = request.getParameter("vorname");
 			String nachname = request.getParameter("nachname");
-			String email = request.getParameter("email");	
+			String email = request.getParameter("email");
 			String uni = request.getParameter("uni");
 			String studiengang = request.getParameter("studiengang");
 			int semester = Integer.parseInt(request.getParameter("semester"));
 			String password1 = request.getParameter("password1");
 			String password2 = request.getParameter("password2");
-			
+
 			// Felder bei reloead befuellen
 			felderFuellen(request);
-			
+
 			if (!vorname.equals("") && !nachname.equals("") && isCorrectEmail(email) && !uni.equals("")
-					&& !password1.equals("") && !password2.equals("")) {
+					&& !password1.equals("") && !password2.equals("") && !isVorhanden(email)) {
 				// ALLE DATEN VORHANDEN
 				try {
 					if (password1.equals(password2)) {
 						// PASSWÖRTER GLEICH
-						
+
 						// Passwort hashen
 						String hash = "";
 						String salt = "";
@@ -243,7 +252,8 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						ResultSet rsStudiengangid = drei.executeQuery();
 						rsStudiengangid.next();
 						String studiengangid = rsStudiengangid.getString(1);
-						// Studentendaten aus Nutzerregistrierung in Tablle speichern
+						// Studentendaten aus Nutzerregistrierung in Tablle
+						// speichern
 						PreparedStatement psTmtStudent = con.prepareStatement(sqlSt.getRegistrierungStudentSql());
 						psTmtStudent.setInt(1, Integer.parseInt(userid));
 						psTmtStudent.setInt(2, Integer.parseInt(uniid));
@@ -255,19 +265,21 @@ public class AnmeldeAktivServlet extends HttpServlet {
 						psTmtStudent.setInt(1, Integer.parseInt(userid));
 						psTmtStudent.execute();
 						// Freundschaft mit sich selbst eintragen
-						PreparedStatement psTmtFreund = con.prepareStatement("INSERT INTO freunde VALUES (?, ?, 1000, 1000)");
+						PreparedStatement psTmtFreund = con
+								.prepareStatement("INSERT INTO freunde VALUES (?, ?, 1000, 1000)");
 						psTmtFreund.setInt(1, Integer.parseInt(userid));
 						psTmtFreund.setInt(2, Integer.parseInt(userid));
 						psTmtFreund.executeUpdate();
-						// Setzt fuer den Fall, dass kein Profilbild eingestellt wurde, das Default-Profilbild
+						// Setzt fuer den Fall, dass kein Profilbild eingestellt
+						// wurde, das Default-Profilbild
 						defaultProfilbildSetzen(userid, con);
-						
+
 						HttpSession userSession = request.getSession();
 						userSession.setAttribute("UserID", userid);
 						response.sendRedirect("StartseiteServlet");
 					} else {
 						// PASSWÖRTER UNGLEICH
-						
+
 						// Meldung bei ungleichem Passwort
 						meldung = "Keine &Uuml;bereinstimmung - Geben das Passwort erneut ein";
 						request.setAttribute("meldung", meldung);
@@ -276,7 +288,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 					}
 				} catch (Exception e) {
 					// EMAIL SCHON REGISTRIERT
-					
+
 					e.printStackTrace();
 					// Meldung bei gleicher E-Mail
 					meldung = "E-Mail wird schon verwendet.";
@@ -293,6 +305,10 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				if (!isCorrectEmail(email)) {
 					meldung = "Bitte geben Sie eine gültige E-Mail-Adresse an!";
 				}
+				// E-Mail ist gebannt oder schon vorhanden
+				else if (isVorhanden(email)) {
+					meldung = "Die angebenene E-Mail-Adresse wird bereits verwendet oder wurde blockiert!";
+				}
 				// Meldung bei unvollständiger Registrierung
 				else {
 					meldung = "Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus";
@@ -308,25 +324,44 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			updateStudiengaenge(request, response, con, sqlSt, uni);
 		}
 	}
-	
+
 	/**
 	 * Prüft den übergebenen String auf ein gültiges E-Mail-Format
 	 */
 	private boolean isCorrectEmail(String email) {
 		boolean isCorrect = false;
 		// Email abfrage mit Regex
-		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		Pattern pattern = Pattern
+				.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 		Matcher matcher = pattern.matcher(email);
 		if (matcher.matches()) {
 			isCorrect = true;
 		}
 		return isCorrect;
 	}
-	
+
+	private boolean isVorhanden(String email) {
+		Connection con = dbcon.getCon();
+		AnmeldeSql sqlSt = new AnmeldeSql();
+		boolean isVorhanden = true;
+		try {
+			PreparedStatement pStmt = con.prepareStatement(sqlSt.isVorhandenOrGespert());
+			pStmt.setString(1, email);
+			pStmt.setString(2, email);
+			ResultSet rs = pStmt.executeQuery();
+			if (!rs.next()) {
+				isVorhanden = false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isVorhanden;
+	}
+
 	/**
 	 * Beendet die übergebene Connection
 	 */
-	private void killConnection(Connection con){
+	private void killConnection(Connection con) {
 		try {
 			if (con != null) {
 				dbcon.close();
@@ -335,7 +370,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			ignored.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Füllt die schon angegebenen Felder nach einem Update
 	 */
@@ -355,7 +390,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 		request.setAttribute("nachname", nachname);
 		request.setAttribute("email", email);
 	}
-	
+
 	/**
 	 * Updated die Studiengänge, wenn die Person eine Uni ausgewählt hat.
 	 */
@@ -385,7 +420,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 			killConnection(con);
 		}
 	}
-	
+
 	/**
 	 * Setzt für den neue angelegten Nutzer das Standard-Profilbild
 	 */
@@ -404,7 +439,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				// Wenn kein Profilbild gesetzt wurde
 				if (rs.getBytes(1) == null) {
 					// Lade eines der DefaulProfilBilder
-					int rand = (int)(Math.random() * files.size());
+					int rand = (int) (Math.random() * files.size());
 					BufferedImage img = ImageIO.read(files.get(rand));
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					ImageIO.write(img, "jpg", baos);

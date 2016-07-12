@@ -35,14 +35,10 @@
 		<button type="submit" class="btn btn-default buttonLightBlue" name="anmelden">Anmelden</button>
 		<div class="row"><br></div>
 	</form>
-	
-	<div class="row">
-		<div class="col-sm-4">
-			<br>${ meldung }<br>
-		</div>
-	</div>
+	<br>
 	<form id="registrierung" role="form" class="form-horizontal" action="AnmeldeAktivServlet" method="post">
 		<div class="form-group">
+			<strong>${ meldung }</strong>
 			<label for="Anrede" class="col-sm-2 control-label">Anrede</label>
 			<div class="col-sm-4">
 				<div class="row">
