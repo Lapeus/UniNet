@@ -30,6 +30,13 @@ public class Student {
 	private boolean online = false;
 	
 	/**
+	 * Anzahl der Nachrichten, die der User dem aktuellen User geschickt hat,
+	 * die dieser noch nicht gelesen hat.<br>
+	 * Diese Anzahl wird in der Chatspalte hinter dem Namen angezeigt.
+	 */
+	private int anzahlUngeleseneNachrichten = 0;
+	
+	/**
 	 * Erstellt einen neuen Studenten.<br>
 	 * Hauptkonstruktor dieser Klasse.
 	 * @param vorname Der Vorname
@@ -37,7 +44,7 @@ public class Student {
 	 * @param userID Die UserID
 	 */
 	public Student(String vorname, String nachname, int userID) {
-		this(vorname, nachname, userID, false);
+		this(vorname, nachname, userID, false, 0);
 	}
 	
 	/**
@@ -46,12 +53,15 @@ public class Student {
 	 * @param nachname Der Nachname
 	 * @param userID Die UserID
 	 * @param online Der Online-Status
+	 * @param anzahlUngeleseneNachrichten Die Anzahl der Nachrichten, die der aktuelle User noch nicht
+	 * gelesen hat
 	 */
-	public Student(String vorname, String nachname, int userID, boolean online) {
+	public Student(String vorname, String nachname, int userID, boolean online, int anzahlUngeleseneNachrichten) {
 		this.setVorname(vorname);
 		this.setNachname(nachname);
 		this.setUserID(userID);
 		this.setOnline(online);
+		this.setAnzahlUngeleseneNachrichten(anzahlUngeleseneNachrichten);
 	}
 
 	/**
@@ -116,5 +126,21 @@ public class Student {
 	 */
 	public void setOnline(boolean online) {
 		this.online = online;
+	}
+
+	/**
+	 * Gibt die Anzahl der ungelesenen Nachrichten zur&uuml;ck.
+	 * @return Die Anzahl der ungelesenen Nachrichten
+	 */
+	public int getAnzahlUngeleseneNachrichten() {
+		return anzahlUngeleseneNachrichten;
+	}
+
+	/**
+	 * Setzt die Anzahl der ungelesenen Nachrichten.
+	 * @param anzahlUngeleseneNachrichten Die Anzahl der ungelesenen Nachrichten
+	 */
+	public void setAnzahlUngeleseneNachrichten(int anzahlUngeleseneNachrichten) {
+		this.anzahlUngeleseneNachrichten = anzahlUngeleseneNachrichten;
 	}
 }

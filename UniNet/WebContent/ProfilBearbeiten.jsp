@@ -128,6 +128,15 @@
 				</c:choose>
 			</div>
 		</div>
+		<div class="row">
+			<h4>Passwort ändern</h4>
+			<div class="col-md-3">
+				<input type="password" class="form-control" id="password1" placeholder="Passwort" name="password1">
+			</div>
+			<div class="col-md-3">
+				<input type="password" class="form-control" id="password2" placeholder="Passwort erneut eingeben" name="password2">
+			</div>
+		</div>
 		<div class="row"><div class="col-md-6">
 			<button type="submit" style="margin-top: 5px;" class="btn btn-success pull-right">Änderungen sichern</button>
 		</div></div>

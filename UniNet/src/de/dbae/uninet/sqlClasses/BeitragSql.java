@@ -107,15 +107,15 @@ public class BeitragSql {
 			break;
 		// Gibt alle Kommentare des Beitrags zurueck
 		case "Kommentare":
-			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentare INNER JOIN Nutzer ON verfasserID = userID WHERE beitragsID = ?";
+			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentare INNER JOIN Nutzer ON verfasserID = userID WHERE beitragsID = ? ORDER BY kommentarID";
 			break;
 		// Gibt alle Unterkommentare eines Kommentars zuruck
 		case "Unterkommentare":
-			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM unterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
+			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM unterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ? ORDER BY kommentarID";
 			break;
 		// Gibt alle Kommentare zu einem Unterkommentar zurueck
 		case "KommentareZuUnterkommentaren":
-			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentareZuUnterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ?";
+			sql = "SELECT verfasserID, kommentarID, vorname, nachname, kommentar, datum, uhrzeit FROM kommentareZuUnterkommentare INNER JOIN Nutzer ON verfasserID = userID WHERE antwortAuf = ? ORDER BY kommentarID";
 			break;
 		case "GemeldeteBeitraege":
 			sql = "SELECT VerfasserID, Vorname, Nachname, Nachricht, AnzahlLikes, AnzahlKommentare, BeitragsID, Datum, Uhrzeit, Sichtbarkeit, Bearbeitet "

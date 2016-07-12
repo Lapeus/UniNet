@@ -72,15 +72,12 @@ public class ErstelleBenachrichtigung {
 	}
 	
 	/**
-	 * Erstellt eine Benachrichtung, wenn jemand auf einen Beitrag reagiert hat.<br>
-	 * Entweder wurde der Beitrag kommentiert oder mit <i>Interessiert mich nicht besonders</i>
-	 * markiert.
-	 * @param userID Die ID des aktuellen Users
-	 * @param beitragsID Die ID des Beitrags auf den reagiert wurde
-	 * @param isLike Gibt an, ob es eine &quot;Like&quot; oder ein Kommentar war
+	 * Gibt die ID des Verfassers des Beitrags zur&uuml;ck.
+	 * @param beitragsID Die ID des Beitrags
+	 * @return Die ID des Verfassers
 	 * @throws SQLException
 	 */
-	public void beitragReaktion(int userID, int beitragsID, boolean isLike) throws SQLException {
+	private int getVerfasserID(int beitragsID) throws SQLException {
 		// Lade das Sql-Statement um die UserID des Beitragsverfassers zu bekommen
 		sql = sqlSt.getSqlStatement("VerfasserBeitrag");
 		pStmt = con.prepareStatement(sql);
@@ -93,21 +90,50 @@ public class ErstelleBenachrichtigung {
 			// Lies die VerfasserID aus
 			verfasserID = rs.getInt(1);
 		}
-		// Lade das Sql-Statement um eine neue Benachrichtigung anzulegen
+		return verfasserID;
+	}
+	
+	/**
+	 * Erstellt eine neue Benachrichtung.
+	 * @param userID Die ID des Users an den die Benachrichtigung gehen soll
+	 * @param benachrichtigung Der Text der Benachrichtigung
+	 * @throws SQLException
+	 */
+	private void erstelleBenachrichtigung(int userID, String benachrichtigung) throws SQLException {
+		// Erstelle eine neue Benachrichtigung
 		sql = sqlSt.getSqlStatement("BenachrichtigungAnlegen");
-		PreparedStatement pStmt = con.prepareStatement(sql);
-		pStmt.setInt(1, verfasserID);
-		String benachrichtigung;
-		// Wenn es ein Like war
-		if (isLike) {
-			benachrichtigung = " interessiert deinen Beitrag nicht besonders.";
-		// Wenn es ein Kommentar war
-		} else {
-			benachrichtigung = " hat deinen Beitrag kommentiert.";
+		PreparedStatement pStmt2 = con.prepareStatement(sql);
+		pStmt2.setInt(1, userID);
+		pStmt2.setString(2, benachrichtigung);
+		pStmt2.executeUpdate();
+	}
+	
+	
+	/**
+	 * Erstellt eine Benachrichtung, wenn jemand auf einen Beitrag reagiert hat.<br>
+	 * Entweder wurde der Beitrag kommentiert oder mit <i>Interessiert mich nicht besonders</i>
+	 * markiert.
+	 * @param userID Die ID des aktuellen Users
+	 * @param beitragsID Die ID des Beitrags auf den reagiert wurde
+	 * @param isLike Gibt an, ob es eine &quot;Like&quot; oder ein Kommentar war
+	 * @throws SQLException
+	 */
+	public void beitragReaktion(int userID, int beitragsID, boolean isLike) throws SQLException {
+		int verfasserID = getVerfasserID(beitragsID);
+		// Wenn es nicht der eigene Beitrag ist, auf den man reagiert
+		if (verfasserID != userID) {
+			String benachrichtigung = getName(userID);
+			// Wenn es ein Like war
+			if (isLike) {
+				benachrichtigung = " interessiert deinen Beitrag nicht besonders.";
+			// Wenn es ein Kommentar war
+			} else {
+				benachrichtigung = " hat deinen Beitrag kommentiert.";
+			}
+			// Setze die Benachrichtigung an sich mit Link auf den Beitrag
+			benachrichtigung += "<br><a class='blau' href='BeitragServlet?beitragsID=" + beitragsID + "'>Ansehen</a>";
+			erstelleBenachrichtigung(userID, benachrichtigung);
 		}
-		// Setze die Benachrichtigung an sich mit Link auf den Beitrag
-		pStmt.setString(2, getName(userID) + benachrichtigung+ "<br><a class='blau' href='BeitragServlet?beitragsID=" + beitragsID + "'>Ansehen</a>");
-		pStmt.executeUpdate();
 	}
 	
 	/**
@@ -152,14 +178,8 @@ public class ErstelleBenachrichtigung {
 			int mitgliedID = rs.getInt(1);
 			// Ausser den Verfasser selbst
 			if (mitgliedID != verfasserID) {
-				// Erstelle eine neue Benachrichtigung
-				sql = sqlSt.getSqlStatement("BenachrichtigungAnlegen");
-				PreparedStatement pStmt2 = con.prepareStatement(sql);
-				// An das jeweilige Mitglied
-				pStmt2.setInt(1, mitgliedID);
 				String benachrichtigung = verfasserName + " hat etwas in " + name + " gepostet.<br><a class='blau' href='BeitragServlet?beitragsID=" + beitragsID + "'>Ansehen</a>";
-				pStmt2.setString(2, benachrichtigung);
-				pStmt2.executeUpdate();
+				erstelleBenachrichtigung(mitgliedID, benachrichtigung);
 			}
 		}
 	}
@@ -183,15 +203,9 @@ public class ErstelleBenachrichtigung {
 			// Lies den Gruppennamen aus
 			gruppenName = rs.getString(1);
 		}
-		// Erstelle eine neue Benachrichtigung
-		sql = sqlSt.getSqlStatement("BenachrichtigungAnlegen");
-		PreparedStatement pStmt2 = con.prepareStatement(sql);
-		// An den Eingeladenen
-		pStmt2.setInt(1, eingeladenerID);
 		String einladerName = getName(einladerID);
 		String benachrichtigung = einladerName + " hat dich der Gruppe " + gruppenName + " hinzugefügt.<br><a class='blau' href='GruppenServlet?tab=beitraege&gruppenID=" + gruppenID + "'>Ansehen</a>";
-		pStmt2.setString(2, benachrichtigung);
-		pStmt2.executeUpdate();
+		erstelleBenachrichtigung(eingeladenerID, benachrichtigung);
 	}
 	
 	public void gruppenAdmin(int userID, int gruppenID) throws SQLException {
@@ -206,14 +220,8 @@ public class ErstelleBenachrichtigung {
 			// Lies den Gruppennamen aus
 			gruppenName = rs.getString(1);
 		}
-		// Erstelle eine neue Benachrichtigung
-		sql = sqlSt.getSqlStatement("BenachrichtigungAnlegen");
-		PreparedStatement pStmt2 = con.prepareStatement(sql);
-		// An den neuen Admin
-		pStmt2.setInt(1, userID);
 		String benachrichtigung = "Du bist jetzt Administrator der Gruppe <a class='blau' href='GruppenServlet?tab=beitraege&gruppenID=" + gruppenID + "'>" + gruppenName + "</a>";
-		pStmt2.setString(2, benachrichtigung);
-		pStmt2.executeUpdate();
+		erstelleBenachrichtigung(userID, benachrichtigung);
 	}
 	
 	/**
@@ -236,4 +244,25 @@ public class ErstelleBenachrichtigung {
 		pStmt.executeUpdate();
 	}
 	
+	/**
+	 * Erstellt eine Benachrichtigung, wenn der Admin einen Beitrag ge&auml;ndert hat.
+	 * @param beitragsID Die ID des Beitrags, der ge&auml;ndert wurde
+	 * @throws SQLException
+	 */
+	public void adminBeitragGeaendert(int beitragsID) throws SQLException {
+		int verfasserID = getVerfasserID(beitragsID);
+		String benachrichtigung = "Dein Beitrag wurde aufgrund von Regelverst&ouml;&szlig;en bearbeitet.<br><a class='blau' href='BeitragServlet?beitragsID=" + beitragsID + "'>Ansehen</a>";
+		erstelleBenachrichtigung(verfasserID, benachrichtigung);
+	}
+	
+	/**
+	 * Erstellt eine Benachrichtigung, wenn der Admin einen Beitrag gel&ouml;scht hat.
+	 * @param beitragsID Die ID des Beitrags, der gel&ouml;scht wurde
+	 * @throws SQLException
+	 */
+	public void adminBeitragGeloescht(int beitragsID) throws SQLException {
+		int verfasserID = getVerfasserID(beitragsID);
+		String benachrichtigung = "Ein Beitrag von dir wurde aufgrund von Regelverst&ouml;&szlig;en gel&ouml;scht.";
+		erstelleBenachrichtigung(verfasserID, benachrichtigung);
+	}
 }

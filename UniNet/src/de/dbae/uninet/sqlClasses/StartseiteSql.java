@@ -31,6 +31,10 @@ public class StartseiteSql {
 		case "Chatfreunde":
 			sql = "SELECT Vorname, Nachname, userID FROM (FreundeView INNER JOIN Studenten ON Freund = StudentID INNER JOIN Nutzer ON StudentID = UserID) WHERE Nutzer = ? AND Nutzer != Freund AND Online = TRUE";
 			break;
+		// Gibt die Anzahl der ungelesenen Nachrichten an ? von ? zurueck
+		case "AnzahlNachrichten":
+			sql = "SELECT COUNT(empfaengerid) FROM nachrichten WHERE empfaengerid = ? AND senderid = ? AND gelesen = false GROUP BY senderid;";
+			break;
 		default:
 			System.err.println("FEHLER IN STARTSEITESQL " + action);
 			break;

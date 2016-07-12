@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Student;
 import de.dbae.uninet.sqlClasses.NachrichtenSql;
+import de.dbae.uninet.sqlClasses.StartseiteSql;
 
 /**
  * Servlet stellt die Daten für die Freundesliste zur Verfuegung.
@@ -63,15 +64,26 @@ public class LadeChatAlleFreundeServlet extends HttpServlet {
 			int iUserId = Integer.parseInt(session.getAttribute("UserID").toString());
 			pStmt.setInt(1, iUserId);
 			pStmt.setInt(2, iUserId);
-			System.out.println(pStmt.toString());
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
 				String vorname = rs.getString(1);
 				String nachname = rs.getString(2);
 				int userID = rs.getInt(3);
 				boolean online = rs.getBoolean(4);
-				System.out.println(vorname + " " + nachname);
-				Student freund = new Student(vorname, nachname, userID, online);
+				// Lade die Anzahl der ungelesenen Nachrichten
+				sql = new StartseiteSql().getSqlStatement("AnzahlNachrichten");
+				PreparedStatement pStmt2 = con.prepareStatement(sql);
+				// Die Nachrichten an den Nutzer
+				pStmt2.setInt(1, iUserId);
+				// Von dem jeweiligen Studenten
+				pStmt2.setInt(2, userID);
+				ResultSet rs2 = pStmt2.executeQuery();
+				int anzahl = 0;
+				if (rs2.next()) {
+					anzahl = rs2.getInt(1);
+				}
+				// Lege einen neuen Studenten an und fuege ihn der Liste hinzu
+				Student freund = new Student(vorname, nachname, userID, online, anzahl);
 				chatfreunde.add(freund);
 			}
 		} catch (Exception e) {

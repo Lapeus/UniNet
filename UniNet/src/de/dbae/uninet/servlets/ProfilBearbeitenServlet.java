@@ -1,11 +1,15 @@
 package de.dbae.uninet.servlets;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Random;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
@@ -142,13 +146,20 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			// Lade Sql-Statement um die restlichen Infos zu aendern
 			sql = sqlSt.getSqlStatement("AendereInfos");
 			pStmt = con.prepareStatement(sql);
-			int semester = Integer.parseInt(request.getParameter("semester"));
+			// Default-Wert ist 1
+			int semester = 1;
+			try {
+				semester = Integer.parseInt(request.getParameter("semester"));
+			} catch (NumberFormatException nfex) {
+			}
 			// Formatierung des Geburtstags
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 			Date date = null;
 			try {
 				date = new Date(sdf.parse(request.getParameter("geburtstag").toString()).getTime());
 			} catch (Exception e) {
+				// Default-Wert ist 01.01.1994
+				date = new Date(757378800000L);
 			}
 			String wohnort = request.getParameter("wohnort").toString();
 			String hobbys = request.getParameter("hobbys").toString();
@@ -177,9 +188,42 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			pStmt.setBoolean(5, ueberMichSichtbar);
 			pStmt.setInt(6, userID);
 			pStmt.executeUpdate();
-			// Weiterleitung
-			response.sendRedirect("ProfilServlet?userID=" + userID);
+			// Passwoerter
+			String password1 = request.getParameter("password1").toString();
+			String password2 = request.getParameter("password2").toString();
+			if (password1.equals(password2) && !password1.equals("")) {
+				String hash = "";
+				String salt = "";
+				try {
+					MessageDigest digest = MessageDigest.getInstance("MD5");
+					Random random = new Random();
+					byte[] salt2 = new byte[16];
+					random.nextBytes(salt2);
+					password1 += salt2;
+					digest.update(password1.getBytes(), 0, password1.length());
+					hash = new BigInteger(1, digest.digest()).toString();
+					salt = salt2.toString();
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String passwortSql = sqlSt.getSqlStatement("PasswortAendern");
+				PreparedStatement pStmt2 = con.prepareStatement(passwortSql);
+				pStmt2.setString(1, hash);
+				pStmt2.setString(2, salt);
+				pStmt2.setInt(3, userID);
+				pStmt2.executeUpdate();
+				// Weiterleitung
+				response.sendRedirect("ProfilServlet?userID=" + userID);
+			} else if (password1.equals("")) {
+				// Weiterleitung
+				response.sendRedirect("ProfilServlet?userID=" + userID);
+			} else {
+				// Passwoerter neu eingeben
+				response.sendRedirect("ProfilBearbeitenServlet");
+			}
 		} catch (NullPointerException npe) {
+			npe.printStackTrace();
 			response.sendRedirect("FehlerServlet?fehler=Session");
 		} catch (SQLException sqlex) {
 			response.sendRedirect("FehlerServlet?fehler=DBCon");

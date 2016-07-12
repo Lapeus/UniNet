@@ -32,7 +32,7 @@ public class RechteSpalteTag extends TagSupport {
 		try {
 			out.append(getHtmlCode(chatfreunde));
 		} catch (IOException e) {
-			System.out.println("Fehler beim Anhängen!");
+			System.out.println("Fehler beim Anhï¿½ngen!");
 			// TODO Fehler
 			e.printStackTrace();
 		}
@@ -54,11 +54,15 @@ public class RechteSpalteTag extends TagSupport {
 		// Fuer jeden Freund aus der Liste
 		for (Student freund : chatfreunde) {
 			String online = "";
+			// Wenn es ungelesene Nachrichten gibt
+			if (freund.getAnzahlUngeleseneNachrichten() > 0) {
+				online += "<span class='text-center'>&nbsp;&nbsp;&nbsp;(" + freund.getAnzahlUngeleseneNachrichten() + ")</span>";
+			}
 			// Schaue ob er online ist
 			if (freund.isOnline()) {
 				anzahlOnline++;
 				// Wenn ja, haenge das Online-Symbol an seinen Namen
-				online = "<span class='glyphicon glyphicon-record pull-right' style='color: #00aa00;'></span>";
+				online += "<span class='glyphicon glyphicon-record pull-right' style='color: #00aa00;'></span>";
 			}
 			erg += "<li role='presentation' class='chatfreunde'><a href='NachrichtenServlet?userID=" + freund.getUserID()+ "'><img class='media-object kopfzeile' alt='' src='LadeProfilbildServlet?userID=" + freund.getUserID() + "'</img>&nbsp;" + freund.getVorname() + " " + freund.getNachname() + online + "</a></li>";
 		}

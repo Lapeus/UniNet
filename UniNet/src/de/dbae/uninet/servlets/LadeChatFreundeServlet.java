@@ -59,31 +59,48 @@ public class LadeChatFreundeServlet extends HttpServlet{
 	 * @throws NullPointerException
 	 */
 	public void setChatfreunde(HttpServletRequest request, HttpServletResponse response, Connection con) throws IOException, SQLException, NullPointerException {
-		// Die aktuelle Session
-		HttpSession session = request.getSession();
-		// Stellt das Sql-Statement zur Verfuegung
-		StartseiteSql sqlSt = new StartseiteSql();
-		// Liste der Chatfreunde
-		List<Student> chatfreunde = new ArrayList<Student>();
-		// UserID
-		int userID = Integer.parseInt(session.getAttribute("UserID").toString());
-		// Lade das Sql-Statement um die Chatfreunde zu ermitteln
-		String sql = sqlSt.getSqlStatement("Chatfreunde");
-		PreparedStatement pStmt = con.prepareStatement(sql);
-		pStmt.setInt(1, userID);
-		ResultSet rs = pStmt.executeQuery();
-		// Fuer jeden Studenten / Chatfreund
-		while (rs.next()) {
-			String vorname = rs.getString(1);
-			String nachname = rs.getString(2);
-			int id = rs.getInt(3);
-			// Lege einen neuen Studenten an und fuege ihn der Liste hinzu
-			chatfreunde.add(new Student(vorname, nachname, id, true));
+		try {
+			// Die aktuelle Session
+			HttpSession session = request.getSession();
+			// Stellt das Sql-Statement zur Verfuegung
+			StartseiteSql sqlSt = new StartseiteSql();
+			// Liste der Chatfreunde
+			List<Student> chatfreunde = new ArrayList<Student>();
+			// UserID
+			int userID = Integer.parseInt(session.getAttribute("UserID").toString());
+			// Lade das Sql-Statement um die Chatfreunde zu ermitteln
+			String sql = sqlSt.getSqlStatement("Chatfreunde");
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setInt(1, userID);
+			ResultSet rs = pStmt.executeQuery();
+			// Fuer jeden Studenten / Chatfreund
+			while (rs.next()) {
+				String vorname = rs.getString(1);
+				String nachname = rs.getString(2);
+				int id = rs.getInt(3);
+				// Lade die Anzahl der ungelesenen Nachrichten
+				sql = sqlSt.getSqlStatement("AnzahlNachrichten");
+				PreparedStatement pStmt2 = con.prepareStatement(sql);
+				// Die Nachrichten an den Nutzer
+				pStmt2.setInt(1, userID);
+				// Von dem jeweiligen Studenten
+				pStmt2.setInt(2, id);
+				ResultSet rs2 = pStmt2.executeQuery();
+				int anzahl = 0;
+				if (rs2.next()) {
+					anzahl = rs2.getInt(1);
+				}
+				// Lege einen neuen Studenten an und fuege ihn der Liste hinzu
+				chatfreunde.add(new Student(vorname, nachname, id, true, anzahl));
+			}
+			// Setze die Liste als Attribut des Request-Objektes
+			request.setAttribute("chatfreunde", chatfreunde);
+			// Setze die UserID als Attribut des Request-Objektes
+			request.setAttribute("id", userID);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		// Setze die Liste als Attribut des Request-Objektes
-		request.setAttribute("chatfreunde", chatfreunde);
-		// Setze die UserID als Attribut des Request-Objektes
-		request.setAttribute("id", userID);
+		
 	}
 
 }

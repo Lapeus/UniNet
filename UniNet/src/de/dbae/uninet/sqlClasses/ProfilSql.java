@@ -57,6 +57,10 @@ public class ProfilSql {
 		case "AendereSichtbarkeiten":
 			sql = "UPDATE Profilsichtbarkeiten SET GeburtSichtbar = ?, WohnortSichtbar = ?, HobbysSichtbar = ?, InteressenSichtbar = ?, UeberMichSichtbar = ? WHERE StudentID = ?";
 			break;
+		// Passwort aendern
+		case "PasswortAendern":
+			sql = "UPDATE Nutzer SET passwort = ?, salt = ? WHERE userID = ?";
+			break;
 		default:
 			System.err.println("FEHLER IN PROFILSQL " + action);
 			break;

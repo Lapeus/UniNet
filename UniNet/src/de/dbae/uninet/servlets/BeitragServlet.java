@@ -452,7 +452,6 @@ public class BeitragServlet extends HttpServlet {
 				String timeStamp2 = sdf.format(new Date(rs2.getDate(6).getTime())) + " " + rs2.getTime(7).toString();
 				// Neuer Unterkommentar
 				Unterkommentar ukomm = new Unterkommentar(userID2, kommID2, name2, kommentar2, kommID, timeStamp2);
-				System.out.println(ukomm.getKommentar() + " : " + ukomm.getKommID());
 				// Lade Kommentare zum Unterkommentar
 				sql = sqlSt.getSqlStatement("KommentareZuUnterkommentaren");
 				pStmt = con.prepareStatement(sql);
@@ -754,7 +753,6 @@ public class BeitragServlet extends HttpServlet {
 		default:
 			break;
 		}
-		System.out.println(kommID + " lautet die KommID");
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, kommID);
 		pStmt.setString(2, request.getAttribute("kommentar").toString());
