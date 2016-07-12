@@ -110,6 +110,17 @@
 		</attribute>
 	</tag>
 	<tag>
+	<!-- Tag, der die Studenten Tabellarisch darstellt -->
+	<name>student</name>
+	<tag-class>de.dbae.uninet.taghandler.StudentAnzeigeTag</tag-class>
+	<attribute>
+	<!-- StudentObjekt -->
+		<name>student</name>
+		<requiered>true</requiered>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	</tag>
+	<tag>
 		<!-- Tag, der Veranstaltungen Tabellarisch darstellt -->
 		<name>veranstaltung</name>
 		<tag-class>de.dbae.uninet.taghandler.VeranstaltungAnzeigeTag

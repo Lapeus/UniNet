@@ -24,6 +24,10 @@ public class Student {
 	private int userID;
 	
 	/**
+	 * Die email des Studenten.
+	 */
+	private String email;
+	/**
 	 * Der Online-Status des Studenten.<br>
 	 * Dieser ist nur im Chat relevant, weshalb er sonst standardm&auml;&szlig;ig auf <b>false</b> steht.
 	 */
@@ -53,7 +57,19 @@ public class Student {
 		this.setUserID(userID);
 		this.setOnline(online);
 	}
-
+	/**
+	 * Erstellt einen Studenten inklusive email.
+	 * @param userID Die UserID
+	 * @param vorname Der Vorname
+	 * @param nachname Der Nachname 
+	 * @param email Die Email
+	 */
+	public Student (int userID, String vorname, String nachname, String email) {
+		this.setUserID(userID);
+		this.setVorname(vorname);
+		this.setNachname(nachname);
+		this.email = email;
+	}
 	/**
 	 * Getter f&uuml;r den Vornamen.
 	 * @return Der Vorname
@@ -116,5 +132,12 @@ public class Student {
 	 */
 	public void setOnline(boolean online) {
 		this.online = online;
+	}
+	/**
+	 * Getter f&uuml;r die E-Mail.
+	 * @return Die email
+	 */
+	public String getEmail() {
+		return email;
 	}
 }

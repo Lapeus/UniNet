@@ -104,4 +104,20 @@ public class AdminSql {
 		String sql ="UPDATE beitragmeldungen SET adminbearbeitet = true WHERE beitragsid = ?;";
 		return sql;
 	}
+	public String getStudentenSql() {
+		String sql = "SELECT studentid, vorname, nachname, email FROM studenten FULL OUTER JOIN nutzer ON (studenten.studentid = nutzer.userid) WHERE Nutzertyp != 1 AND Nutzertyp != 2 AND uniid =?";
+		return sql;
+	}
+	public String getStudentEmailSql() {
+		String sql ="SELECT email FROM studenten FULL OUTER JOIN nutzer ON (studenten.studentid = nutzer.userid)WHERE studentid = ?;";
+		return sql;
+	}
+	public String getStudentLoeschenSql() {
+		String sql ="DELETE FROM nutzer WHERE userid = ?;";
+		return sql;
+	}
+	public String getEmailSperrenSql() {
+		String sql ="INSERT INTO GesperrteNutzer (email) VALUES (?);";
+		return sql;
+	}
 }

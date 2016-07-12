@@ -43,6 +43,7 @@ public class LocalAdminKopfzeileTag extends TagSupport {
 		kopfzeile += "<li><label class='platzhalter'></label></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile logo'><b>UNINET</b></a></li></ul>";
 		kopfzeile += "<ul class='nav navbar-nav navbar-right'>";
+		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminUserVerwaltenServlet'>Studenten verwalten</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminVeranstaltungAnlegenServlet'>Veranstaltung anlegen</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminVeranstaltungenVerwaltenServlet'>Veranstaltungen verwalten</a></li>";
 		kopfzeile += "<li><a class='navbar-brand kopfzeile' href='AdminBeitraegeServlet'>Beiträge verwalten</a></li>";
