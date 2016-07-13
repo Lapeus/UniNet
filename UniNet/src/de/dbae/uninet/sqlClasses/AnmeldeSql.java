@@ -16,12 +16,12 @@ public class AnmeldeSql {
 	}
 	
 	public String getNutzerId() {
-		String sql = "SELECT userid FROM nutzer WHERE email=?";
+		String sql = "SELECT userid FROM nutzer WHERE email iLIKE ?";
 	    return sql;
 	}
 	
 	public String getNutzerTyp() {
-		String sql = "SELECT nutzertyp FROM nutzer WHERE email=?";
+		String sql = "SELECT nutzertyp FROM nutzer WHERE email iLIKE ?";
 	    return sql;
 	}
 	
@@ -51,7 +51,7 @@ public class AnmeldeSql {
 	}
 	
 	public String ueberpruefeAnmeldedaten() {
-		String sql = "SELECT passwort, salt FROM nutzer WHERE email=?";
+		String sql = "SELECT passwort, salt FROM nutzer WHERE email iLIKE ?";
 		return sql;
 	}
 	

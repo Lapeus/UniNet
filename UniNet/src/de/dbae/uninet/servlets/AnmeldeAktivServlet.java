@@ -95,6 +95,7 @@ public class AnmeldeAktivServlet extends HttpServlet {
 				String sql = sqlSt.ueberpruefeAnmeldedaten();
 				PreparedStatement pStmt = con.prepareStatement(sql);
 				pStmt.setString(1, email);
+				System.out.println(pStmt.toString());
 				ResultSet rs = pStmt.executeQuery();
 
 				if (!rs.next()) {
