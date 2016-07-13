@@ -125,14 +125,14 @@ public class ErstelleBenachrichtigung {
 			String benachrichtigung = getName(userID);
 			// Wenn es ein Like war
 			if (isLike) {
-				benachrichtigung = " interessiert deinen Beitrag nicht besonders.";
+				benachrichtigung += " interessiert deinen Beitrag nicht besonders.";
 			// Wenn es ein Kommentar war
 			} else {
-				benachrichtigung = " hat deinen Beitrag kommentiert.";
+				benachrichtigung += " hat deinen Beitrag kommentiert.";
 			}
 			// Setze die Benachrichtigung an sich mit Link auf den Beitrag
 			benachrichtigung += "<br><a class='blau' href='BeitragServlet?beitragsID=" + beitragsID + "'>Ansehen</a>";
-			erstelleBenachrichtigung(userID, benachrichtigung);
+			erstelleBenachrichtigung(verfasserID, benachrichtigung);
 		}
 	}
 	

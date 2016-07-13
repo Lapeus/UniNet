@@ -33,7 +33,7 @@ public class StartseiteSql {
 			break;
 		// Gibt die Anzahl der ungelesenen Nachrichten an ? von ? zurueck
 		case "AnzahlNachrichten":
-			sql = "SELECT COUNT(empfaengerid) FROM nachrichten WHERE empfaengerid = ? AND senderid = ? AND gelesen = false GROUP BY senderid;";
+			sql = "SELECT COUNT(empfaengerid) FROM nachrichten WHERE empfaengerid = ? AND senderid = ? AND gelesen = false;";
 			break;
 		default:
 			System.err.println("FEHLER IN STARTSEITESQL " + action);
