@@ -42,7 +42,6 @@ public class GesuchteVeranstaltungTag extends TagSupport {
 				page.append(getVeranstaltungJSPCode());
 			}
 		} catch (IOException e) {
-			System.out.println("GesucheteVeranstaltungTag - doStartTag");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;

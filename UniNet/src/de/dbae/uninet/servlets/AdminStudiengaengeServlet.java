@@ -175,7 +175,6 @@ public class AdminStudiengaengeServlet extends HttpServlet {
 							nameDoppelt = true;
 						}
 					}
-					System.out.println(!nameDoppelt);
 					if (!nameDoppelt) {
 						// Neuen Studiengang in Tabelle speichern
 						sql = aSql.getStudiengangAnlegenSql();

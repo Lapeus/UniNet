@@ -139,8 +139,8 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			// Lade Sql-Statement um den Namen zu aendern
 			String sql = sqlSt.getSqlStatement("AendereNamen");
 			PreparedStatement pStmt = con.prepareStatement(sql);
-			pStmt.setString(1, request.getParameter("vorname").toString());
-			pStmt.setString(2, request.getParameter("nachname").toString());
+			pStmt.setString(1, request.getAttribute("vorname").toString());
+			pStmt.setString(2, request.getAttribute("nachname").toString());
 			pStmt.setInt(3, userID);
 			pStmt.executeUpdate();
 			// Lade Sql-Statement um die restlichen Infos zu aendern
@@ -149,22 +149,22 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			// Default-Wert ist 1
 			int semester = 1;
 			try {
-				semester = Integer.parseInt(request.getParameter("semester"));
+				semester = Integer.parseInt(request.getAttribute("semester").toString());
 			} catch (NumberFormatException nfex) {
 			}
 			// Formatierung des Geburtstags
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 			Date date = null;
 			try {
-				date = new Date(sdf.parse(request.getParameter("geburtstag").toString()).getTime());
+				date = new Date(sdf.parse(request.getAttribute("geburtstag").toString()).getTime());
 			} catch (Exception e) {
 				// Default-Wert ist 01.01.1994
 				date = new Date(757378800000L);
 			}
-			String wohnort = request.getParameter("wohnort").toString();
-			String hobbys = request.getParameter("hobbys").toString();
-			String interessen = request.getParameter("interessen").toString();
-			String ueberMich = request.getParameter("ueberMich").toString();
+			String wohnort = request.getAttribute("wohnort").toString();
+			String hobbys = request.getAttribute("hobbys").toString();
+			String interessen = request.getAttribute("interessen").toString();
+			String ueberMich = request.getAttribute("ueberMich").toString();
 			pStmt.setDate(1, new Date(new Semesterrechner().getStudienbeginn(semester)));
 			pStmt.setDate(2, date);
 			pStmt.setString(3, wohnort);
@@ -189,8 +189,8 @@ public class ProfilBearbeitenServlet extends HttpServlet {
 			pStmt.setInt(6, userID);
 			pStmt.executeUpdate();
 			// Passwoerter
-			String password1 = request.getParameter("password1").toString();
-			String password2 = request.getParameter("password2").toString();
+			String password1 = request.getAttribute("password1").toString();
+			String password2 = request.getAttribute("password2").toString();
 			if (password1.equals(password2) && !password1.equals("")) {
 				String hash = "";
 				String salt = "";

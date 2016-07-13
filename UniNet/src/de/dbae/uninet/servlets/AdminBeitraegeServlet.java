@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.dbae.uninet.dbConnections.DBConnection;
 import de.dbae.uninet.javaClasses.Beitrag;
+import de.dbae.uninet.javaClasses.ErstelleBenachrichtigung;
 import de.dbae.uninet.javaClasses.HashtagVerarbeitung;
 import de.dbae.uninet.sqlClasses.AdminSql;
 import de.dbae.uninet.sqlClasses.BeitragSql;
@@ -52,8 +53,7 @@ public class AdminBeitraegeServlet extends HttpServlet {
 			if (request.getParameter("name") != null) {
 				int beitragsID = Integer.parseInt(request.getParameter("beitragsID"));
 				if (request.getParameter("name").equals("BeitragLoeschen")) {
-					// new
-					// ErstelleBenachrichtigung(con).adminBeitragGeloescht(beitragsID);
+					new ErstelleBenachrichtigung(con).adminBeitragGeloescht(beitragsID);
 					BeitragSql sqlSt = new BeitragSql();
 					String sql = sqlSt.getSqlStatement("BeitragLoeschen");
 					PreparedStatement pStmt = con.prepareStatement(sql);
@@ -111,12 +111,9 @@ public class AdminBeitraegeServlet extends HttpServlet {
 				pStmt = con.prepareStatement(sql);
 				pStmt.setInt(1, beitragsID);
 				pStmt.executeUpdate();
-				// new
-				// ErstelleBenachrichtigung(con).adminBeitragGeaendert(beitragsID);
+				new ErstelleBenachrichtigung(con).adminBeitragGeaendert(beitragsID);
 			}
-		} catch (
-
-		NullPointerException npex) {
+		} catch (NullPointerException npex) {
 			response.sendRedirect("FehlerServlet?fehler=Session");
 		} catch (SQLException sqlex) {
 			response.sendRedirect("FehlerServlet?fehler=DBCon");

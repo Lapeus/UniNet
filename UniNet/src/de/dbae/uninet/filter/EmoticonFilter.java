@@ -47,7 +47,7 @@ public class EmoticonFilter implements Filter {
 			for (String parameter : parameters) {
 				// Wenn der Parameter gesetzt wurde
 				if (request.getAttribute(parameter) != null && !request.getAttribute(parameter).equals("")) {
-					// Setze den ersetzten Parameter als Atribut
+					// Setze den ersetzten Parameter als Attribut
 					request.setAttribute(parameter, getString(request.getAttribute(parameter).toString()));
 				}
 			}

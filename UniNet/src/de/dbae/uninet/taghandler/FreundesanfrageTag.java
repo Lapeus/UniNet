@@ -77,7 +77,6 @@ public class FreundesanfrageTag extends TagSupport {
 				+ "</span>"
 				+ "<span class='clearfix borda'></span>"
 				+ "</article>";
-		System.out.println(jsp);
 		return jsp;
 	}
 }

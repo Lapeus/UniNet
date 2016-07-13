@@ -29,7 +29,6 @@ public class GesuchterNutzerTag extends TagSupport {
 		try {
 			page.append(getUserJSPCode());
 		} catch (IOException e) {
-			System.out.println("GesucheterNutzerTag - doStartTag");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;

@@ -31,7 +31,6 @@ public class NachrichtenTag extends TagSupport {
 		try {
 			page.append(getNachrichtenJSPCode());
 		} catch (IOException e) {
-			System.out.println("Da ist was bei der Nachricht kaputt");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;

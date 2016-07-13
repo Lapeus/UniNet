@@ -185,7 +185,6 @@ public class BenachrichtigungenServlet extends HttpServlet {
 			pStmt.setInt(2, freundID);
 			pStmt.setInt(3, freundID);
 			pStmt.setInt(4, userID);
-			System.out.println(pStmt.toString());
 			pStmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("ERROR - BenachrichtigungenServlet - lehneFreundschaftAb - catch");

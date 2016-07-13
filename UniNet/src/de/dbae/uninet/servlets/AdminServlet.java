@@ -83,7 +83,6 @@ public class AdminServlet extends HttpServlet {
 			AdminSql sqlSt = new AdminSql();
 			String sql = sqlSt.getAdminLoeschen1Sql();
 			int userid = Integer.parseInt(request.getParameter("loeschen"));
-			System.out.println(userid);
 			try {
 				if (con.isClosed()) {
 					dbcon = new DBConnection();

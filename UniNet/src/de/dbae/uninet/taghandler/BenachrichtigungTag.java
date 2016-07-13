@@ -44,7 +44,6 @@ public class BenachrichtigungTag extends TagSupport {
 				page.append(getGruppeJSPCode());
 			}
 		} catch (IOException e) {
-			System.out.println("FreundesanfrageTag - doStartTag");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;

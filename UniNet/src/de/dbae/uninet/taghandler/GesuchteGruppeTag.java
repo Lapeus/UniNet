@@ -45,7 +45,6 @@ public class GesuchteGruppeTag extends TagSupport {
 				page.append(getGruppeJSPCode());
 			}
 		} catch (IOException e) {
-			System.out.println("GesuchteGruppeTag - doStartTag");
 			e.printStackTrace();
 		}
 		return EVAL_PAGE;
@@ -66,7 +65,6 @@ public class GesuchteGruppeTag extends TagSupport {
 					Date datum = formatDate.parse(group.getGruendung());
 					sDatum = formatDate2.format(datum);
 				} catch (ParseException e) {
-					System.out.println("ERROR - GescuhteGruppeTag - getGruppeJSPCode");
 					e.printStackTrace();
 				}
 			}

@@ -94,7 +94,6 @@ public class AdminUserVerwaltenServlet extends HttpServlet {
 		}
 		if (request.getParameter("loeschen") != null) {
 			int loeschUserid = Integer.parseInt(request.getParameter("loeschen"));
-			System.out.println(loeschUserid);
 			try {
 				if (con.isClosed()) {
 					dbcon = new DBConnection();

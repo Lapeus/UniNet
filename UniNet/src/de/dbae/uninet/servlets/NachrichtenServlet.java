@@ -62,10 +62,9 @@ public class NachrichtenServlet extends HttpServlet {
 			ResultSet result = pStmtName.executeQuery();
 			while (result.next()) {
 				sNameFreund = result.getString(1) + " " + result.getString(2);
-				System.out.println(sNameFreund);
 			}
 		} catch (SQLException e) {
-			System.out.println("SQL Fehler NameFreund - NachrichtenServletGET");
+			e.printStackTrace();
 		} finally {
 			try {
 				if (dbcon != null) {
@@ -90,7 +89,7 @@ public class NachrichtenServlet extends HttpServlet {
 		DBConnection dbcon = null;
 		NachrichtenSql nSql = new NachrichtenSql();
 		if(request.getParameter("senden") != null){
-			if(!request.getParameter("nachricht").equals("")) {
+			if(!request.getAttribute("nachricht").toString().equals("")) {
 				try {
 					dbcon = new DBConnection();
 					Connection con = dbcon.getCon();
@@ -98,7 +97,7 @@ public class NachrichtenServlet extends HttpServlet {
 					// Prepared Stmt mit Argumenten fuellen
 					pStmtSenden.setInt(1, Integer.parseInt(session.getAttribute("UserID").toString()));
 					pStmtSenden.setInt(2, userIDFreund);
-					pStmtSenden.setString(3, request.getParameter("nachricht"));
+					pStmtSenden.setString(3, request.getAttribute("nachricht").toString());
 					// Datestamp erstellen
 					java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
 					pStmtSenden.setDate(4, sqlDate);

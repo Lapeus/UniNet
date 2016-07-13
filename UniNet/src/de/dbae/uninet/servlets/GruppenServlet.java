@@ -128,7 +128,7 @@ public class GruppenServlet extends HttpServlet {
 		// Setze die Session
 		session = request.getSession();
 		// Lade die Aktion, die das Servlet durchfuehren soll
-		String name = request.getParameter("name");
+		String name = request.getAttribute("name").toString();
 		if (name == null) {
 			name = "";
 		}

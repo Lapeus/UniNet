@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
- * Dieser Filter &uuml;bersetzt fehlerhaft kodierte Umlaute in Html-Code, dabei sie korrekt angezeigt werden k&ouml;nnen.
+ * Dieser Filter &uuml;bersetzt fehlerhaft kodierte Umlaute in Html-Code, damit sie korrekt angezeigt werden k&ouml;nnen.
  * @author Christian Ackermann
  */
 public class UmlauteFilter implements Filter {
