@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="UniNet">
+    <wb-module deploy-name="UniNetAlt">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="UniNet"/>
-        <property name="java-output-path" value="/UniNet/build/classes"/>
+        <property name="java-output-path" value="/UniNetAlt/build/classes"/>
+        <property name="context-root" value="UniNetAlt"/>
     </wb-module>
 </project-modules>

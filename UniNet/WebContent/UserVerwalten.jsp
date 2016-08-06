@@ -22,7 +22,7 @@
 				<th><a href='AdminUserVerwaltenServlet?sort=id'>User ID</a></th>
 				<th><a href='AdminUserVerwaltenServlet?sort=vorname'>Vorname</a></th>
 				<th><a href='AdminUserVerwaltenServlet?sort=nachname'>Nachname</a></th>
-				<th><a href='AdminUserVerwaltenServlet?sort=mail'>E-Mail</a></th>
+				<th><a href='AdminUserVerwaltenServlet?sort=email'>E-Mail</a></th>
 			</tr>
 		</thead>
 		<tbody>
